@@ -1,0 +1,58 @@
+name: 'Trustify Dependency Analytics'
+description: 'Analyze dependencies for vulnerabilities and license conflicts using Trustify'
+author: 'Trustification'
+branding:
+  icon: 'shield'
+  color: 'red'
+
+inputs:
+  mode:
+    description: 'Operation mode: remediate, check, or sbom'
+    required: true
+  backend-url:
+    description: 'Trustify backend URL'
+    required: false
+  providers:
+    description: 'Comma-separated list of vulnerability providers to query'
+    required: false
+  sources:
+    description: 'Comma-separated list of manifest paths to analyze'
+    required: false
+  group-by:
+    description: 'Grouping strategy for vulnerabilities (package, severity, file)'
+    required: false
+  dry-run:
+    description: 'Preview changes without creating PRs (remediate mode)'
+    required: false
+    default: 'false'
+  sbom-targets:
+    description: 'Comma-separated list of SBOM upload targets (artifact, oci)'
+    required: false
+  config-path:
+    description: 'Path to .trustify-da.yml config file'
+    required: false
+    default: '.trustify-da.yml'
+
+outputs:
+  remediation-count:
+    description: 'Number of vulnerabilities remediated (remediate mode)'
+  critical-count:
+    description: 'Number of critical vulnerabilities found'
+  high-count:
+    description: 'Number of high severity vulnerabilities found'
+  medium-count:
+    description: 'Number of medium severity vulnerabilities found'
+  low-count:
+    description: 'Number of low severity vulnerabilities found'
+  license-conflicts:
+    description: 'Number of license policy conflicts detected'
+  pr-url:
+    description: 'URL of created/updated PR (remediate mode)'
+  sbom-path:
+    description: 'Path to generated SBOM (sbom mode)'
+  changed-files:
+    description: 'Comma-separated list of files modified (remediate mode)'
+
+runs:
+  using: 'node20'
+  main: 'dist/index.js'
