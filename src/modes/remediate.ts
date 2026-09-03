@@ -310,8 +310,13 @@ ${changedFilesList.map((f) => `- \`${f}\``).join('\n')}
     if (changedFilesList.length > 0) {
       await exec.exec('git', ['add', ...changedFilesList]);
 
-      // Commit changes
+      // Commit changes. Set the author inline (not via global config) so the
+      // action works on bare CI runners that have no git identity configured.
       await exec.exec('git', [
+        '-c',
+        'user.name=trustify-da[bot]',
+        '-c',
+        'user.email=trustify-da[bot]@users.noreply.github.com',
         'commit',
         '-m',
         prTitle,
