@@ -1,0 +1,65 @@
+name: Local Test
+
+on:
+  push:
+    branches: [main, test]
+  workflow_dispatch:
+
+jobs:
+  test-check-mode:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Test check mode
+        uses: ./
+        with:
+          mode: check
+          sources: test/fixtures/pom.xml,test/fixtures/libs.versions.toml
+
+  test-remediate-mode:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Test remediate mode (dry-run)
+        uses: ./
+        with:
+          mode: remediate
+          sources: test/fixtures/pom.xml
+          dry-run: 'true'
+
+  test-sbom-mode:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Test sbom mode
+        uses: ./
+        with:
+          mode: sbom
+          sbom-targets: artifact
+
+  test-remediate-dry-run:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Test remediate mode (dry-run)
+        id: remediate
+        uses: ./
+        with:
+          mode: remediate
+          sources: test/fixtures/pom.xml,test/fixtures/libs.versions.toml
+          dry-run: 'true'
+          labels: trustify-da,test
+          branch-prefix: test-remediate
+
+      - name: Show remediate results
+        run: |
+          echo "Remediation count: ${{ steps.remediate.outputs.remediation-count }}"
+          echo "Changed files: ${{ steps.remediate.outputs.changed-files }}"

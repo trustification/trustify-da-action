@@ -1,0 +1,37 @@
+name: Automated Dependency Remediation
+
+on:
+  schedule:
+    # Run daily at 2 AM UTC
+    - cron: '0 2 * * *'
+  workflow_dispatch:
+    # Allow manual trigger
+
+jobs:
+  remediate-vulnerabilities:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Run Trustify Dependency Analytics
+        uses: trustification/trustify-da-action@main
+        with:
+          mode: remediate
+          backend-url: ${{ secrets.TRUSTIFY_BACKEND_URL }}
+          providers: osv,snyk
+          dry-run: 'false'
+          labels: trustify-da,security,dependencies
+          branch-prefix: trustify-da
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Check remediation results
+        run: |
+          echo "Remediation count: ${{ steps.remediate.outputs.remediation-count }}"
+          echo "PR URL: ${{ steps.remediate.outputs.pr-url }}"
+          echo "Changed files: ${{ steps.remediate.outputs.changed-files }}"

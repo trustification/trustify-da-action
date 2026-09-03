@@ -25,6 +25,14 @@ inputs:
     description: 'Preview changes without creating PRs (remediate mode)'
     required: false
     default: 'false'
+  labels:
+    description: 'Comma-separated list of labels to add to PRs (remediate mode)'
+    required: false
+    default: 'trustify-da,security'
+  branch-prefix:
+    description: 'Branch name prefix for remediation PRs (remediate mode)'
+    required: false
+    default: 'trustify-da'
   sbom-targets:
     description: 'Comma-separated list of SBOM upload targets (artifact, oci)'
     required: false

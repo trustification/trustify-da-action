@@ -5,6 +5,8 @@ export interface ActionConfig {
     sources?: string[];
     groupBy?: string;
     dryRun: boolean;
+    labels?: string[];
+    branchPrefix?: string;
     sbomTargets?: string[];
     configPath: string;
 }

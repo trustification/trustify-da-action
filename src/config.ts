@@ -9,6 +9,8 @@ export interface ActionConfig {
   sources?: string[];
   groupBy?: string;
   dryRun: boolean;
+  labels?: string[];
+  branchPrefix?: string;
   sbomTargets?: string[];
   configPath: string;
 }
@@ -38,6 +40,8 @@ export async function loadConfig(): Promise<ActionConfig> {
   const groupBy = core.getInput('group-by');
   const dryRunInput = core.getInput('dry-run') || 'false';
   const dryRun = dryRunInput.toLowerCase() === 'true';
+  const labels = core.getInput('labels');
+  const branchPrefix = core.getInput('branch-prefix');
   const sbomTargets = core.getInput('sbom-targets');
 
   // Merge config - action inputs override file config
@@ -52,6 +56,10 @@ export async function loadConfig(): Promise<ActionConfig> {
       : (fileConfig.sources as string[]),
     groupBy: groupBy || (fileConfig.groupBy as string),
     dryRun,
+    labels: labels
+      ? labels.split(',').map((l) => l.trim())
+      : (fileConfig.labels as string[]) || ['trustify-da', 'security'],
+    branchPrefix: branchPrefix || (fileConfig.branchPrefix as string) || 'trustify-da',
     sbomTargets: sbomTargets
       ? sbomTargets.split(',').map((t) => t.trim())
       : (fileConfig.sbomTargets as string[]),
