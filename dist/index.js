@@ -51241,7 +51241,11 @@ const crypto_1 = __importDefault(__nccwpck_require__(6982));
  */
 function generateDeduplicationKey(context) {
     const normalized = JSON.stringify(context, Object.keys(context).sort());
-    return crypto_1.default.createHash('sha256').update(normalized).digest('hex').substring(0, 16);
+    return crypto_1.default
+        .createHash('sha256')
+        .update(normalized)
+        .digest('hex')
+        .substring(0, 16);
 }
 /**
  * Creates a new pull request.
@@ -51555,6 +51559,8 @@ Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.runRemediateMode = runRemediateMode;
 const core = __importStar(__nccwpck_require__(7484));
 const exec = __importStar(__nccwpck_require__(5236));
+const github = __importStar(__nccwpck_require__(3228));
+const node_crypto_1 = __nccwpck_require__(7598);
 const promises_1 = __nccwpck_require__(1455);
 const node_path_1 = __nccwpck_require__(6760);
 const remediate_js_1 = __nccwpck_require__(6010);
@@ -51618,45 +51624,67 @@ async function runRemediateMode(config) {
         await runDependencyMode(result.remediations, config, workspacePath);
     }
     else {
-        await runBundleMode(result.remediations, config);
+        await runBundleMode(result.remediations, config, workspacePath);
     }
 }
 /**
  * Bundle mode: a single PR containing every fix already applied to the working tree.
  */
-async function runBundleMode(remediations, config) {
-    const changedFiles = await getChangedFiles();
+async function runBundleMode(remediations, config, workspacePath) {
+    const changedFiles = await getChangedFiles(workspacePath);
     if (changedFiles.length === 0) {
         core.info('No files modified - no remediations applied');
         return;
     }
     core.info(`Modified files: ${changedFiles.join(', ')}`);
     core.setOutput('changed-files', changedFiles.join(','));
-    const prUrl = await createPRForGroup({ key: 'bundle', remediations }, config, changedFiles);
+    const baseSha = await getHeadSha(workspacePath);
+    const group = {
+        key: 'bundle',
+        branchName: `${config.branchPrefix}/remediate-vulnerabilities`,
+        title: 'fix: remediate dependency vulnerabilities',
+        remediations,
+    };
+    const prUrl = await createPRForGroup(group, config, changedFiles, workspacePath, baseSha);
     core.setOutput('pr-url', prUrl);
     core.info('Created 1 PR');
 }
 /**
- * Dependency mode: one PR per changeKey. Each PR's branch is built from base and
- * receives only that dependency's `after` content, so fixes are never lost when
- * multiple dependencies share a manifest.
+ * Dependency mode: one PR per changeKey. Each PR's branch is pinned to the base
+ * commit and receives only that dependency's `after` content, so fixes are never
+ * lost when multiple dependencies share a manifest.
  */
 async function runDependencyMode(remediations, config, workspacePath) {
-    const groups = groupByChangeKey(remediations);
-    if (groups.length === 0) {
+    const rawGroups = groupByChangeKey(remediations);
+    if (rawGroups.length === 0) {
         core.info('No per-dependency changes emitted - no remediations applied');
         return;
     }
     // The JS client applied every fix atomically to the working tree. We rebuild
     // each dependency's isolated change from its `after` content instead, so
     // discard the atomic working-tree edits to start each branch from a clean base.
-    const allChangePaths = Array.from(new Set(groups.flatMap((g) => g.changes.map((c) => c.path))));
+    const allChangePaths = Array.from(new Set(rawGroups.flatMap((g) => g.changes.map((c) => c.path))));
     core.setOutput('changed-files', allChangePaths.join(','));
-    await discardWorkingTreeChanges(allChangePaths);
-    core.info(`Creating ${groups.length} PR(s) (groupBy: dependency)`);
+    await discardWorkingTreeChanges(allChangePaths, workspacePath);
+    // Pin every branch to this commit so each PR is isolated from the others,
+    // regardless of whether the checkout left us on a branch or detached HEAD.
+    const baseSha = await getHeadSha(workspacePath);
+    core.info(`Creating ${rawGroups.length} PR(s) (groupBy: dependency)`);
     const prUrls = [];
-    for (const group of groups) {
-        const prUrl = await createPRForGroup(group, config, group.changes.map((c) => c.path), workspacePath);
+    for (const raw of rawGroups) {
+        // Readable dependency label (may be multiple deps when inseparable).
+        const depLabel = Array.from(new Set(raw.remediations.map((r) => r.groupId ? `${r.groupId}:${r.artifactId}` : r.artifactId))).join(', ');
+        // Branch name: readable dep + short hash of the stable changeKey. The hash
+        // keeps the name unique and bounded even for long keys/paths, while PR
+        // updates still dedup to the same branch.
+        const group = {
+            key: raw.key,
+            branchName: `${config.branchPrefix}/remediate-${sanitizeBranchName(depLabel)}-${shortHash(raw.key)}`,
+            title: `fix: update ${depLabel} to fix vulnerabilities`,
+            remediations: raw.remediations,
+            changes: raw.changes,
+        };
+        const prUrl = await createPRForGroup(group, config, raw.changes.map((c) => c.path), workspacePath, baseSha);
         prUrls.push(prUrl);
     }
     core.setOutput('pr-url', prUrls.length === 1 ? prUrls[0] : prUrls.join(','));
@@ -51674,14 +51702,19 @@ function groupByChangeKey(remediations) {
         for (const change of remediation.changes ?? []) {
             let group = groups.get(change.changeKey);
             if (!group) {
-                group = { key: change.changeKey, remediations: [], changeByPath: new Map() };
+                group = {
+                    key: change.changeKey,
+                    remediations: [],
+                    changeByPath: new Map(),
+                };
                 groups.set(change.changeKey, group);
             }
             if (!group.remediations.includes(remediation)) {
                 group.remediations.push(remediation);
             }
             const existing = group.changeByPath.get(change.path);
-            if (!existing || compareVersions(remediation.fixedInVersion, existing.version) > 0) {
+            if (!existing ||
+                compareVersions(remediation.fixedInVersion, existing.version) > 0) {
                 group.changeByPath.set(change.path, {
                     after: change.after,
                     version: remediation.fixedInVersion,
@@ -51699,25 +51732,75 @@ function groupByChangeKey(remediations) {
     }));
 }
 /**
- * Creates a PR for a group of remediations.
+ * Creates (or updates) the PR for a single group: materialize its changes, commit
+ * and push its branch, then open/update the PR. All mode-specific naming is
+ * already resolved on `group`.
  */
-async function createPRForGroup(group, config, changedFilesList, workspacePath) {
-    const branchPrefix = config.branchPrefix || 'trustify-da';
-    const isBundled = group.key === 'bundle';
-    // Branch name: bundle mode uses a generic name; per-dependency uses the
-    // sanitized (stable) changeKey so PR updates dedup to the same branch.
-    const branchSuffix = isBundled
-        ? 'remediate-vulnerabilities'
-        : `remediate-${sanitizeBranchName(group.key)}`;
-    const branchName = `${branchPrefix}/${branchSuffix}`;
-    // Readable dependency label for title (may be multiple when inseparable).
-    const depLabel = Array.from(new Set(group.remediations.map((r) => r.groupId ? `${r.groupId}:${r.artifactId}` : r.artifactId))).join(', ');
-    const prTitle = isBundled
-        ? 'fix: remediate dependency vulnerabilities'
-        : `fix: update ${depLabel} to fix vulnerabilities`;
-    // PR body from JS client report generator
-    const report = (0, remediation_report_js_1.generateReport)(group.remediations, { groupBy: 'dependency' });
-    const prBody = `## Automated Dependency Remediation
+async function createPRForGroup(group, config, changedFilesList, workspacePath, baseSha) {
+    await materializeChanges(group, workspacePath);
+    await commitAndPushBranch(group, changedFilesList, workspacePath, baseSha);
+    core.info(`Creating or updating PR for branch: ${group.branchName}`);
+    const prUrl = await (0, github_js_1.createOrUpdatePR)({
+        title: group.title,
+        body: buildPrBody(group, config, changedFilesList),
+        head: group.branchName,
+        base: getBaseBranch(),
+        labels: config.labels,
+    }, {
+        mode: 'remediate',
+        groupBy: config.groupBy || 'bundle',
+        dependency: group.key,
+    });
+    core.info(`PR created/updated: ${prUrl}`);
+    return prUrl;
+}
+/**
+ * Writes each group change's isolated `after` content to disk. In bundle mode
+ * `changes` is undefined and this is a no-op (the working tree already holds
+ * every fix).
+ */
+async function materializeChanges(group, workspacePath) {
+    for (const change of group.changes ?? []) {
+        await (0, promises_1.writeFile)((0, node_path_1.resolve)(workspacePath, change.path), change.after);
+    }
+}
+/**
+ * Checks out the group's branch pinned to `baseSha`, then stages, commits, and
+ * pushes the listed files. Pinning to the base commit keeps each group's PR
+ * isolated from the previous group's commit.
+ */
+async function commitAndPushBranch(group, changedFilesList, workspacePath, baseSha) {
+    const options = { cwd: workspacePath };
+    core.info(`Preparing branch: ${group.branchName}`);
+    await exec.exec('git', ['checkout', '-B', group.branchName, baseSha], options);
+    if (changedFilesList.length === 0)
+        return;
+    await exec.exec('git', ['add', ...changedFilesList], options);
+    // Commit changes. Set the author inline (not via global config) so the action
+    // works on bare CI runners that have no git identity configured.
+    await exec.exec('git', [
+        '-c',
+        'user.name=trustify-da[bot]',
+        '-c',
+        'user.email=trustify-da[bot]@users.noreply.github.com',
+        'commit',
+        '-m',
+        group.title,
+        '-m',
+        'Automated remediation by Trustify Dependency Analytics',
+    ], options);
+    core.info(`Pushing branch: ${group.branchName}`);
+    await exec.exec('git', ['push', '-u', 'origin', group.branchName, '--force-with-lease'], options);
+}
+/**
+ * Builds the PR body from the JS client report generator, using the actual
+ * grouping mode so bundle PRs render a bundle report and dependency PRs a
+ * dependency report.
+ */
+function buildPrBody(group, config, changedFilesList) {
+    const groupBy = config.groupBy === 'dependency' ? 'dependency' : 'bundle';
+    const report = (0, remediation_report_js_1.generateReport)(group.remediations, { groupBy });
+    return `## Automated Dependency Remediation
 
 ${report}
 
@@ -51726,79 +51809,19 @@ ${changedFilesList.map((f) => `- \`${f}\``).join('\n')}
 
 ---
 *Automated by [Trustify Dependency Analytics](https://github.com/trustification/trustify-da-action)*`;
-    core.info(`Preparing branch: ${branchName}`);
-    // Save current branch
-    let currentBranch = '';
-    await exec.exec('git', ['branch', '--show-current'], {
-        listeners: {
-            stdout: (data) => {
-                currentBranch += data.toString().trim();
-            },
-        },
-    });
-    try {
-        // Check if branch already exists locally
-        try {
-            await exec.exec('git', ['rev-parse', '--verify', branchName], {
-                ignoreReturnCode: true,
-            });
-            core.info(`Branch ${branchName} exists, switching to it`);
-            await exec.exec('git', ['checkout', branchName]);
-        }
-        catch {
-            core.info(`Creating new branch: ${branchName}`);
-            await exec.exec('git', ['checkout', '-b', branchName]);
-        }
-        // In dependency mode, materialize this group's isolated `after` content.
-        // In bundle mode the working tree already holds every fix.
-        if (!isBundled && group.changes) {
-            for (const change of group.changes) {
-                const target = workspacePath ? (0, node_path_1.resolve)(workspacePath, change.path) : change.path;
-                await (0, promises_1.writeFile)(target, change.after);
-            }
-        }
-        // Stage files for this group
-        if (changedFilesList.length > 0) {
-            await exec.exec('git', ['add', ...changedFilesList]);
-            // Commit changes. Set the author inline (not via global config) so the
-            // action works on bare CI runners that have no git identity configured.
-            await exec.exec('git', [
-                '-c',
-                'user.name=trustify-da[bot]',
-                '-c',
-                'user.email=trustify-da[bot]@users.noreply.github.com',
-                'commit',
-                '-m',
-                prTitle,
-                '-m',
-                'Automated remediation by Trustify Dependency Analytics',
-            ]);
-            // Push branch with --force-with-lease for safety
-            core.info(`Pushing branch: ${branchName}`);
-            await exec.exec('git', ['push', '-u', 'origin', branchName, '--force-with-lease']);
-        }
-        // Create or update PR with dedupContext
-        core.info(`Creating or updating PR for branch: ${branchName}`);
-        const prUrl = await (0, github_js_1.createOrUpdatePR)({
-            title: prTitle,
-            body: prBody,
-            head: branchName,
-            base: 'main',
-            labels: config.labels || ['trustify-da', 'security'],
-        }, {
-            mode: 'remediate',
-            groupBy: config.groupBy || 'bundle',
-            dependency: group.key,
-        });
-        core.info(`PR created/updated: ${prUrl}`);
-        return prUrl;
-    }
-    finally {
-        // Return to original branch
-        if (currentBranch && currentBranch !== branchName) {
-            await exec.exec('git', ['checkout', currentBranch]);
-        }
-    }
+}
+/**
+ * The PR base branch: the repository's default branch, falling back to `main`
+ * when the event payload doesn't carry it.
+ */
+function getBaseBranch() {
+    return github.context.payload.repository?.default_branch ?? 'main';
+}
+/**
+ * Short, stable hash of a changeKey for use as a branch-name suffix.
+ */
+function shortHash(value) {
+    return (0, node_crypto_1.createHash)('sha256').update(value).digest('hex').substring(0, 8);
 }
 /**
  * Sanitizes a dependency name for use in git branch names.
@@ -51813,6 +51836,13 @@ function sanitizeBranchName(name) {
 /**
  * Compares two dotted version strings numerically. Returns >0 if a > b, <0 if
  * a < b, 0 if equal. Non-numeric segments compare lexically as a fallback.
+ *
+ * Edge case: splitting on `[.+-]` flattens pre-release/build separators, so a
+ * release (`1.10.0`) can rank *below* its own pre-release (`1.10.0-rc1`) because
+ * the extra `rc1` segment compares as greater than the release's implicit `0`.
+ * This only affects tie-breaking between fixed versions that share a changeKey,
+ * where remediations advertising a full release over a pre-release are expected;
+ * revisit if the backend ever emits pre-release fixed versions.
  */
 function compareVersions(a, b) {
     const aParts = a.split(/[.+-]/);
@@ -51836,17 +51866,33 @@ function compareVersions(a, b) {
 /**
  * Discards unstaged working-tree edits for the given paths, restoring them to HEAD.
  */
-async function discardWorkingTreeChanges(paths) {
+async function discardWorkingTreeChanges(paths, workspacePath) {
     if (paths.length === 0)
         return;
-    await exec.exec('git', ['checkout', '--', ...paths]);
+    await exec.exec('git', ['checkout', '--', ...paths], { cwd: workspacePath });
+}
+/**
+ * Returns the current HEAD commit SHA.
+ */
+async function getHeadSha(workspacePath) {
+    let output = '';
+    await exec.exec('git', ['rev-parse', 'HEAD'], {
+        cwd: workspacePath,
+        listeners: {
+            stdout: (data) => {
+                output += data.toString();
+            },
+        },
+    });
+    return output.trim();
 }
 /**
  * Gets list of modified files via git diff.
  */
-async function getChangedFiles() {
+async function getChangedFiles(workspacePath) {
     let output = '';
     await exec.exec('git', ['diff', '--name-only'], {
+        cwd: workspacePath,
         listeners: {
             stdout: (data) => {
                 output += data.toString();

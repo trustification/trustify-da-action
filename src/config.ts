@@ -29,7 +29,9 @@ export async function loadConfig(): Promise<ActionConfig> {
     fileConfig = yaml.parse(configContent) as Record<string, unknown>;
   } catch (error) {
     // Config file doesn't exist or can't be read - this is okay, we'll use inputs
-    core.info(`No config file found at ${configPath}, using action inputs only`);
+    core.info(
+      `No config file found at ${configPath}, using action inputs only`
+    );
   }
 
   // Read action inputs
@@ -59,7 +61,8 @@ export async function loadConfig(): Promise<ActionConfig> {
     labels: labels
       ? labels.split(',').map((l) => l.trim())
       : (fileConfig.labels as string[]) || ['trustify-da', 'security'],
-    branchPrefix: branchPrefix || (fileConfig.branchPrefix as string) || 'trustify-da',
+    branchPrefix:
+      branchPrefix || (fileConfig.branchPrefix as string) || 'trustify-da',
     sbomTargets: sbomTargets
       ? sbomTargets.split(',').map((t) => t.trim())
       : (fileConfig.sbomTargets as string[]),

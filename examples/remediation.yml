@@ -19,6 +19,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Run Trustify Dependency Analytics
+        id: remediate
         uses: trustification/trustify-da-action@main
         with:
           mode: remediate

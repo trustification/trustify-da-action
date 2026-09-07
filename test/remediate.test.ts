@@ -38,6 +38,26 @@ vi.mock('node:fs/promises', () => ({
   writeFile: vi.fn().mockResolvedValue(undefined),
 }));
 
+// Builds a Remediation with sensible defaults; pass overrides for the fields a
+// given test actually cares about (versions, changeKey, cves, ...).
+function makeRemediation(overrides: Record<string, unknown> = {}) {
+  return {
+    purl: 'pkg:maven/com.example/vulnerable@1.0.0',
+    groupId: 'com.example',
+    artifactId: 'vulnerable',
+    currentVersion: '1.0.0',
+    fixedInVersion: '1.1.0',
+    fixedInPurl: 'pkg:maven/com.example/vulnerable@1.1.0',
+    provider: 'osv',
+    source: 'osv',
+    severity: 'HIGH',
+    cves: ['CVE-0000-0000'],
+    advisories: [],
+    files: ['pom.xml'],
+    ...overrides,
+  };
+}
+
 describe('remediate mode', () => {
   beforeEach(() => {
     vi.clearAllMocks();
@@ -173,19 +193,14 @@ describe('remediate mode', () => {
       vi.mocked(runRemediation).mockResolvedValueOnce({
         exitCode: 0,
         remediations: [
-          {
+          makeRemediation({
             purl: 'pkg:maven/org.apache.commons/commons-text@1.9',
             groupId: 'org.apache.commons',
             artifactId: 'commons-text',
             currentVersion: '1.9',
             fixedInVersion: '1.10.0',
             fixedInPurl: 'pkg:maven/org.apache.commons/commons-text@1.10.0',
-            provider: 'osv',
-            source: 'osv',
-            severity: 'HIGH',
             cves: ['CVE-2022-42889'],
-            advisories: [],
-            files: ['pom.xml'],
             changes: [
               {
                 path: 'pom.xml',
@@ -193,20 +208,15 @@ describe('remediate mode', () => {
                 changeKey: 'mvn:direct:pom.xml:org.apache.commons:commons-text',
               },
             ],
-          },
-          {
+          }),
+          makeRemediation({
             purl: 'pkg:maven/com.fasterxml.jackson.core/jackson-databind@2.14.0',
             groupId: 'com.fasterxml.jackson.core',
             artifactId: 'jackson-databind',
             currentVersion: '2.14.0',
             fixedInVersion: '2.15.0',
             fixedInPurl: 'pkg:maven/com.fasterxml.jackson.core/jackson-databind@2.15.0',
-            provider: 'osv',
-            source: 'osv',
-            severity: 'HIGH',
             cves: ['CVE-2023-0001'],
-            advisories: [],
-            files: ['pom.xml'],
             changes: [
               {
                 path: 'pom.xml',
@@ -214,7 +224,7 @@ describe('remediate mode', () => {
                 changeKey: 'mvn:direct:pom.xml:com.fasterxml.jackson.core:jackson-databind',
               },
             ],
-          },
+          }),
         ],
       });
 
@@ -250,19 +260,14 @@ describe('remediate mode', () => {
       vi.mocked(runRemediation).mockResolvedValueOnce({
         exitCode: 0,
         remediations: [
-          {
+          makeRemediation({
             purl: 'pkg:maven/org.apache.commons/commons-text@1.9',
             groupId: 'org.apache.commons',
             artifactId: 'commons-text',
             currentVersion: '1.9',
             fixedInVersion: '1.10.0',
             fixedInPurl: 'pkg:maven/org.apache.commons/commons-text@1.10.0',
-            provider: 'osv',
-            source: 'osv',
-            severity: 'HIGH',
             cves: ['CVE-2022-42889'],
-            advisories: [],
-            files: ['pom.xml'],
             changes: [
               {
                 path: 'pom.xml',
@@ -270,20 +275,16 @@ describe('remediate mode', () => {
                 changeKey: 'mvn:prop:pom.xml:commons.version',
               },
             ],
-          },
-          {
+          }),
+          makeRemediation({
             purl: 'pkg:maven/org.apache.commons/commons-lang3@3.11',
             groupId: 'org.apache.commons',
             artifactId: 'commons-lang3',
             currentVersion: '3.11',
             fixedInVersion: '1.10.0',
             fixedInPurl: 'pkg:maven/org.apache.commons/commons-lang3@1.10.0',
-            provider: 'osv',
-            source: 'osv',
             severity: 'MEDIUM',
             cves: ['CVE-2023-0002'],
-            advisories: [],
-            files: ['pom.xml'],
             changes: [
               {
                 path: 'pom.xml',
@@ -291,7 +292,7 @@ describe('remediate mode', () => {
                 changeKey: 'mvn:prop:pom.xml:commons.version',
               },
             ],
-          },
+          }),
         ],
       });
 
