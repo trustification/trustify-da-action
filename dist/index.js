@@ -51750,8 +51750,12 @@ function groupByChangeKey(remediations) {
  * already resolved on `group`.
  */
 async function createPRForGroup(group, config, changedFilesList, workspacePath, baseSha) {
+    // Switch to a clean branch cut from the base commit BEFORE writing this group's
+    // content. Materializing first would leave the previous group's branch dirty and
+    // make `git checkout -B` abort ("local changes would be overwritten").
+    await checkoutBranch(group.branchName, baseSha, workspacePath);
     await materializeChanges(group, workspacePath);
-    await commitAndPushBranch(group, changedFilesList, workspacePath, baseSha);
+    await commitAndPushBranch(group, changedFilesList, workspacePath);
     core.info(`Creating or updating PR for branch: ${group.branchName}`);
     const prUrl = await (0, github_js_1.createOrUpdatePR)({
         title: group.title,
@@ -51778,14 +51782,20 @@ async function materializeChanges(group, workspacePath) {
     }
 }
 /**
- * Checks out the group's branch pinned to `baseSha`, then stages, commits, and
- * pushes the listed files. Pinning to the base commit keeps each group's PR
- * isolated from the previous group's commit.
+ * Checks out `branchName` pinned to `baseSha`, creating or resetting it. Pinning
+ * every group's branch to the base commit keeps each PR isolated from the
+ * others' commits. Must run before materializing this group's content so the
+ * previous group's working-tree edits never block the checkout.
  */
-async function commitAndPushBranch(group, changedFilesList, workspacePath, baseSha) {
+async function checkoutBranch(branchName, baseSha, workspacePath) {
+    core.info(`Preparing branch: ${branchName}`);
+    await exec.exec('git', ['checkout', '-B', branchName, baseSha], { cwd: workspacePath });
+}
+/**
+ * Stages, commits, and pushes the listed files on the current branch.
+ */
+async function commitAndPushBranch(group, changedFilesList, workspacePath) {
     const options = { cwd: workspacePath };
-    core.info(`Preparing branch: ${group.branchName}`);
-    await exec.exec('git', ['checkout', '-B', group.branchName, baseSha], options);
     if (changedFilesList.length === 0)
         return;
     await exec.exec('git', ['add', ...changedFilesList], options);

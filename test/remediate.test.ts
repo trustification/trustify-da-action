@@ -64,6 +64,17 @@ describe('remediate mode', () => {
     process.env.GITHUB_WORKSPACE = '/tmp/test-workspace';
     process.env.GITHUB_TOKEN = 'test-token';
     process.env.TRUSTIFY_DA_BACKEND_URL = 'https://trustify.test';
+
+    // getChangedFiles / getHeadSha read the .stdout of getExecOutput.
+    vi.mocked(exec.getExecOutput).mockImplementation(async (cmd, args) => {
+      if (cmd === 'git' && args?.[0] === 'rev-parse') {
+        return { stdout: 'basesha0000000000000000000000000000000000\n', stderr: '', exitCode: 0 };
+      }
+      if (cmd === 'git' && args?.[0] === 'diff') {
+        return { stdout: 'pom.xml\n', stderr: '', exitCode: 0 };
+      }
+      return { stdout: '', stderr: '', exitCode: 0 };
+    });
   });
 
   it('should run remediation and create PR when files are modified', async () => {
@@ -247,6 +258,22 @@ describe('remediate mode', () => {
         'pr-url',
         'https://github.com/test/repo/pull/1,https://github.com/test/repo/pull/1'
       );
+
+      // Regression: each group must `git checkout -B` its clean branch BEFORE it
+      // materializes pom.xml. Writing first leaves the previous group's branch
+      // dirty and makes the next checkout abort. Assert the calls strictly
+      // interleave: checkout1 < write1 < checkout2 < write2.
+      const checkoutOrders = vi
+        .mocked(exec.exec)
+        .mock.calls.map((call, i) => ({ call, order: vi.mocked(exec.exec).mock.invocationCallOrder[i] }))
+        .filter(({ call }) => call[0] === 'git' && call[1]?.[0] === 'checkout' && call[1]?.[1] === '-B')
+        .map(({ order }) => order);
+      const writeOrders = vi.mocked(writeFile).mock.invocationCallOrder;
+      expect(checkoutOrders).toHaveLength(2);
+      expect(writeOrders).toHaveLength(2);
+      expect(checkoutOrders[0]).toBeLessThan(writeOrders[0]);
+      expect(writeOrders[0]).toBeLessThan(checkoutOrders[1]);
+      expect(checkoutOrders[1]).toBeLessThan(writeOrders[1]);
     });
 
     it('collapses deps sharing a changeKey into one PR (shared maven property)', async () => {
