@@ -51813,7 +51813,25 @@ async function commitAndPushBranch(group, changedFilesList, workspacePath) {
         'Automated remediation by Trustify Dependency Analytics',
     ], options);
     core.info(`Pushing branch: ${group.branchName}`);
-    await exec.exec('git', ['push', '-u', 'origin', group.branchName, '--force-with-lease'], options);
+    await pushBranch(group.branchName, workspacePath);
+}
+/**
+ * Pushes the current branch to origin, overwriting any prior bot branch of the
+ * same name. A bare `--force-with-lease` fails on fresh CI runners with "stale
+ * info": with no remote-tracking ref for the branch, the lease has no known base
+ * to compare against. So resolve the branch's current remote SHA via
+ * `git ls-remote` and pin the lease to it — this still refuses to clobber a
+ * concurrent push (the SHA won't match), but succeeds without a prior fetch.
+ * When the branch does not exist remotely yet, a plain create is enough.
+ */
+async function pushBranch(branchName, workspacePath) {
+    const options = { cwd: workspacePath };
+    const lsRemote = await exec.getExecOutput('git', ['ls-remote', '--heads', 'origin', branchName], options);
+    const remoteSha = lsRemote.stdout.trim().split(/\s+/)[0] ?? '';
+    const pushArgs = remoteSha
+        ? ['push', 'origin', branchName, `--force-with-lease=${branchName}:${remoteSha}`]
+        : ['push', '-u', 'origin', branchName];
+    await exec.exec('git', pushArgs, options);
 }
 /**
  * Builds the PR body from the JS client report generator, using the actual

@@ -339,5 +339,62 @@ describe('remediate mode', () => {
       // remediation-count sums both deps' CVEs
       expect(core.setOutput).toHaveBeenCalledWith('remediation-count', 2);
     });
+
+    it('pins --force-with-lease to the branch remote SHA when it already exists', async () => {
+      const { runRemediation } = await import(
+        '@trustify-da/trustify-da-javascript-client/dist/src/remediate.js'
+      );
+
+      const existingSha = 'deadbeefdeadbeefdeadbeefdeadbeefdeadbeef';
+      vi.mocked(exec.getExecOutput).mockImplementation(async (cmd, args) => {
+        if (cmd === 'git' && args?.[0] === 'rev-parse') {
+          return { stdout: 'basesha\n', stderr: '', exitCode: 0 };
+        }
+        if (cmd === 'git' && args?.[0] === 'ls-remote') {
+          // Branch already exists on the remote (e.g. from a prior run).
+          return { stdout: `${existingSha}\trefs/heads/some-branch\n`, stderr: '', exitCode: 0 };
+        }
+        return { stdout: '', stderr: '', exitCode: 0 };
+      });
+
+      vi.mocked(runRemediation).mockResolvedValueOnce({
+        exitCode: 0,
+        remediations: [
+          makeRemediation({
+            groupId: 'org.apache.commons',
+            artifactId: 'commons-text',
+            fixedInVersion: '1.10.0',
+            cves: ['CVE-2022-42889'],
+            changes: [
+              {
+                path: 'pom.xml',
+                after: '<pom/>',
+                changeKey: 'mvn:direct:pom.xml:org.apache.commons:commons-text',
+              },
+            ],
+          }),
+        ],
+      });
+
+      const config: ActionConfig = {
+        mode: 'remediate',
+        dryRun: false,
+        groupBy: 'dependency',
+        branchPrefix: 'trustify-da',
+        configPath: '.trustify-da.yml',
+      };
+
+      await runRemediateMode(config);
+
+      const pushCall = vi
+        .mocked(exec.exec)
+        .mock.calls.find((call) => call[0] === 'git' && call[1]?.[0] === 'push');
+      expect(pushCall).toBeDefined();
+      // Lease pinned to the observed remote SHA, not a bare --force-with-lease.
+      expect(
+        pushCall?.[1]?.some((a) => a.startsWith('--force-with-lease=') && a.endsWith(`:${existingSha}`))
+      ).toBe(true);
+      expect(pushCall?.[1]).not.toContain('-u');
+    });
   });
 });
