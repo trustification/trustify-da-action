@@ -4,35 +4,10 @@ import * as github from '@actions/github';
 import { createHash } from 'node:crypto';
 import { writeFile } from 'node:fs/promises';
 import { resolve } from 'node:path';
-import { runRemediation } from '@trustify-da/trustify-da-javascript-client/dist/src/remediate.js';
+import { Remediation, runRemediation } from '@trustify-da/trustify-da-javascript-client/dist/src/remediate.js';
 import { generateReport } from '@trustify-da/trustify-da-javascript-client/dist/src/remediation_report.js';
 import type { ActionConfig } from '../config.js';
 import { createOrUpdatePR } from '../github.js';
-
-// NOTE (parity follow-up): these mirror the JS client's remediation shapes. If the
-// client starts exporting `Remediation`/`Change` types, import them instead of
-// redeclaring here. Tracked for the counterpart in .claude/agent-memory/_shared.
-interface Change {
-  path: string;
-  after: string;
-  changeKey: string;
-}
-
-interface Remediation {
-  purl: string;
-  groupId: string;
-  artifactId: string;
-  currentVersion: string;
-  fixedInVersion: string;
-  fixedInPurl: string;
-  provider: string;
-  source: string;
-  severity: string;
-  cves: string[];
-  advisories: Array<{ id: string; url: string }>;
-  files: string[];
-  changes?: Change[];
-}
 
 // A group is one PR. `branchName` and `title` are precomputed by the caller
 // (bundle vs dependency), so the PR-creation path itself carries no mode
@@ -57,15 +32,12 @@ export async function runRemediateMode(config: ActionConfig): Promise<void> {
   if (!config.dryRun) {
     const token = core.getInput('token') || process.env.GITHUB_TOKEN;
     if (!token) {
-      throw new Error(
-        'GITHUB_TOKEN is required for PR creation. Set it via the token input or GITHUB_TOKEN env var.'
-      );
+      throw new Error('GITHUB_TOKEN is required for PR creation. Set it via the token input or GITHUB_TOKEN env var.');
     }
   }
 
   const workspacePath = process.env.GITHUB_WORKSPACE || process.cwd();
-  const groupBy: 'bundle' | 'dependency' =
-    config.groupBy === 'dependency' ? 'dependency' : 'bundle';
+  const groupBy: 'bundle' | 'dependency' = config.groupBy === 'dependency' ? 'dependency' : 'bundle';
 
   // The JS client discovers the DA backend via the TRUSTIFY_DA_BACKEND_URL env
   // var (selectTrustifyDABackend throws if unset). Thread the action's
@@ -90,9 +62,7 @@ export async function runRemediateMode(config: ActionConfig): Promise<void> {
       perDependencyChanges: groupBy === 'dependency',
     });
   } catch (error) {
-    throw new Error(
-      `Remediation failed: ${error instanceof Error ? error.message : String(error)}`
-    );
+    throw new Error(`Remediation failed: ${error instanceof Error ? error.message : String(error)}`);
   }
 
   // Check exit code (0 = success, 2 = dry-run success)
@@ -194,7 +164,7 @@ async function runDependencyMode(
 
   core.info(`Creating ${rawGroups.length} PR(s) (groupBy: dependency)`);
 
-  const prUrls: string[] = [];
+  const purls: string[] = [];
   for (const raw of rawGroups) {
     // Readable dependency label (may be multiple deps when inseparable).
     const depLabel = Array.from(
@@ -223,11 +193,11 @@ async function runDependencyMode(
       workspacePath,
       baseSha
     );
-    prUrls.push(prUrl);
+    purls.push(prUrl);
   }
 
-  core.setOutput('pr-url', prUrls.length === 1 ? prUrls[0] : prUrls.join(','));
-  core.info(`Created ${prUrls.length} PR(s)`);
+  core.setOutput('pr-url', purls.length === 1 ? purls[0] : purls.join(','));
+  core.info(`Created ${purls.length} PR(s)`);
 }
 
 /**
@@ -309,7 +279,7 @@ async function createPRForGroup(
       title: group.title,
       body: buildPrBody(group, config, changedFilesList),
       head: group.branchName,
-      base: getBaseBranch(),
+      base: github.context.payload.repository?.default_branch ?? 'main',
       labels: config.labels,
     },
     {
@@ -328,10 +298,7 @@ async function createPRForGroup(
  * `changes` is undefined and this is a no-op (the working tree already holds
  * every fix).
  */
-async function materializeChanges(
-  group: PRGroup,
-  workspacePath: string
-): Promise<void> {
+async function materializeChanges(group: PRGroup, workspacePath: string): Promise<void> {
   for (const change of group.changes ?? []) {
     await writeFile(resolve(workspacePath, change.path), change.after);
   }
@@ -391,11 +358,7 @@ async function commitAndPushBranch(
  * grouping mode so bundle PRs render a bundle report and dependency PRs a
  * dependency report.
  */
-function buildPrBody(
-  group: PRGroup,
-  config: ActionConfig,
-  changedFilesList: string[]
-): string {
+function buildPrBody(group: PRGroup, config: ActionConfig, changedFilesList: string[]): string {
   const groupBy = config.groupBy === 'dependency' ? 'dependency' : 'bundle';
   const report = generateReport(group.remediations, { groupBy });
   return `## Automated Dependency Remediation
@@ -407,14 +370,6 @@ ${changedFilesList.map((f) => `- \`${f}\``).join('\n')}
 
 ---
 *Automated by [Trustify Dependency Analytics](https://github.com/trustification/trustify-da-action)*`;
-}
-
-/**
- * The PR base branch: the repository's default branch, falling back to `main`
- * when the event payload doesn't carry it.
- */
-function getBaseBranch(): string {
-  return github.context.payload.repository?.default_branch ?? 'main';
 }
 
 /**
@@ -470,10 +425,7 @@ function compareVersions(a: string, b: string): number {
 /**
  * Discards unstaged working-tree edits for the given paths, restoring them to HEAD.
  */
-async function discardWorkingTreeChanges(
-  paths: string[],
-  workspacePath: string
-): Promise<void> {
+async function discardWorkingTreeChanges(paths: string[], workspacePath: string): Promise<void> {
   if (paths.length === 0) return;
   await exec.exec('git', ['checkout', '--', ...paths], { cwd: workspacePath });
 }
@@ -482,32 +434,14 @@ async function discardWorkingTreeChanges(
  * Returns the current HEAD commit SHA.
  */
 async function getHeadSha(workspacePath: string): Promise<string> {
-  let output = '';
-  await exec.exec('git', ['rev-parse', 'HEAD'], {
-    cwd: workspacePath,
-    listeners: {
-      stdout: (data: Buffer) => {
-        output += data.toString();
-      },
-    },
-  });
-  return output.trim();
+  return (await exec.getExecOutput('git', ['rev-parse', 'HEAD'], { cwd: workspacePath })).stdout.trim();
 }
 
 /**
  * Gets list of modified files via git diff.
  */
 async function getChangedFiles(workspacePath: string): Promise<string[]> {
-  let output = '';
-
-  await exec.exec('git', ['diff', '--name-only'], {
-    cwd: workspacePath,
-    listeners: {
-      stdout: (data: Buffer) => {
-        output += data.toString();
-      },
-    },
-  });
+  const output = (await exec.getExecOutput('git', ['diff', '--name-only'], { cwd: workspacePath })).stdout;
 
   return output
     .split('\n')
