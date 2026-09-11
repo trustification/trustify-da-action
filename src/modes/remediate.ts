@@ -20,6 +20,12 @@ interface PRGroup {
   title: string;
   remediations: Remediation[];
   changes?: Array<{ path: string; after: string }>;
+  // The version actually written to the shared edit site for this group. When
+  // deps collapse onto one Maven property, every dep is bumped to this single
+  // value (the highest fix among them), which differs from each remediation's
+  // own `fixedInVersion`. Undefined in bundle mode. Surfaced to the PR body so
+  // it reflects the real on-disk change, not each dep's individual selection.
+  appliedVersion?: string;
 }
 
 /**
@@ -71,7 +77,7 @@ export async function runRemediateMode(config: ActionConfig): Promise<void> {
   }
 
   const totalVulnerabilities = result.remediations.reduce(
-    (sum, r) => sum + r.cves.length,
+    (sum, r) => sum + r.vulnerabilities.length,
     0
   );
   core.setOutput('remediation-count', totalVulnerabilities);
@@ -184,6 +190,7 @@ async function runDependencyMode(
       title: `fix: update ${depLabel} to fix vulnerabilities`,
       remediations: raw.remediations,
       changes: raw.changes,
+      appliedVersion: raw.appliedVersion,
     };
 
     const prUrl = await createPRForGroup(
@@ -210,6 +217,7 @@ function groupByChangeKey(remediations: Remediation[]): Array<{
   key: string;
   remediations: Remediation[];
   changes: Array<{ path: string; after: string }>;
+  appliedVersion: string;
 }> {
   const groups = new Map<
     string,
@@ -248,14 +256,20 @@ function groupByChangeKey(remediations: Remediation[]): Array<{
     }
   }
 
-  return Array.from(groups.values()).map((group) => ({
-    key: group.key,
-    remediations: group.remediations,
-    changes: Array.from(group.changeByPath.entries()).map(([path, value]) => ({
-      path,
-      after: value.after,
-    })),
-  }));
+  return Array.from(groups.values()).map((group) => {
+    const entries = Array.from(group.changeByPath.entries());
+    // One changeKey maps to a single edit site, so the applied version is the
+    // (highest) version written there — the value all deps in this group share.
+    const appliedVersion = entries
+      .map(([, value]) => value.version)
+      .sort((a, b) => compareVersions(b, a))[0];
+    return {
+      key: group.key,
+      remediations: group.remediations,
+      appliedVersion,
+      changes: entries.map(([path, value]) => ({ path, after: value.after })),
+    };
+  });
 }
 
 /**
@@ -385,7 +399,15 @@ async function pushBranch(branchName: string, workspacePath: string): Promise<vo
  */
 function buildPrBody(group: PRGroup, config: ActionConfig, changedFilesList: string[]): string {
   const groupBy = config.groupBy === 'dependency' ? 'dependency' : 'bundle';
-  const report = generateReport(group.remediations, { groupBy });
+  // Stamp each remediation with the group's applied version so the report reflects
+  // the real on-disk change: the heading shows the applied version, and the client
+  // derives its recommended-vs-applied divergence table straight from these entries
+  // (a dep's own `fixedInVersion` vs the stamped `appliedVersion`). One PR body is
+  // one collapsed group, so no extra grouping data is needed.
+  const remediations = group.appliedVersion
+    ? group.remediations.map((r) => ({ ...r, appliedVersion: group.appliedVersion }))
+    : group.remediations;
+  const report = generateReport(remediations, { groupBy });
   return `## Automated Dependency Remediation
 
 ${report}
