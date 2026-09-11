@@ -345,24 +345,24 @@ describe('remediate mode', () => {
       // remediation-count sums both deps' CVEs
       expect(core.setOutput).toHaveBeenCalledWith('remediation-count', 2);
 
-      // The PR body must reflect the actual shared-property bump: every dep in
-      // the collapsed group is stamped with the highest applied version (1.10.0),
-      // not its own fixedInVersion (commons-lang3's 1.9.0).
+      // The client heading renders from fixedInVersion, so every dep in the
+      // collapsed group is overloaded to the highest applied version (1.10.0)
+      // before the report is generated — the heading shows what was written.
       const { generateReport } = await import(
         '@trustify-da/trustify-da-javascript-client/dist/src/remediation_report.js'
       );
-      const bodyCall = vi
-        .mocked(generateReport)
-        .mock.calls.find(([rems]) =>
-          Array.isArray(rems) && rems.length === 2 && rems.every((r) => 'appliedVersion' in r)
-        );
-      expect(bodyCall).toBeDefined();
-      // Each entry keeps its own fixedInVersion (commons-lang3's 1.9.0) alongside the
-      // stamped appliedVersion (1.10.0), so the report can render the divergence table
-      // directly — commons-lang3 is the divergent member.
-      expect(bodyCall?.[0].every((r) => (r as { appliedVersion?: string }).appliedVersion === '1.10.0')).toBe(true);
-      const langEntry = bodyCall?.[0].find((r) => r.artifactId === 'commons-lang3');
-      expect(langEntry?.fixedInVersion).toBe('1.9.0');
+      // The last generateReport call is the PR-body one (the earlier call is the
+      // top-level info-log report, which keeps each dep's own recommendation).
+      const bodyCall = vi.mocked(generateReport).mock.calls.at(-1);
+      expect(bodyCall?.[0]).toHaveLength(2);
+      expect(bodyCall?.[0].every((r) => r.fixedInVersion === '1.10.0')).toBe(true);
+
+      // The action appends its own divergence table to the PR body, surfacing the
+      // overwritten recommendation (commons-lang3 recommended 1.9.0, applied 1.10.0).
+      const prBody = vi.mocked(createOrUpdatePR).mock.calls[0][0].body;
+      expect(prBody).toContain('Applied version differs from some recommendations');
+      expect(prBody).toContain('| org.apache.commons:commons-lang3 | 1.9.0 | 1.10.0 |');
+      expect(prBody).toContain('| org.apache.commons:commons-text | 1.10.0 | 1.10.0 |');
     });
 
     it('pins --force-with-lease to the branch remote SHA when it already exists', async () => {

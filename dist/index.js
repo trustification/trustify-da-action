@@ -51834,24 +51834,55 @@ async function pushBranch(branchName, workspacePath) {
  */
 function buildPrBody(group, config, changedFilesList) {
     const groupBy = config.groupBy === 'dependency' ? 'dependency' : 'bundle';
-    // Stamp each remediation with the group's applied version so the report reflects
-    // the real on-disk change: the heading shows the applied version, and the client
-    // derives its recommended-vs-applied divergence table straight from these entries
-    // (a dep's own `fixedInVersion` vs the stamped `appliedVersion`). One PR body is
-    // one collapsed group, so no extra grouping data is needed.
-    const remediations = group.appliedVersion
-        ? group.remediations.map((r) => ({ ...r, appliedVersion: group.appliedVersion }))
+    const appliedVersion = group.appliedVersion;
+    // The client report renders each section heading from `fixedInVersion`. For a
+    // collapsed group — where a single shared version is written for every member —
+    // overload `fixedInVersion` to that applied version (on copies) so the headings
+    // show what was actually written. The originals keep each member's own
+    // recommendation, which the divergence table below surfaces when it was overwritten.
+    const remediations = appliedVersion
+        ? group.remediations.map((r) => ({ ...r, fixedInVersion: appliedVersion }))
         : group.remediations;
     const report = (0, remediation_report_js_1.generateReport)(remediations, { groupBy });
+    const divergence = appliedVersion
+        ? renderDivergenceTable(group.remediations, appliedVersion)
+        : '';
     return `## Automated Dependency Remediation
 
-${report}
+${[divergence, report].filter(Boolean).join('\n\n')}
 
 ### Changed Files
 ${changedFilesList.map((f) => `- \`${f}\``).join('\n')}
 
 ---
 *Automated by [Trustify Dependency Analytics](https://github.com/trustification/trustify-da-action)*`;
+}
+/**
+ * Renders a recommended-vs-applied table for a collapsed group. Members that share
+ * one on-disk version site (a Maven `${property}` or TOML `version.ref`) are all
+ * written to a single `appliedVersion` (the highest fix among them), so any member
+ * whose own recommendation differs was silently overwritten. Returns '' unless there
+ * are ≥2 members and at least one whose recommended `fixedInVersion` differs from the
+ * applied version.
+ */
+function renderDivergenceTable(remediations, appliedVersion) {
+    if (remediations.length < 2)
+        return '';
+    if (!remediations.some((r) => r.fixedInVersion !== appliedVersion))
+        return '';
+    const rows = remediations.map((r) => {
+        const name = r.groupId ? `${r.groupId}:${r.artifactId}` : r.artifactId;
+        return `| ${name} | ${r.fixedInVersion} | ${appliedVersion} |`;
+    });
+    return [
+        '### Applied version differs from some recommendations',
+        '',
+        'These artifacts share one version site, so a single version was written for all of them.',
+        '',
+        '| Artifact | Recommended | Applied |',
+        '| --- | --- | --- |',
+        ...rows,
+    ].join('\n');
 }
 /**
  * Short, stable hash of a changeKey for use as a branch-name suffix.
@@ -51988,7 +52019,7 @@ async function runSbomMode(config) {
 /***/ ((module, __unused_webpack_exports, __nccwpck_require__) => {
 
 "use strict";
-module.exports = __nccwpck_require__.p + "9e0b810d4ded44c0a86e.js";
+module.exports = __nccwpck_require__.p + "2ff642eb361e0a5a7905.js";
 
 /***/ }),
 
@@ -62953,6 +62984,147 @@ const external_node_fs_namespaceObject = require("node:fs");
 var external_node_path_ = __nccwpck_require__(6760);
 // EXTERNAL MODULE: external "os"
 var external_os_ = __nccwpck_require__(857);
+;// CONCATENATED MODULE: ../../guacsec/trustify-da-javascript-client/dist/src/license/license_utils.js
+/**
+ * License utilities: file reading, SPDX detection, normalization, compatibility.
+ * This module has NO dependencies on providers or backend to avoid circular dependencies.
+ */
+
+
+const LICENSE_FILES = ['LICENSE', 'LICENSE.md', 'LICENSE.txt'];
+/**
+ * Find LICENSE file path in the same directory as the manifest.
+ * @param {string} manifestPath
+ * @returns {string|null} - path to LICENSE file or null if not found
+ */
+function findLicenseFilePath(manifestPath) {
+    const manifestDir = external_node_path_.dirname(external_node_path_.resolve(manifestPath));
+    for (const name of LICENSE_FILES) {
+        const filePath = external_node_path_.join(manifestDir, name);
+        try {
+            if (external_node_fs_namespaceObject.statSync(filePath).isFile()) {
+                return filePath;
+            }
+        }
+        catch {
+            // skip
+        }
+    }
+    return null;
+}
+/**
+ * Very simple SPDX detection from common license text (first ~500 chars).
+ * @param {string} text
+ * @returns {string|null}
+ */
+function detectSpdxFromText(text) {
+    const head = text.slice(0, 500);
+    if (/Apache License,?\s*Version 2\.0/i.test(head)) {
+        return 'Apache-2.0';
+    }
+    if (/MIT License/i.test(head) && /Permission is hereby granted/i.test(head)) {
+        return 'MIT';
+    }
+    if (/GNU AFFERO GENERAL PUBLIC LICENSE\s+Version 3/i.test(head)) {
+        return 'AGPL-3.0-only';
+    }
+    if (/GNU LESSER GENERAL PUBLIC LICENSE\s+Version 3/i.test(head)) {
+        return 'LGPL-3.0-only';
+    }
+    if (/GNU LESSER GENERAL PUBLIC LICENSE\s+Version 2\.1/i.test(head)) {
+        return 'LGPL-2.1-only';
+    }
+    if (/GNU GENERAL PUBLIC LICENSE\s+Version 2/i.test(head)) {
+        return 'GPL-2.0-only';
+    }
+    if (/GNU GENERAL PUBLIC LICENSE\s+Version 3/i.test(head)) {
+        return 'GPL-3.0-only';
+    }
+    if (/BSD 2-Clause/i.test(head)) {
+        return 'BSD-2-Clause';
+    }
+    if (/BSD 3-Clause/i.test(head)) {
+        return 'BSD-3-Clause';
+    }
+    return null;
+}
+/**
+ * Read LICENSE file and detect SPDX identifier.
+ * @param {string} manifestPath - path to manifest
+ * @returns {string|null} - SPDX identifier from LICENSE file or null
+ */
+function readLicenseFile(manifestPath) {
+    const licenseFilePath = findLicenseFilePath(manifestPath);
+    if (!licenseFilePath) {
+        return null;
+    }
+    try {
+        const content = external_node_fs_namespaceObject.readFileSync(licenseFilePath, 'utf-8');
+        return detectSpdxFromText(content) || content.split('\n')[0]?.trim() || null;
+    }
+    catch {
+        return null;
+    }
+}
+/**
+ * Get project license from manifest or LICENSE file.
+ * Returns manifestLicense if provided, otherwise tries LICENSE file.
+ * @param {string|null} manifestLicense - license from manifest (or null)
+ * @param {string} manifestPath - path to manifest
+ * @returns {string|null} - SPDX identifier or null
+ */
+function getLicense(manifestLicense, manifestPath) {
+    return manifestLicense || readLicenseFile(manifestPath) || null;
+}
+/**
+ * Normalize SPDX identifier for comparison (lowercase, strip common suffixes).
+ * @param {string} spdxOrName
+ * @returns {string}
+ */
+function normalizeSpdx(spdxOrName) {
+    const s = String(spdxOrName).trim().toLowerCase();
+    if (s.endsWith(' license')) {
+        return s.slice(0, -8);
+    }
+    return s;
+}
+/**
+ * Check if a dependency's license is compatible with the project license based on backend categories.
+ *
+ * @param {string} [projectCategory] - backend category for project license: PERMISSIVE | WEAK_COPYLEFT | STRONG_COPYLEFT | UNKNOWN
+ * @param {string} [dependencyCategory] - backend category for dependency license: PERMISSIVE | WEAK_COPYLEFT | STRONG_COPYLEFT | UNKNOWN
+ * @returns {'compatible'|'incompatible'|'unknown'}
+ */
+function getCompatibility(projectCategory, dependencyCategory) {
+    if (!projectCategory || !dependencyCategory) {
+        return 'unknown';
+    }
+    const proj = projectCategory.toUpperCase();
+    const dep = dependencyCategory.toUpperCase();
+    if (proj === 'UNKNOWN') {
+        return 'unknown';
+    }
+    if (dep === 'UNKNOWN') {
+        return 'incompatible';
+    }
+    const restrictiveness = {
+        'PERMISSIVE': 1,
+        'WEAK_COPYLEFT': 2,
+        'STRONG_COPYLEFT': 3
+    };
+    const projLevel = restrictiveness[proj];
+    const depLevel = restrictiveness[dep];
+    if (projLevel === undefined || depLevel === undefined) {
+        return 'unknown';
+    }
+    if (depLevel > projLevel) {
+        return 'incompatible';
+    }
+    return 'compatible';
+}
+
+// EXTERNAL MODULE: ../../guacsec/trustify-da-javascript-client/node_modules/packageurl-js/index.js
+var packageurl_js = __nccwpck_require__(5314);
 ;// CONCATENATED MODULE: ../../guacsec/trustify-da-javascript-client/node_modules/yocto-queue/index.js
 /*
 How it works:
@@ -63741,8 +63913,6 @@ function omit(obj, ...keys) {
     return ret;
 }
 //# sourceMappingURL=index.js.map
-// EXTERNAL MODULE: ../../guacsec/trustify-da-javascript-client/node_modules/packageurl-js/index.js
-var packageurl_js = __nccwpck_require__(5314);
 ;// CONCATENATED MODULE: ../../guacsec/trustify-da-javascript-client/dist/src/tools.js
 
 
@@ -64108,145 +64278,6 @@ function getPackageVersion() {
     catch {
         return undefined;
     }
-}
-
-;// CONCATENATED MODULE: ../../guacsec/trustify-da-javascript-client/dist/src/license/license_utils.js
-/**
- * License utilities: file reading, SPDX detection, normalization, compatibility.
- * This module has NO dependencies on providers or backend to avoid circular dependencies.
- */
-
-
-const LICENSE_FILES = ['LICENSE', 'LICENSE.md', 'LICENSE.txt'];
-/**
- * Find LICENSE file path in the same directory as the manifest.
- * @param {string} manifestPath
- * @returns {string|null} - path to LICENSE file or null if not found
- */
-function findLicenseFilePath(manifestPath) {
-    const manifestDir = external_node_path_.dirname(external_node_path_.resolve(manifestPath));
-    for (const name of LICENSE_FILES) {
-        const filePath = external_node_path_.join(manifestDir, name);
-        try {
-            if (external_node_fs_namespaceObject.statSync(filePath).isFile()) {
-                return filePath;
-            }
-        }
-        catch {
-            // skip
-        }
-    }
-    return null;
-}
-/**
- * Very simple SPDX detection from common license text (first ~500 chars).
- * @param {string} text
- * @returns {string|null}
- */
-function detectSpdxFromText(text) {
-    const head = text.slice(0, 500);
-    if (/Apache License,?\s*Version 2\.0/i.test(head)) {
-        return 'Apache-2.0';
-    }
-    if (/MIT License/i.test(head) && /Permission is hereby granted/i.test(head)) {
-        return 'MIT';
-    }
-    if (/GNU AFFERO GENERAL PUBLIC LICENSE\s+Version 3/i.test(head)) {
-        return 'AGPL-3.0-only';
-    }
-    if (/GNU LESSER GENERAL PUBLIC LICENSE\s+Version 3/i.test(head)) {
-        return 'LGPL-3.0-only';
-    }
-    if (/GNU LESSER GENERAL PUBLIC LICENSE\s+Version 2\.1/i.test(head)) {
-        return 'LGPL-2.1-only';
-    }
-    if (/GNU GENERAL PUBLIC LICENSE\s+Version 2/i.test(head)) {
-        return 'GPL-2.0-only';
-    }
-    if (/GNU GENERAL PUBLIC LICENSE\s+Version 3/i.test(head)) {
-        return 'GPL-3.0-only';
-    }
-    if (/BSD 2-Clause/i.test(head)) {
-        return 'BSD-2-Clause';
-    }
-    if (/BSD 3-Clause/i.test(head)) {
-        return 'BSD-3-Clause';
-    }
-    return null;
-}
-/**
- * Read LICENSE file and detect SPDX identifier.
- * @param {string} manifestPath - path to manifest
- * @returns {string|null} - SPDX identifier from LICENSE file or null
- */
-function readLicenseFile(manifestPath) {
-    const licenseFilePath = findLicenseFilePath(manifestPath);
-    if (!licenseFilePath) {
-        return null;
-    }
-    try {
-        const content = external_node_fs_namespaceObject.readFileSync(licenseFilePath, 'utf-8');
-        return detectSpdxFromText(content) || content.split('\n')[0]?.trim() || null;
-    }
-    catch {
-        return null;
-    }
-}
-/**
- * Get project license from manifest or LICENSE file.
- * Returns manifestLicense if provided, otherwise tries LICENSE file.
- * @param {string|null} manifestLicense - license from manifest (or null)
- * @param {string} manifestPath - path to manifest
- * @returns {string|null} - SPDX identifier or null
- */
-function getLicense(manifestLicense, manifestPath) {
-    return manifestLicense || readLicenseFile(manifestPath) || null;
-}
-/**
- * Normalize SPDX identifier for comparison (lowercase, strip common suffixes).
- * @param {string} spdxOrName
- * @returns {string}
- */
-function normalizeSpdx(spdxOrName) {
-    const s = String(spdxOrName).trim().toLowerCase();
-    if (s.endsWith(' license')) {
-        return s.slice(0, -8);
-    }
-    return s;
-}
-/**
- * Check if a dependency's license is compatible with the project license based on backend categories.
- *
- * @param {string} [projectCategory] - backend category for project license: PERMISSIVE | WEAK_COPYLEFT | STRONG_COPYLEFT | UNKNOWN
- * @param {string} [dependencyCategory] - backend category for dependency license: PERMISSIVE | WEAK_COPYLEFT | STRONG_COPYLEFT | UNKNOWN
- * @returns {'compatible'|'incompatible'|'unknown'}
- */
-function getCompatibility(projectCategory, dependencyCategory) {
-    if (!projectCategory || !dependencyCategory) {
-        return 'unknown';
-    }
-    const proj = projectCategory.toUpperCase();
-    const dep = dependencyCategory.toUpperCase();
-    if (proj === 'UNKNOWN') {
-        return 'unknown';
-    }
-    if (dep === 'UNKNOWN') {
-        return 'incompatible';
-    }
-    const restrictiveness = {
-        'PERMISSIVE': 1,
-        'WEAK_COPYLEFT': 2,
-        'STRONG_COPYLEFT': 3
-    };
-    const projLevel = restrictiveness[proj];
-    const depLevel = restrictiveness[dep];
-    if (projLevel === undefined || depLevel === undefined) {
-        return 'unknown';
-    }
-    if (depLevel > projLevel) {
-        return 'incompatible';
-    }
-    return 'compatible';
 }
 
 ;// CONCATENATED MODULE: ../../guacsec/trustify-da-javascript-client/dist/src/cyclone_dx_sbom.js
@@ -83517,7 +83548,6 @@ var remediation_report = __nccwpck_require__(983);
  * TRUSTIFY_DA_SOURCE?: string | undefined,
  * TRUSTIFY_DA_TOKEN?: string | undefined,
  * TRUSTIFY_DA_TELEMETRY_ID?: string | undefined,
- * TRUSTIFY_DA_WORKSPACE_DIR?: string | undefined,
  * batchConcurrency?: number | undefined,
  * TRUSTIFY_DA_BATCH_CONCURRENCY?: string | undefined,
  * workspaceDiscoveryIgnore?: string[] | undefined,
@@ -83594,7 +83624,7 @@ function selectTrustifyDABackend(opts = {}) {
  * @param {string} manifest
  * @param {false} html
  * @param {Options} [opts={}]
- * @returns {Promise<import('@trustify-da/trustify-da-api-model/model/v5/AnalysisReport').AnalysisReport>}
+ * @returns {Promise<import('@trustify-da/trustify-da-api-model/model/v5/AnalysisReport.ts').AnalysisReport>}
  * @throws {Error}
  */
 /**
@@ -83603,7 +83633,7 @@ function selectTrustifyDABackend(opts = {}) {
  * @param {string} manifest - path for the manifest
  * @param {boolean} [html=false] - true will return a html string, false will return AnalysisReport object.
  * @param {Options} [opts={}] - optional various options to pass along the application
- * @returns {Promise<string|import('@trustify-da/trustify-da-api-model/model/v5/AnalysisReport').AnalysisReport>}
+ * @returns {Promise<string|import('@trustify-da/trustify-da-api-model/model/v5/AnalysisReport.ts').AnalysisReport>}
  * @throws {Error} if manifest inaccessible, no matching provider, failed to get create content,
  * 		or backend request failed
  */
@@ -83617,7 +83647,7 @@ async function stackAnalysis(manifest, html = false, opts = {}) {
  * Get component analysis report for a manifest content.
  * @param {string} manifest - path to the manifest
  * @param {Options} [opts={}] - optional various options to pass along the application
- * @returns {Promise<import('@trustify-da/trustify-da-api-model/model/v5/AnalysisReport').AnalysisReport>}
+ * @returns {Promise<import('@trustify-da/trustify-da-api-model/model/v5/AnalysisReport.ts').AnalysisReport>}
  * @throws {Error} if no matching provider, failed to get create content, or backend request failed
  */
 async function componentAnalysis(manifest, opts = {}) {
@@ -83642,7 +83672,7 @@ async function componentAnalysis(manifest, opts = {}) {
  * @param {Array<string>} imageRefs
  * @param {false} html
  * @param {Options} [opts={}]
- * @returns {Promise<Object.<string, import('@trustify-da/trustify-da-api-model/model/v5/AnalysisReport').AnalysisReport>>}
+ * @returns {Promise<Object.<string, import('@trustify-da/trustify-da-api-model/model/v5/AnalysisReport.ts').AnalysisReport>>}
  * @throws {Error}
  */
 /**
@@ -83651,7 +83681,7 @@ async function componentAnalysis(manifest, opts = {}) {
  * @param {Array<string>} imageRefs - OCI image references
  * @param {boolean} [html=false] - true will return a html string, false will return AnalysisReport
  * @param {Options} [opts={}] - optional various options to pass along the application
- * @returns {Promise<string|Object.<string, import('@trustify-da/trustify-da-api-model/model/v5/AnalysisReport').AnalysisReport>>}
+ * @returns {Promise<string|Object.<string, import('@trustify-da/trustify-da-api-model/model/v5/AnalysisReport.ts').AnalysisReport>>}
  * @throws {Error} if manifest inaccessible, no matching provider, failed to get create content,
  * 		or backend request failed
  */
@@ -83903,7 +83933,7 @@ function batchError(message, wantMetadata, metadata) {
  * @param {string} workspaceRoot
  * @param {false} html
  * @param {Options & { batchMetadata: true }} opts
- * @returns {Promise<{ analysis: Object.<string, import('@trustify-da/trustify-da-api-model/model/v5/AnalysisReport').AnalysisReport>, metadata: BatchAnalysisMetadata }>}
+ * @returns {Promise<{ analysis: Object.<string, import('@trustify-da/trustify-da-api-model/model/v5/AnalysisReport.ts').AnalysisReport>, metadata: BatchAnalysisMetadata }>}
  * @throws {Error}
  */
 /**
@@ -83911,7 +83941,7 @@ function batchError(message, wantMetadata, metadata) {
  * @param {string} workspaceRoot
  * @param {false} html
  * @param {Options & { batchMetadata?: false }} [opts={}]
- * @returns {Promise<Object.<string, import('@trustify-da/trustify-da-api-model/model/v5/AnalysisReport').AnalysisReport>>}
+ * @returns {Promise<Object.<string, import('@trustify-da/trustify-da-api-model/model/v5/AnalysisReport.ts').AnalysisReport>>}
  * @throws {Error}
  */
 /**
@@ -83924,7 +83954,7 @@ function batchError(message, wantMetadata, metadata) {
  * @param {string} workspaceRoot - Path to workspace root (containing lock file and workspace config)
  * @param {boolean} [html=false] - true returns HTML, false returns JSON report
  * @param {Options} [opts={}] - `batchConcurrency`, discovery ignores, `continueOnError` (default true), `batchMetadata` (default false)
- * @returns {Promise<string|Object.<string, import('@trustify-da/trustify-da-api-model/model/v5/AnalysisReport').AnalysisReport>|{ analysis: string|Object.<string, import('@trustify-da/trustify-da-api-model/model/v5/AnalysisReport').AnalysisReport>, metadata: BatchAnalysisMetadata }>}
+ * @returns {Promise<string|Object.<string, import('@trustify-da/trustify-da-api-model/model/v5/AnalysisReport.ts').AnalysisReport>|{ analysis: string|Object.<string, import('@trustify-da/trustify-da-api-model/model/v5/AnalysisReport.ts').AnalysisReport>, metadata: BatchAnalysisMetadata }>}
  * @throws {Error} if workspace root invalid, no manifests found, no packages pass validation, no SBOMs produced, or backend request failed. When `opts.batchMetadata` is set, `error.batchMetadata` may be set on thrown errors.
  */
 async function stackAnalysisBatch(workspaceRoot, html = false, opts = {}) {
@@ -83981,70 +84011,6 @@ async function stackAnalysisBatch(workspaceRoot, html = false, opts = {}) {
 async function validateToken(opts = {}) {
     const theUrl = selectTrustifyDABackend(opts);
     return await analysis.validateToken(theUrl, opts); // throws error request sending failed
-}
-
-;// CONCATENATED MODULE: ../../guacsec/trustify-da-javascript-client/dist/src/license/project_license.js
-/**
- * Resolves the project license from the manifest and from a LICENSE / LICENSE.md file.
- * Used to report manifest-vs-file mismatch and as the baseline for dependency license compatibility.
- */
-
-
-
-
-
-
-/**
- * Resolve project license from manifest and from LICENSE / LICENSE.md in manifest dir or git root.
- * Uses local pattern matching for LICENSE file identification (synchronous).
- * For more accurate backend-based identification, use identifyLicense() separately.
- * @param {string} manifestPath - path to manifest
- * @returns {{ fromManifest: string|null, fromFile: string|null, mismatch: boolean }}
- */
-function getProjectLicense(manifestPath) {
-    const resolved = external_node_path_.resolve(manifestPath);
-    const provider = matchForLicense(resolved, availableProviders);
-    const fromManifest = provider.readLicenseFromManifest(resolved);
-    const fromFile = readLicenseFile(resolved);
-    const mismatch = Boolean(fromManifest && fromFile && normalizeSpdx(fromManifest) !== normalizeSpdx(fromFile));
-    return {
-        fromManifest: fromManifest || null,
-        fromFile: fromFile || null,
-        mismatch
-    };
-}
-
-/**
- * Call backend /licenses/identify endpoint to identify license from file.
- * @param {string} licenseFilePath - path to LICENSE file
- * @param {{}} [opts={}] - options (proxy, token, etc.)
- * @returns {Promise<string|null>} - SPDX identifier or null
- */
-async function identifyLicense(licenseFilePath, opts = {}) {
-    try {
-        const fileContent = external_node_fs_namespaceObject.readFileSync(licenseFilePath);
-        const backendUrl = selectTrustifyDABackend(opts);
-        const url = new URL(`${backendUrl}/api/v5/licenses/identify`);
-        const tokenHeaders = getTokenHeaders(opts);
-        const fetchOptions = addProxyAgent({
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/octet-stream',
-                ...tokenHeaders,
-            },
-            body: fileContent,
-        }, opts);
-        const resp = await fetch(url, fetchOptions);
-        if (!resp.ok) {
-            return null; // Fallback to local detection on error
-        }
-        const data = await resp.json();
-        // Extract SPDX identifier from backend response
-        return data?.license?.id || data?.spdx_id || data?.identifier || null;
-    }
-    catch {
-        return null; // Fallback to local detection on error
-    }
 }
 
 ;// CONCATENATED MODULE: ../../guacsec/trustify-da-javascript-client/dist/src/license/licenses_api.js
@@ -84136,7 +84102,7 @@ function normalizeLicensesResponse(data, purls = []) {
  * Build license map from an analysis report that already includes license data (result.licenses).
  * Use this when the dependency analysis response already contains the licenses array to avoid a second request.
  *
- * @param {import('@trustify-da/trustify-da-api-model/model/v5/AnalysisReport').AnalysisReport} analysisReport - full analysis JSON
+ * @param {import('@trustify-da/trustify-da-api-model/model/v5/AnalysisReport.ts').AnalysisReport} analysisReport - full analysis JSON
  * @param {string[]} [purls] - optional list of purls to restrict to
  * @returns {Map<string, { licenses: string[], category?: string }>}
  */
@@ -84145,6 +84111,70 @@ function licensesFromReport(analysisReport, purls = []) {
         return new Map();
     }
     return normalizeLicensesResponse(analysisReport.licenses, purls);
+}
+
+;// CONCATENATED MODULE: ../../guacsec/trustify-da-javascript-client/dist/src/license/project_license.js
+/**
+ * Resolves the project license from the manifest and from a LICENSE / LICENSE.md file.
+ * Used to report manifest-vs-file mismatch and as the baseline for dependency license compatibility.
+ */
+
+
+
+
+
+
+/**
+ * Resolve project license from manifest and from LICENSE / LICENSE.md in manifest dir or git root.
+ * Uses local pattern matching for LICENSE file identification (synchronous).
+ * For more accurate backend-based identification, use identifyLicense() separately.
+ * @param {string} manifestPath - path to manifest
+ * @returns {{ fromManifest: string|null, fromFile: string|null, mismatch: boolean }}
+ */
+function getProjectLicense(manifestPath) {
+    const resolved = external_node_path_.resolve(manifestPath);
+    const provider = matchForLicense(resolved, availableProviders);
+    const fromManifest = provider.readLicenseFromManifest(resolved);
+    const fromFile = readLicenseFile(resolved);
+    const mismatch = Boolean(fromManifest && fromFile && normalizeSpdx(fromManifest) !== normalizeSpdx(fromFile));
+    return {
+        fromManifest: fromManifest || null,
+        fromFile: fromFile || null,
+        mismatch
+    };
+}
+
+/**
+ * Call backend /licenses/identify endpoint to identify license from file.
+ * @param {string} licenseFilePath - path to LICENSE file
+ * @param {{}} [opts={}] - options (proxy, token, etc.)
+ * @returns {Promise<string|null>} - SPDX identifier or null
+ */
+async function identifyLicense(licenseFilePath, opts = {}) {
+    try {
+        const fileContent = external_node_fs_namespaceObject.readFileSync(licenseFilePath);
+        const backendUrl = selectTrustifyDABackend(opts);
+        const url = new URL(`${backendUrl}/api/v5/licenses/identify`);
+        const tokenHeaders = getTokenHeaders(opts);
+        const fetchOptions = addProxyAgent({
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/octet-stream',
+                ...tokenHeaders,
+            },
+            body: fileContent,
+        }, opts);
+        const resp = await fetch(url, fetchOptions);
+        if (!resp.ok) {
+            return null; // Fallback to local detection on error
+        }
+        const data = await resp.json();
+        // Extract SPDX identifier from backend response
+        return data?.license?.id || data?.spdx_id || data?.identifier || null;
+    }
+    catch {
+        return null; // Fallback to local detection on error
+    }
 }
 
 ;// CONCATENATED MODULE: ../../guacsec/trustify-da-javascript-client/dist/src/license/index.js
@@ -84165,7 +84195,7 @@ function licensesFromReport(analysisReport, purls = []) {
  * @param {string} manifestPath - path to manifest
  * @param {string} url - the backend url to send the request to
  * @param {import('../index.js').Options} [opts={}]
- * @param {import('@trustify-da/trustify-da-api-model/model/v5/AnalysisReport').AnalysisReport} [analysisResult] - analysis result that includes licenses array from backend
+ * @param {import('@trustify-da/trustify-da-api-model/model/v5/AnalysisReport.ts').AnalysisReport} [analysisResult] - analysis result that includes licenses array from backend
  * @returns {Promise<{ projectLicense: { manifest: Object|null, file: Object|null, mismatch: boolean }, incompatibleDependencies: Array<{ purl: string, licenses: string[], category?: string, reason: string }>, error?: string }>}
  */
 async function runLicenseCheck(sbomContent, manifestPath, url, opts = {}, analysisResult = null) {
@@ -84189,10 +84219,12 @@ async function runLicenseCheck(sbomContent, manifestPath, url, opts = {}, analys
     // Fetch detailed license info from backend (avoid duplicate calls if same license)
     const licenseDetailsCache = new Map();
     async function getDetails(spdxId) {
-        if (!spdxId || !url)
+        if (!spdxId || !url) {
             return null;
-        if (licenseDetailsCache.has(spdxId))
+        }
+        if (licenseDetailsCache.has(spdxId)) {
             return licenseDetailsCache.get(spdxId);
+        }
         try {
             const details = await getLicenseDetails(spdxId, { ...opts, TRUSTIFY_DA_BACKEND_URL: url });
             licenseDetailsCache.set(spdxId, details);
@@ -84231,8 +84263,9 @@ async function runLicenseCheck(sbomContent, manifestPath, url, opts = {}, analys
     const incompatibleDependencies = [];
     for (const purl of purls) {
         const entry = licenseByPurl.get(purl);
-        if (!entry)
+        if (!entry) {
             continue;
+        }
         const status = getCompatibility(projectCategory, entry.category);
         if (status === 'incompatible') {
             const reason = entry.category?.toUpperCase() === 'UNKNOWN'
@@ -84263,13 +84296,31 @@ async function runLicenseCheck(sbomContent, manifestPath, url, opts = {}, analys
 const CYCLONEDX_JSON_MEDIA_TYPE = 'application/vnd.cyclonedx+json';
 /* harmony default export */ const analysis = ({ requestComponent, requestStack, requestStackBatch, requestImages, validateToken: analysis_validateToken, appendAnalysisQueryParams });
 /**
+ * @overload
+ * @param {import('./provider').Provider} provider
+ * @param {string} manifest
+ * @param {string} url
+ * @param {true} [html]
+ * @param {import("index.js").Options} [opts={}]
+ * @returns {Promise<string>}
+ */
+/**
+ * @overload
+ * @param {import('./provider').Provider} provider
+ * @param {string} manifest
+ * @param {string} url
+ * @param {false} [html]
+ * @param {import("index.js").Options} [opts={}]
+ * @returns {Promise<import('@trustify-da/trustify-da-api-model/model/v5/AnalysisReport.ts').AnalysisReport>>}
+ */
+/**
  * Send a stack analysis request and get the report as 'text/html' or 'application/json'.
  * @param {import('./provider').Provider} provider - the provided data for constructing the request
  * @param {string} manifest - path for the manifest
  * @param {string} url - the backend url to send the request to
  * @param {boolean} [html=false] - true will return 'text/html', false will return 'application/json'
  * @param {import("index.js").Options} [opts={}] - optional various options to pass along the application
- * @returns {Promise<string|import('@trustify-da/trustify-da-api-model/model/v5/AnalysisReport').AnalysisReport>}
+ * @returns {Promise<string|import('@trustify-da/trustify-da-api-model/model/v5/AnalysisReport.ts').AnalysisReport>}
  */
 async function requestStack(provider, manifest, url, html = false, opts = {}) {
     opts["source-manifest"] = Buffer.from(external_node_fs_namespaceObject.readFileSync(manifest).toString()).toString('base64');
@@ -84330,7 +84381,7 @@ async function requestStack(provider, manifest, url, html = false, opts = {}) {
  * @param {string} manifest - path for the manifest
  * @param {string} url - the backend url to send the request to
  * @param {import("index.js").Options} [opts={}] - optional various options to pass along the application
- * @returns {Promise<import('@trustify-da/trustify-da-api-model/model/v5/AnalysisReport').AnalysisReport>}
+ * @returns {Promise<import('@trustify-da/trustify-da-api-model/model/v5/AnalysisReport.ts').AnalysisReport>}
  */
 async function requestComponent(provider, manifest, url, opts = {}) {
     opts["source-manifest"] = Buffer.from(external_node_fs_namespaceObject.readFileSync(manifest).toString()).toString('base64');
@@ -84389,7 +84440,7 @@ async function requestComponent(provider, manifest, url, opts = {}) {
  * @param {string} url - the backend url
  * @param {boolean} [html=false] - true returns HTML, false returns JSON
  * @param {import("index.js").Options} [opts={}]
- * @returns {Promise<string|Object.<string, import('@trustify-da/trustify-da-api-model/model/v5/AnalysisReport').AnalysisReport>>}
+ * @returns {Promise<string|Object.<string, import('@trustify-da/trustify-da-api-model/model/v5/AnalysisReport.ts').AnalysisReport>>}
  */
 async function requestStackBatch(sbomByPurl, url, html = false, opts = {}) {
     const finalUrl = new URL(`${url}/api/v5/batch-analysis`);
@@ -84432,7 +84483,7 @@ async function requestStackBatch(sbomByPurl, url, html = false, opts = {}) {
  * @param {Array<string>} imageRefs
  * @param {string} url
  * @param {import("index.js").Options} [opts={}] - optional various options to pass along the application
- * @returns {Promise<string|Object.<string, import('@trustify-da/trustify-da-api-model/model/v5/AnalysisReport').AnalysisReport>>}
+ * @returns {Promise<string|Object.<string, import('@trustify-da/trustify-da-api-model/model/v5/AnalysisReport.ts').AnalysisReport>>}
  */
 async function requestImages(imageRefs, url, html = false, opts = {}) {
     const imageSboms = {};
@@ -85191,21 +85242,14 @@ const SKIP_DIRS = new Set(['node_modules', '.git']);
  * @typedef {{ path: string, after: string, changeKey: string }} DependencyFix
  */
 /**
- * A single applicable remediation, as produced by `extractRemediations` and enriched by
- * `runRemediation` with the originating manifest path(s) and (optionally) per-dependency changes.
- * @typedef {{
- *   purl: string,
- *   groupId: string,
- *   artifactId: string,
- *   currentVersion: string,
- *   fixedInVersion: string,
- *   fixedInPurl: string,
- *   provider: string,
- *   source: string,
- *   vulnerabilities: Array<{id: string, severity: string, advisories: Array<{id: string, url: string}>}>,
+ * A remediation grounded in the scanned workspace: the canonical
+ * {@link import('./remediation.js').Remediation} base as produced by `extractRemediations`, enriched
+ * by `runRemediation` with the originating manifest path(s) in `files` (always present) and,
+ * optionally, the isolated per-dependency edits in `changes`.
+ * @typedef {import('./remediation.js').Remediation & {
  *   files: string[],
  *   changes?: DependencyFix[]
- * }} Remediation
+ * }} AppliedRemediation
  */
 /** @type {ManifestType[]} */
 const MANIFEST_TYPES = [
@@ -85288,7 +85332,7 @@ function findManifests(targetPath) {
  * @param {boolean} [options.perDependencyChanges=false] - when true, each remediation is populated with
  *   a `changes` array describing the isolated, single-dependency edit (see {@link DependencyFix}). This lets
  *   callers create one commit/PR per dependency without attributing diff hunks themselves.
- * @returns {Promise<{exitCode: number, remediations: Remediation[], manifests: string[], appliedFiles: string[]}>}
+ * @returns {Promise<{exitCode: number, remediations: AppliedRemediation[], manifests: string[], appliedFiles: string[]}>}
  *   exitCode is 2 for a dry-run that found remediations (nothing written), 0 otherwise. `remediations`
  *   is the structured, per-manifest list of applicable updates — each entry carries the originating
  *   manifest path(s) in `files` so callers can group and create per-dependency changes. `appliedFiles`
@@ -85333,7 +85377,7 @@ async function runRemediation(targetPath, options = {}) {
         }
         // Tag each remediation with the manifest it came from so callers can group
         // changes per dependency across a multi-manifest workspace.
-        for (const remediation of remediations) {
+        for (const remediation of /** @type {AppliedRemediation[]} */ (remediations)) {
             remediation.files = [manifestPath];
         }
         // Read the pristine manifest once. Both the atomic apply and the per-dependency
@@ -85406,6 +85450,26 @@ async function runRemediation(targetPath, options = {}) {
 /* harmony import */ var packageurl_js__WEBPACK_IMPORTED_MODULE_0__ = __nccwpck_require__(5314);
 
 /**
+ * A single per-CVE vulnerability carried by a remediation: one CVE with its own severity and the
+ * advisories attributed to it.
+ * @typedef {{id: string, severity: string, advisories: Array<{id: string, url: string}>}} Vulnerability
+ */
+/**
+ * A single applicable remediation as produced by {@link extractRemediations}: a dependency, the
+ * version that fixes it, and the per-CVE `vulnerabilities` it resolves.
+ * @typedef {{
+ *   purl: string,
+ *   groupId: string,
+ *   artifactId: string,
+ *   currentVersion: string,
+ *   fixedInVersion: string,
+ *   fixedInPurl: string,
+ *   provider: string,
+ *   source: string,
+ *   vulnerabilities: Vulnerability[]
+ * }} Remediation
+ */
+/**
  * Extracts the major version segment from a version string.
  * @param {string} version
  * @returns {string} the first dot-separated segment
@@ -85414,10 +85478,13 @@ function getMajorVersion(version) {
     return version.split('.')[0] || '';
 }
 /**
+ * @typedef {{selectVersion: (fixedInVersions: string[], currentVersion: string) => string, resolveConflict: (existing: ConflictCandidate, candidate: ConflictCandidate) => 'existing'|'candidate'}} VersionStrategy
+ */
+/**
  * Version selection strategy that prefers the closest compatible version
  * within the same major version stream. Falls back to the lowest cross-major
  * version when no same-major option exists.
- * @type {{selectVersion: function(string[], string): string, resolveConflict: function(object, object): string}}
+ * @type {VersionStrategy}
  */
 const closestCoverageStrategy = {
     selectVersion(fixedInVersions, currentVersion) {
@@ -85453,7 +85520,7 @@ const closestCoverageStrategy = {
  * Version selection strategy that always picks the highest version regardless
  * of major version distance. Guarantees maximum CVE coverage but may produce
  * large version jumps. This is the original behavior before pluggable strategies.
- * @type {{selectVersion: function(string[], string): string, resolveConflict: function(object, object): string}}
+ * @type {VersionStrategy}
  */
 const highestStrategy = {
     selectVersion(fixedInVersions) {
@@ -85479,18 +85546,16 @@ const highestStrategy = {
  * version selection strategy to resolve conflicts. Dependencies with no remediation
  * data are skipped.
  *
- * @param {object} analysisReport - raw DA AnalysisReport JSON response
+ * @param {import('@trustify-da/trustify-da-api-model/model/v5/AnalysisReport.ts').AnalysisReport} analysisReport - raw DA AnalysisReport JSON response
  * @param {object} [options] - extraction options
  * @param {string[]} [options.providerPriority] - provider names in descending priority order.
  *   The first entry has the highest priority. Providers not listed share the lowest priority.
  *   When omitted or empty, all providers are treated equally and the highest fix version wins.
- * @param {object} [options.versionStrategy] - version selection strategy with selectVersion
+ * @param {VersionStrategy} [options.versionStrategy] - version selection strategy with selectVersion
  *   and resolveConflict methods. Defaults to closestCoverageStrategy.
- * @returns {Array<{purl: string, groupId: string, artifactId: string, currentVersion: string,
- *   fixedInVersion: string, fixedInPurl: string, provider: string, source: string,
- *   vulnerabilities: Array<{id: string, severity: string, advisories: Array<{id: string, url: string}>}>}>}
- *   `vulnerabilities` is the sole source of vulnerability data — each entry holds one CVE with its
- *   own severity and advisories. Use {@link maxSeverity} to derive a dependency-level severity.
+ * @returns {Remediation[]} `vulnerabilities` is the sole source of vulnerability data — each entry
+ *   holds one CVE with its own severity and advisories. Use {@link maxSeverity} to derive a
+ *   dependency-level severity.
  */
 function extractRemediations(analysisReport, options = {}) {
     if (!analysisReport || !analysisReport.providers) {
@@ -85498,6 +85563,7 @@ function extractRemediations(analysisReport, options = {}) {
     }
     const priorityMap = buildPriorityMap(options.providerPriority);
     const strategy = options.versionStrategy || closestCoverageStrategy;
+    /** @type {Map<string, Remediation & { _fromTrustedContent?: boolean}>} */
     const remediationsByDep = new Map();
     const rankByDep = new Map();
     for (const [providerName, providerReport] of Object.entries(analysisReport.providers)) {
@@ -85530,12 +85596,12 @@ function buildPriorityMap(providerPriority) {
 }
 /**
  * Extracts remediations from the sources/dependencies/issues tree of a provider report.
- * @param {object} providerReport
+ * @param {import('@trustify-da/trustify-da-api-model/model/v5/ProviderReport.js').ProviderReport} providerReport
  * @param {string} providerName
  * @param {number} providerRank - numeric priority rank for this provider
- * @param {Map<string, object>} remediationsByDep - accumulator keyed by dependency PURL
+ * @param {Map<string, Remediation & { _fromTrustedContent?: boolean }>} remediationsByDep - accumulator keyed by dependency PURL
  * @param {Map<string, number>} rankByDep - tracks current winning rank per dependency
- * @param {object} strategy - version selection strategy
+ * @param {VersionStrategy} strategy - version selection strategy
  */
 function extractFromSources(providerReport, providerName, providerRank, remediationsByDep, rankByDep, strategy) {
     if (!providerReport.sources) {
@@ -85557,14 +85623,14 @@ function extractFromSources(providerReport, providerName, providerRank, remediat
 }
 /**
  * Processes a single issue's remediation data and merges it into the accumulator.
- * @param {object} issue - issue object containing remediation and CVE data
- * @param {object} dep - dependency object containing the ref PURL
+ * @param {import('@trustify-da/trustify-da-api-model/model/v5/Issue.js').Issue} issue - issue object containing remediation and CVE data
+ * @param {import('@trustify-da/trustify-da-api-model/model/v5/DependencyReport.js').DependencyReport} dep - dependency object containing the ref PURL
  * @param {string} providerName
  * @param {string} sourceName
  * @param {number} providerRank
- * @param {Map<string, object>} remediationsByDep
+ * @param {Map<string, Remediation & { _fromTrustedContent?: boolean }>} remediationsByDep
  * @param {Map<string, number>} rankByDep
- * @param {object} strategy - version selection strategy
+ * @param {VersionStrategy} strategy - version selection strategy
  */
 function processIssueRemediation(issue, dep, providerName, sourceName, providerRank, remediationsByDep, rankByDep, strategy) {
     const depPurl = dep.ref;
@@ -85595,7 +85661,7 @@ function processIssueRemediation(issue, dep, providerName, sourceName, providerR
     if (!fixedInVersion) {
         return;
     }
-    const cveId = issue.id || issue.cve;
+    const cveId = issue.id;
     const severity = issue.severity || 'UNKNOWN';
     const advisories = extractAdvisories(issue);
     const existing = remediationsByDep.get(depPurl);
@@ -85641,10 +85707,10 @@ function processIssueRemediation(issue, dep, providerName, sourceName, providerR
 /**
  * Extracts remediations from the recommendations section of a provider report.
  * Merges CVEs and advisories into existing entries when present.
- * @param {object} providerReport
+ * @param {import('@trustify-da/trustify-da-api-model/model/v5/ProviderReport.js').ProviderReport} providerReport
  * @param {string} providerName
  * @param {number} providerRank
- * @param {Map<string, object>} remediationsByDep
+ * @param {Map<string, Remediation & { _fromTrustedContent?: boolean }>} remediationsByDep
  * @param {Map<string, number>} rankByDep
  */
 function extractFromRecommendations(providerReport, providerName, providerRank, remediationsByDep, rankByDep) {
@@ -85711,9 +85777,9 @@ function extractFromRecommendations(providerReport, providerName, providerRank, 
  * Gets the fixedIn PURL from an issue's remediation, preferring trustedContent.
  * When fixedIn is an array of version strings (not PURLs), uses the strategy's
  * selectVersion to pick the best candidate and constructs a PURL from the dependency ref.
- * @param {object} issue
+ * @param {import('@trustify-da/trustify-da-api-model/model/v5/Issue.js').Issue} issue
  * @param {string} depPurl - the dependency PURL, used to construct fixedIn PURLs from version strings
- * @param {object} strategy - version selection strategy
+ * @param {VersionStrategy} strategy - version selection strategy
  * @param {string} currentVersion - the dependency's current version
  * @returns {string|undefined}
  */
@@ -85721,17 +85787,11 @@ function getFixedInPurl(issue, depPurl, strategy, currentVersion) {
     if (!issue.remediation) {
         return undefined;
     }
-    if (issue.remediation.trustedContent && issue.remediation.trustedContent.ref) {
+    if (issue.remediation.trustedContent?.ref) {
         return issue.remediation.trustedContent.ref;
     }
     const fixedIn = issue.remediation.fixedIn;
-    if (!fixedIn) {
-        return undefined;
-    }
-    if (typeof fixedIn === 'string') {
-        return fixedIn;
-    }
-    if (Array.isArray(fixedIn) && fixedIn.length > 0) {
+    if (fixedIn?.length > 0) {
         const version = fixedIn.length > 1
             ? strategy.selectVersion(fixedIn, currentVersion)
             : fixedIn[0];
@@ -85755,7 +85815,7 @@ function getFixedInPurl(issue, depPurl, strategy, currentVersion) {
  * Adds a per-CVE vulnerability entry to a remediation, deduplicating by CVE id. When the
  * CVE is already present, the higher severity is kept and its advisories are merged.
  * Issues without a CVE id contribute no vulnerability entry.
- * @param {object} entry - remediation accumulator entry with a `vulnerabilities` array
+ * @param {Remediation & { _fromTrustedContent?: boolean }} entry - remediation accumulator entry with a `vulnerabilities` array
  * @param {string|undefined} cveId - the CVE identifier for this issue
  * @param {string} severity - the issue's severity
  * @param {Array<{id: string, url: string}>} advisories - advisories attributed to this issue
@@ -85779,25 +85839,16 @@ function addVulnerability(entry, cveId, severity, advisories) {
 }
 /**
  * Extracts advisory objects from an issue.
- * @param {object} issue
+ * @param {import('@trustify-da/trustify-da-api-model/model/v5/Issue.js').Issue} issue
  * @returns {Array<{id: string, url: string}>}
  */
 function extractAdvisories(issue) {
     const advisories = [];
-    if (issue.remediation && issue.remediation.trustedContent) {
-        const tc = issue.remediation.trustedContent;
-        if (tc.advisory) {
+    for (const advisory of issue.remediation?.advisories ?? []) {
+        if (advisory.advisory?.id) {
             advisories.push({
-                id: tc.advisory.id || tc.advisory,
-                url: tc.advisory.url || '',
-            });
-        }
-    }
-    if (issue.advisories) {
-        for (const adv of issue.advisories) {
-            advisories.push({
-                id: adv.id || adv,
-                url: adv.url || '',
+                id: advisory.advisory.id,
+                url: advisory.advisory.url || '',
             });
         }
     }
@@ -85894,10 +85945,7 @@ __nccwpck_require__.r(__webpack_exports__);
 /**
  * Generates a formatted report from an array of remediation entries.
  *
- * @param {Array<{purl: string, groupId: string, artifactId: string, currentVersion: string,
- *   fixedInVersion: string, fixedInPurl: string, provider: string, source: string,
- *   vulnerabilities: Array<{id: string, severity: string, advisories: Array<{id: string, url: string}>}>,
- *   appliedVersion?: string}>} remediations
+ * @param {import('./remediation.js').Remediation[]} remediations
  * @param {object} [options]
  * @param {'dependency'|'bundle'} [options.groupBy='dependency'] - grouping strategy
  * @param {'markdown'|'json'} [options.format='markdown'] - output format
@@ -85926,27 +85974,16 @@ function generateReport(remediations, options = {}) {
  * Each vulnerability row is rendered from its own per-CVE severity and advisories
  * (from `rem.vulnerabilities`), so a Moderate CVE is no longer inflated to the
  * dependency's max severity.
- *
- * The update heading shows `rem.appliedVersion` when present, falling back to
- * `rem.fixedInVersion`. This lets callers that collapse several deps sharing a single
- * on-disk version (e.g. a Maven `${property}`) report the version actually written,
- * rather than each dep's individually-selected fix version.
- *
- * When these remediations collapse onto a single on-disk version site (≥2 entries, and at least one
- * whose stamped `appliedVersion` differs from its own `fixedInVersion`), a single divergence block
- * is prepended once above all sections.
- * @param {Array<object>} remediations
+ * @param {import('./remediation.js').Remediation[]} remediations
  * @returns {string}
  */
 function generatePerDependencyReport(remediations) {
-    const divergenceBlock = renderDivergenceBlock(remediations);
     const sections = remediations.map(rem => {
         const depName = rem.groupId
             ? `${rem.groupId}:${rem.artifactId}`
             : rem.artifactId;
-        const displayVersion = rem.appliedVersion || rem.fixedInVersion;
         const lines = [
-            `## Security Update: ${depName} ${rem.currentVersion} → ${displayVersion}`,
+            `## Security Update: ${depName} ${rem.currentVersion} → ${rem.fixedInVersion}`,
             '',
             `**Provider:** ${rem.provider} | **Source:** ${rem.source}`,
             '',
@@ -85963,47 +86000,11 @@ function generatePerDependencyReport(remediations) {
         }
         return lines.join('\n');
     });
-    return [divergenceBlock, ...sections].filter(Boolean).join('\n\n');
-}
-/**
- * Renders a divergence block when these remediations collapsed onto one on-disk version site, or `''`
- * when they did not diverge.
- *
- * Divergence is read directly from the entries: a caller that collapses several deps sharing a single
- * version site stamps the written value onto each entry's `appliedVersion` (leaving each entry's own
- * `fixedInVersion` as its recommendation). The block renders only when there are ≥2 entries AND at
- * least one has an `appliedVersion` that differs (exact string comparison, not `compareVersions`)
- * from its `fixedInVersion` — surfacing the recommendation that was overwritten. The CLI never stamps
- * `appliedVersion`, so it never triggers this. All entries are listed so the overwritten rows are
- * self-evident against the ones that got their recommendation.
- * @param {Array<object>} remediations
- * @returns {string}
- */
-function renderDivergenceBlock(remediations) {
-    if (!Array.isArray(remediations) || remediations.length < 2) {
-        return '';
-    }
-    const diverges = remediations.some(rem => rem.appliedVersion && rem.appliedVersion !== rem.fixedInVersion);
-    if (!diverges) {
-        return '';
-    }
-    const lines = [
-        '### Applied version differs from some recommendations',
-        '',
-        'These artifacts share one version site, so a single version was written for all of them.',
-        '',
-        '| Artifact | Recommended | Applied |',
-        '| --- | --- | --- |',
-    ];
-    for (const rem of remediations) {
-        const name = rem.groupId ? `${rem.groupId}:${rem.artifactId}` : rem.artifactId;
-        lines.push(`| ${name} | ${rem.fixedInVersion} | ${rem.appliedVersion || rem.fixedInVersion} |`);
-    }
-    return lines.join('\n');
+    return sections.join('\n\n');
 }
 /**
  * Generates a bundled markdown report grouping all remediations by severity.
- * @param {Array<object>} remediations
+ * @param {import('./remediation.js').Remediation[]} remediations
  * @returns {string}
  */
 function generateBundledReport(remediations) {
@@ -86034,7 +86035,7 @@ function generateBundledReport(remediations) {
 }
 /**
  * Generates a tabular dry-run summary of proposed changes.
- * @param {Array<object>} remediations
+ * @param {import('./remediation.js').Remediation[]} remediations
  * @returns {string}
  */
 function generateDryRunReport(remediations) {
@@ -86055,7 +86056,7 @@ function generateDryRunReport(remediations) {
 }
 /**
  * Groups remediations by their severity.
- * @param {Array<object>} remediations
+ * @param {import('./remediation.js').Remediation[]} remediations
  * @returns {Map<string, Array<object>>}
  */
 function groupBySeverity(remediations) {

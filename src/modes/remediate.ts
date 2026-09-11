@@ -4,7 +4,7 @@ import * as github from '@actions/github';
 import { createHash } from 'node:crypto';
 import { writeFile } from 'node:fs/promises';
 import { resolve } from 'node:path';
-import { Remediation, runRemediation } from '@trustify-da/trustify-da-javascript-client/dist/src/remediate.js';
+import { type AppliedRemediation, runRemediation } from '@trustify-da/trustify-da-javascript-client/dist/src/remediate.js';
 import { generateReport } from '@trustify-da/trustify-da-javascript-client/dist/src/remediation_report.js';
 import type { ActionConfig } from '../config.js';
 import { createOrUpdatePR } from '../github.js';
@@ -18,7 +18,7 @@ interface PRGroup {
   key: string;
   branchName: string;
   title: string;
-  remediations: Remediation[];
+  remediations: AppliedRemediation[];
   changes?: Array<{ path: string; after: string }>;
   // The version actually written to the shared edit site for this group. When
   // deps collapse onto one Maven property, every dep is bumped to this single
@@ -58,7 +58,7 @@ export async function runRemediateMode(config: ActionConfig): Promise<void> {
 
   // Run remediation via JS client with error handling
   core.info('Scanning manifests and extracting remediations...');
-  let result: { exitCode: number; remediations: Remediation[] };
+  let result: { exitCode: number; remediations: AppliedRemediation[] };
   try {
     result = await runRemediation(workspacePath, {
       dryRun: config.dryRun,
@@ -107,7 +107,7 @@ export async function runRemediateMode(config: ActionConfig): Promise<void> {
  * Bundle mode: a single PR containing every fix already applied to the working tree.
  */
 async function runBundleMode(
-  remediations: Remediation[],
+  remediations: AppliedRemediation[],
   config: ActionConfig,
   workspacePath: string
 ): Promise<void> {
@@ -145,7 +145,7 @@ async function runBundleMode(
  * lost when multiple dependencies share a manifest.
  */
 async function runDependencyMode(
-  remediations: Remediation[],
+  remediations: AppliedRemediation[],
   config: ActionConfig,
   workspacePath: string
 ): Promise<void> {
@@ -213,9 +213,9 @@ async function runDependencyMode(
  * collapse into one PR. On a version collision for the same changeKey+path
  * (same edit site, different fixed versions), the highest version wins.
  */
-function groupByChangeKey(remediations: Remediation[]): Array<{
+function groupByChangeKey(remediations: AppliedRemediation[]): Array<{
   key: string;
-  remediations: Remediation[];
+  remediations: AppliedRemediation[];
   changes: Array<{ path: string; after: string }>;
   appliedVersion: string;
 }> {
@@ -223,7 +223,7 @@ function groupByChangeKey(remediations: Remediation[]): Array<{
     string,
     {
       key: string;
-      remediations: Remediation[];
+      remediations: AppliedRemediation[];
       changeByPath: Map<string, { after: string; version: string }>;
     }
   >();
@@ -399,24 +399,56 @@ async function pushBranch(branchName: string, workspacePath: string): Promise<vo
  */
 function buildPrBody(group: PRGroup, config: ActionConfig, changedFilesList: string[]): string {
   const groupBy = config.groupBy === 'dependency' ? 'dependency' : 'bundle';
-  // Stamp each remediation with the group's applied version so the report reflects
-  // the real on-disk change: the heading shows the applied version, and the client
-  // derives its recommended-vs-applied divergence table straight from these entries
-  // (a dep's own `fixedInVersion` vs the stamped `appliedVersion`). One PR body is
-  // one collapsed group, so no extra grouping data is needed.
-  const remediations = group.appliedVersion
-    ? group.remediations.map((r) => ({ ...r, appliedVersion: group.appliedVersion }))
+  const appliedVersion = group.appliedVersion;
+  // The client report renders each section heading from `fixedInVersion`. For a
+  // collapsed group — where a single shared version is written for every member —
+  // overload `fixedInVersion` to that applied version (on copies) so the headings
+  // show what was actually written. The originals keep each member's own
+  // recommendation, which the divergence table below surfaces when it was overwritten.
+  const remediations = appliedVersion
+    ? group.remediations.map((r) => ({ ...r, fixedInVersion: appliedVersion }))
     : group.remediations;
   const report = generateReport(remediations, { groupBy });
+  const divergence = appliedVersion
+    ? renderDivergenceTable(group.remediations, appliedVersion)
+    : '';
+
   return `## Automated Dependency Remediation
 
-${report}
+${[divergence, report].filter(Boolean).join('\n\n')}
 
 ### Changed Files
 ${changedFilesList.map((f) => `- \`${f}\``).join('\n')}
 
 ---
 *Automated by [Trustify Dependency Analytics](https://github.com/trustification/trustify-da-action)*`;
+}
+
+/**
+ * Renders a recommended-vs-applied table for a collapsed group. Members that share
+ * one on-disk version site (a Maven `${property}` or TOML `version.ref`) are all
+ * written to a single `appliedVersion` (the highest fix among them), so any member
+ * whose own recommendation differs was silently overwritten. Returns '' unless there
+ * are ≥2 members and at least one whose recommended `fixedInVersion` differs from the
+ * applied version.
+ */
+function renderDivergenceTable(remediations: AppliedRemediation[], appliedVersion: string): string {
+  if (remediations.length < 2) return '';
+  if (!remediations.some((r) => r.fixedInVersion !== appliedVersion)) return '';
+
+  const rows = remediations.map((r) => {
+    const name = r.groupId ? `${r.groupId}:${r.artifactId}` : r.artifactId;
+    return `| ${name} | ${r.fixedInVersion} | ${appliedVersion} |`;
+  });
+  return [
+    '### Applied version differs from some recommendations',
+    '',
+    'These artifacts share one version site, so a single version was written for all of them.',
+    '',
+    '| Artifact | Recommended | Applied |',
+    '| --- | --- | --- |',
+    ...rows,
+  ].join('\n');
 }
 
 /**
