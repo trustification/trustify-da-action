@@ -66817,7 +66817,7 @@ function processIssueRemediation(issue, dep, providerName, sourceName, providerR
   const advisories = extractAdvisories(issue);
   const existing = remediationsByDep.get(depPurl);
   if (!existing) {
-    remediationsByDep.set(depPurl, {
+    const entry = {
       purl: depPurl,
       groupId: parsedDep.namespace || "",
       artifactId: parsedDep.name,
@@ -66826,25 +66826,21 @@ function processIssueRemediation(issue, dep, providerName, sourceName, providerR
       fixedInPurl,
       provider: providerName,
       source: sourceName,
-      advisories,
-      severity: severity.toUpperCase(),
-      cves: cveId ? [cveId] : [],
+      vulnerabilities: [],
       _fromTrustedContent: isTrustedContent
-    });
+    };
+    addVulnerability(entry, cveId, severity, advisories);
+    remediationsByDep.set(depPurl, entry);
     rankByDep.set(depPurl, providerRank);
     return;
   }
-  if (cveId && !existing.cves.includes(cveId)) {
-    existing.cves.push(cveId);
-  }
-  mergeAdvisories(existing.advisories, advisories);
+  addVulnerability(existing, cveId, severity, advisories);
   const existingRank = rankByDep.get(depPurl);
   if (providerRank > existingRank) {
     existing.fixedInVersion = fixedInVersion;
     existing.fixedInPurl = fixedInPurl;
     existing.provider = providerName;
     existing.source = sourceName;
-    existing.severity = higherSeverity(existing.severity, severity);
     existing._fromTrustedContent = isTrustedContent;
     rankByDep.set(depPurl, providerRank);
   } else if (providerRank === existingRank) {
@@ -66856,7 +66852,6 @@ function processIssueRemediation(issue, dep, providerName, sourceName, providerR
       existing.source = sourceName;
       existing._fromTrustedContent = isTrustedContent;
     }
-    existing.severity = higherSeverity(existing.severity, severity);
   }
 }
 function extractFromRecommendations(providerReport, providerName, providerRank, remediationsByDep, rankByDep) {
@@ -66895,9 +66890,7 @@ function extractFromRecommendations(providerReport, providerName, providerRank, 
         fixedInPurl: recommendedPurl,
         provider: providerName,
         source: "recommendation",
-        advisories: [],
-        severity: "UNKNOWN",
-        cves: []
+        vulnerabilities: []
       });
       rankByDep.set(depPurl, providerRank);
       continue;
@@ -66943,6 +66936,23 @@ function getFixedInPurl(issue, depPurl, strategy, currentVersion) {
     }
   }
   return void 0;
+}
+function addVulnerability(entry, cveId, severity, advisories) {
+  if (!cveId) {
+    return;
+  }
+  const normalizedSeverity = (severity || "UNKNOWN").toUpperCase();
+  const existingVuln = entry.vulnerabilities.find((v) => v.id === cveId);
+  if (existingVuln) {
+    existingVuln.severity = higherSeverity(existingVuln.severity, normalizedSeverity);
+    mergeAdvisories(existingVuln.advisories, advisories);
+    return;
+  }
+  entry.vulnerabilities.push({
+    id: cveId,
+    severity: normalizedSeverity,
+    advisories: [...advisories]
+  });
 }
 function extractAdvisories(issue) {
   const advisories = [];
@@ -66996,6 +67006,9 @@ function higherSeverity(a, b) {
   const indexB = SEVERITY_ORDER.indexOf(upperB);
   return indexA >= indexB ? upperA : upperB;
 }
+function maxSeverity(vulnerabilities) {
+  return (vulnerabilities || []).reduce((acc, v) => higherSeverity(acc, v.severity), "UNKNOWN");
+}
 
 // node_modules/@trustify-da/trustify-da-javascript-client/dist/src/remediation_report.js
 function generateReport(remediations, options = {}) {
@@ -67023,14 +67036,14 @@ function generatePerDependencyReport(remediations) {
       `**Provider:** ${rem.provider} | **Source:** ${rem.source}`,
       ""
     ];
-    if (rem.cves && rem.cves.length > 0) {
+    const vulnerabilities = rem.vulnerabilities || [];
+    if (vulnerabilities.length > 0) {
       lines.push("### Vulnerabilities resolved");
       lines.push("");
       lines.push("| CVE | Severity | Advisory |");
       lines.push("| --- | --- | --- |");
-      const advisoryLinks = formatAdvisoryLinks(rem.advisories);
-      for (const cve of rem.cves) {
-        lines.push(`| ${cve} | ${rem.severity} | ${advisoryLinks} |`);
+      for (const v of vulnerabilities) {
+        lines.push(`| ${v.id} | ${v.severity} | ${formatAdvisoryLinks(v.advisories)} |`);
       }
     }
     return lines.join("\n");
@@ -67051,8 +67064,9 @@ function generateBundledReport(remediations) {
     lines.push("| --- | --- | --- | --- | --- | --- |");
     for (const rem of group) {
       const depName = rem.groupId ? `${rem.groupId}:${rem.artifactId}` : rem.artifactId;
-      const cves = (rem.cves || []).join(", ");
-      const advisoryLinks = formatAdvisoryLinks(rem.advisories);
+      const vulnerabilities = rem.vulnerabilities || [];
+      const cves = vulnerabilities.map((v) => v.id).join(", ");
+      const advisoryLinks = formatAdvisoryLinks(collectAdvisories(vulnerabilities));
       lines.push(`| ${depName} | ${rem.currentVersion} | ${rem.fixedInVersion} | ${rem.provider} | ${cves} | ${advisoryLinks} |`);
     }
     lines.push("");
@@ -67068,7 +67082,7 @@ function generateDryRunReport(remediations) {
   ];
   for (const rem of remediations) {
     const depName = rem.groupId ? `${rem.groupId}:${rem.artifactId}` : rem.artifactId;
-    lines.push(`| ${depName} | ${rem.currentVersion} | ${rem.fixedInVersion} | ${rem.severity} | ${rem.provider} |`);
+    lines.push(`| ${depName} | ${rem.currentVersion} | ${rem.fixedInVersion} | ${maxSeverity(rem.vulnerabilities)} | ${rem.provider} |`);
   }
   return lines.join("\n");
 }
@@ -67078,13 +67092,26 @@ function groupBySeverity(remediations) {
     map2.set(severity, []);
   }
   for (const rem of remediations) {
-    const sev = rem.severity || "UNKNOWN";
+    const sev = maxSeverity(rem.vulnerabilities);
     if (!map2.has(sev)) {
       map2.set(sev, []);
     }
     map2.get(sev).push(rem);
   }
   return map2;
+}
+function collectAdvisories(vulnerabilities) {
+  const merged = [];
+  const seen = /* @__PURE__ */ new Set();
+  for (const v of vulnerabilities) {
+    for (const adv of v.advisories || []) {
+      if (!seen.has(adv.id)) {
+        seen.add(adv.id);
+        merged.push(adv);
+      }
+    }
+  }
+  return merged;
 }
 function formatAdvisoryLinks(advisories) {
   if (!advisories || advisories.length === 0) {
@@ -68020,7 +68047,11 @@ async function runRemediation(targetPath, options = {}) {
     if (remediations.length === 0) {
       continue;
     }
-    for (const remediation of remediations) {
+    for (
+      const remediation of
+      /** @type {AppliedRemediation[]} */
+      remediations
+    ) {
       remediation.files = [manifestPath];
     }
     const needsContent = perDependencyChanges || !dryRun;
