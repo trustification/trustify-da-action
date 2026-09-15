@@ -39,12 +39,17 @@ export async function loadConfig(): Promise<ActionConfig> {
   const backendUrl = core.getInput('backend-url');
   const providers = core.getInput('providers');
   const sources = core.getInput('sources');
-  const groupBy = core.getInput('group-by');
   const dryRunInput = core.getInput('dry-run') || 'false';
   const dryRun = dryRunInput.toLowerCase() === 'true';
   const labels = core.getInput('labels');
   const branchPrefix = core.getInput('branch-prefix');
   const sbomTargets = core.getInput('sbom-targets');
+  let groupBy = core.getInput('group-by');
+
+  if (!['bundle', 'dependency'].includes(groupBy)) {
+    core.warning(`Unexpected value '${groupBy}' found for 'groupBy', expected one of 'bundle'/'dependency'. Falling back to 'bundle'.`)
+    groupBy = 'bundle';
+  }
 
   // Merge config - action inputs override file config
   const config: ActionConfig = {
@@ -60,7 +65,7 @@ export async function loadConfig(): Promise<ActionConfig> {
     dryRun,
     labels: labels
       ? labels.split(',').map((l) => l.trim())
-      : (fileConfig.labels as string[]) || ['trustify-da', 'security'],
+      : (fileConfig.labels as string[]) || ['trustify-da'],
     branchPrefix:
       branchPrefix || (fileConfig.branchPrefix as string) || 'trustify-da',
     sbomTargets: sbomTargets
