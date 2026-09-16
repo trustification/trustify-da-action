@@ -68526,5 +68526,7 @@ async function run2() {
     }
   }
 }
-run2();
+
+// src/index.ts
+void run2();
 //# sourceMappingURL=index.js.map

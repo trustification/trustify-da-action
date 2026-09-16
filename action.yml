@@ -60,5 +60,5 @@ outputs:
     description: 'Comma-separated list of files modified (remediate mode)'
 
 runs:
-  using: 'node20'
+  using: 'node24'
   main: 'dist/index.js'

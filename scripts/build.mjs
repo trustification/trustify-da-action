@@ -19,7 +19,7 @@ import * as esbuild from 'esbuild';
 await rm('dist', { recursive: true, force: true });
 
 await esbuild.build({
-  entryPoints: ['src/main.ts'],
+  entryPoints: ['src/index.ts'],
   bundle: true,
   platform: 'node',
   target: 'node20',

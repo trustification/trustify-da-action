@@ -5,10 +5,13 @@ import { runCheckMode } from './modes/check.js';
 import { runSbomMode } from './modes/sbom.js';
 
 /**
- * Main entry point for the GitHub Action.
- * Reads inputs, loads configuration, and dispatches to the appropriate mode handler.
+ * Reads inputs, loads configuration, and dispatches to the appropriate mode
+ * handler. Any failure is surfaced via core.setFailed so the action exits
+ * non-zero with a readable message. Invoked from index.ts (the bundle entry) so
+ * that importing this module has no side effects and run() can be awaited in
+ * tests.
  */
-async function run(): Promise<void> {
+export async function run(): Promise<void> {
   try {
     // Read required mode input
     const mode = core.getInput('mode', { required: true });
@@ -40,5 +43,3 @@ async function run(): Promise<void> {
     }
   }
 }
-
-run();
