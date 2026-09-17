@@ -7,7 +7,11 @@ import crypto from 'crypto';
  */
 function generateDeduplicationKey(context: Record<string, unknown>): string {
   const normalized = JSON.stringify(context, Object.keys(context).sort());
-  return crypto.createHash('sha256').update(normalized).digest('hex').substring(0, 16);
+  return crypto
+    .createHash('sha256')
+    .update(normalized)
+    .digest('hex')
+    .substring(0, 16);
 }
 
 export interface PROptions {
