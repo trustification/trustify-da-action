@@ -41,17 +41,17 @@ inputs:
 
 outputs:
   remediation-count:
-    description: 'Number of vulnerabilities remediated (remediate mode)'
+    description: 'Number of vulnerabilities remediated (remediate mode) or with an available fix (check mode)'
   critical-count:
-    description: 'Number of critical vulnerabilities found'
+    description: 'Number of critical severity vulnerabilities found (check mode)'
   high-count:
-    description: 'Number of high severity vulnerabilities found'
+    description: 'Number of high severity vulnerabilities found (check mode)'
   medium-count:
-    description: 'Number of medium severity vulnerabilities found'
+    description: 'Number of medium severity vulnerabilities found (check mode)'
   low-count:
-    description: 'Number of low severity vulnerabilities found'
+    description: 'Number of low severity vulnerabilities found (check mode)'
   license-conflicts:
-    description: 'Number of license policy conflicts detected'
+    description: 'Number of license policy conflicts detected (check mode)'
   pr-url:
     description: 'URL of created/updated PR (remediate mode)'
   sbom-path:

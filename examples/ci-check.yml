@@ -1,0 +1,42 @@
+name: Dependency Analytics Check
+
+on:
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  dependency-check:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Run Trustify Dependency Analytics (check)
+        id: da
+        uses: trustification/trustify-da-action@main
+        with:
+          mode: check
+          backend-url: ${{ secrets.TRUSTIFY_BACKEND_URL }}
+          providers: osv,snyk
+
+      # Policy gate: fail the build when critical vulnerabilities are present.
+      # The action itself never fails on findings — enforcement lives here so each
+      # repository can pick its own thresholds.
+      - name: Enforce vulnerability policy
+        if: steps.da.outputs.critical-count > 0
+        run: |
+          echo "::error::Found ${{ steps.da.outputs.critical-count }} critical vulnerabilities"
+          exit 1
+
+      - name: Report findings
+        run: |
+          echo "Critical:     ${{ steps.da.outputs.critical-count }}"
+          echo "High:         ${{ steps.da.outputs.high-count }}"
+          echo "Medium:       ${{ steps.da.outputs.medium-count }}"
+          echo "Low:          ${{ steps.da.outputs.low-count }}"
+          echo "Remediations: ${{ steps.da.outputs.remediation-count }}"
+          echo "License conflicts: ${{ steps.da.outputs.license-conflicts }}"
