@@ -1,78 +1,89 @@
 import * as core from '@actions/core';
-import * as fs from 'fs/promises';
-import * as yaml from 'yaml';
+import {
+  resolveConfig,
+  type RemediationConfig,
+} from '@trustify-da/trustify-da-javascript-client/dist/src/config.js';
 
 export interface ActionConfig {
   mode: string;
-  backendUrl?: string;
-  providers?: string[];
-  sources?: string[];
-  groupBy?: string;
+  backendUrl: string | null;
+  providers: string[];
+  sources: string[];
+  groupBy: string;
   dryRun: boolean;
-  labels?: string[];
-  branchPrefix?: string;
+  labels: string[];
+  branchPrefix: string;
   sbomTargets?: string[];
-  configPath: string;
+  remediation: RemediationConfig;
 }
 
 /**
- * Loads configuration from .trustify-da.yml and merges with action inputs.
- * Action inputs override config file values.
+ * Loads `.trustify-da.yml` (via the JS client's directory-walking discovery) and
+ * merges it with action inputs and environment variables. Precedence for
+ * top-level fields (backend-url, providers, sources, group-by): action input >
+ * env var > config file > hardcoded default.
+ *
+ * Remediation-specific fields (labels, branch-prefix) follow a similar chain:
+ * action input > config file > default.
  */
-export async function loadConfig(): Promise<ActionConfig> {
-  const configPath = core.getInput('config-path') || '.trustify-da.yml';
+export async function loadConfig(workspacePath?: string): Promise<ActionConfig> {
+  const workspace = workspacePath || process.env.GITHUB_WORKSPACE || process.cwd();
 
-  // Load config file if it exists
-  let fileConfig: Record<string, unknown> = {};
-  try {
-    const configContent = await fs.readFile(configPath, 'utf-8');
-    fileConfig = yaml.parse(configContent) as Record<string, unknown>;
-  } catch (error) {
-    // Config file doesn't exist or can't be read - this is okay, we'll use inputs
-    core.info(
-      `No config file found at ${configPath}, using action inputs only`
+  const mode = core.getInput('mode', { required: true });
+  const backendUrlInput = core.getInput('backend-url') || undefined;
+  const providersInput = core.getInput('providers') || undefined;
+  const sourcesInput = core.getInput('sources') || undefined;
+  const groupByInput = core.getInput('group-by') || undefined;
+  const dryRun = (core.getInput('dry-run') || 'false').toLowerCase() === 'true';
+  const labelsInput = core.getInput('labels');
+  const branchPrefixInput = core.getInput('branch-prefix');
+  const sbomTargetsInput = core.getInput('sbom-targets');
+
+  const resolved = resolveConfig(
+    workspace,
+    {
+      backendUrl: backendUrlInput,
+      providers: providersInput,
+      sources: sourcesInput,
+      groupBy: groupByInput,
+    },
+    process.env as Record<string, string | undefined>,
+  );
+
+  const remediation = (resolved.remediation ?? {}) as RemediationConfig;
+
+  if (!['bundle', 'dependency'].includes(resolved.groupBy)) {
+    core.warning(
+      `Unexpected value '${resolved.groupBy}' found for 'groupBy', expected one of 'bundle'/'dependency'. Falling back to 'dependency'.`,
     );
   }
 
-  // Read action inputs
-  const mode = core.getInput('mode', { required: true });
-  const backendUrl = core.getInput('backend-url');
-  const providers = core.getInput('providers');
-  const sources = core.getInput('sources');
-  const dryRunInput = core.getInput('dry-run') || 'false';
-  const dryRun = dryRunInput.toLowerCase() === 'true';
-  const labels = core.getInput('labels');
-  const branchPrefix = core.getInput('branch-prefix');
-  const sbomTargets = core.getInput('sbom-targets');
-  let groupBy = core.getInput('group-by');
+  // Labels: action input ∪ remediation.labels from config, deduplicated.
+  // Default to ['trustify-da'] when neither source provides any.
+  const inputLabels = labelsInput
+    ? labelsInput.split(',').map((l) => l.trim()).filter(Boolean)
+    : [];
+  const configLabels = remediation.labels ?? [];
+  const mergedLabels = [...new Set([...inputLabels, ...configLabels])];
+  const labels = mergedLabels.length > 0 ? mergedLabels : ['trustify-da'];
 
-  if (!['bundle', 'dependency'].includes(groupBy)) {
-    core.warning(`Unexpected value '${groupBy}' found for 'groupBy', expected one of 'bundle'/'dependency'. Falling back to 'bundle'.`)
-    groupBy = 'bundle';
-  }
+  // Branch prefix: action input > remediation.branch-prefix > default.
+  // Strip trailing '/' — the branch-name template adds a separator.
+  const rawPrefix = branchPrefixInput || remediation['branch-prefix'] || 'trustify-da';
+  const branchPrefix = rawPrefix.replace(/\/+$/, '') || 'trustify-da';
 
-  // Merge config - action inputs override file config
-  const config: ActionConfig = {
+  return {
     mode,
-    backendUrl: backendUrl || (fileConfig.backendUrl as string),
-    providers: providers
-      ? providers.split(',').map((p) => p.trim())
-      : (fileConfig.providers as string[]),
-    sources: sources
-      ? sources.split(',').map((s) => s.trim())
-      : (fileConfig.sources as string[]),
-    groupBy: groupBy || (fileConfig.groupBy as string),
+    backendUrl: resolved.backendUrl,
+    providers: resolved.providers,
+    sources: resolved.sources,
+    groupBy: ['bundle', 'dependency'].includes(resolved.groupBy) ? resolved.groupBy : 'dependency',
     dryRun,
-    labels: labels
-      ? labels.split(',').map((l) => l.trim())
-      : (fileConfig.labels as string[]) || ['trustify-da'],
-    branchPrefix:
-      branchPrefix || (fileConfig.branchPrefix as string) || 'trustify-da',
-    sbomTargets: sbomTargets
-      ? sbomTargets.split(',').map((t) => t.trim())
-      : (fileConfig.sbomTargets as string[]),
-    configPath,
+    labels,
+    branchPrefix,
+    sbomTargets: sbomTargetsInput
+      ? sbomTargetsInput.split(',').map((t) => t.trim())
+      : undefined,
+    remediation,
   };
-
-  return config;
 }

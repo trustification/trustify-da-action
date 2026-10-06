@@ -10,34 +10,30 @@ inputs:
     description: 'Operation mode: remediate, check, or sbom'
     required: true
   backend-url:
-    description: 'Trustify backend URL'
+    description: 'Trustify backend URL (also settable via .trustify-da.yml or TRUSTIFY_DA_BACKEND_URL env var)'
     required: false
   providers:
-    description: 'Comma-separated list of vulnerability providers to query'
+    description: 'Comma-separated list of vulnerability providers to query (also settable via .trustify-da.yml)'
     required: false
   sources:
-    description: 'Comma-separated list of manifest paths to analyze'
+    description: 'Comma-separated list of manifest paths to analyze (also settable via .trustify-da.yml)'
     required: false
   group-by:
-    description: 'Grouping strategy for vulnerabilities (bundle, dependency)'
+    description: 'Grouping strategy for vulnerabilities: bundle or dependency (also settable via .trustify-da.yml)'
     required: false
   dry-run:
     description: 'Preview changes without creating PRs (remediate mode)'
     required: false
     default: 'false'
   labels:
-    description: 'Comma-separated list of labels to add to PRs (remediate mode)'
+    description: 'Comma-separated list of labels to add to PRs; merged with remediation.labels from .trustify-da.yml'
     required: false
   branch-prefix:
-    description: 'Branch name prefix for remediation PRs (remediate mode)'
+    description: 'Branch name prefix for remediation PRs; defaults to "trustify-da" (also settable via .trustify-da.yml)'
     required: false
   sbom-targets:
     description: 'Comma-separated list of SBOM upload targets (artifact, oci)'
     required: false
-  config-path:
-    description: 'Path to .trustify-da.yml config file'
-    required: false
-    default: '.trustify-da.yml'
 
 outputs:
   remediation-count:

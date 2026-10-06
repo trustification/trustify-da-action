@@ -12,6 +12,7 @@ vi.mock('@trustify-da/trustify-da-javascript-client/dist/src/remediate.js', () =
     exitCode: 0,
     manifests: [],
     appliedFiles: [],
+    skipped: [],
     remediations: [
       {
         purl: 'pkg:maven/com.example/vulnerable@1.0.0',
@@ -92,10 +93,14 @@ describe('remediate mode', () => {
 
     const config: ActionConfig = {
       mode: 'remediate',
+      backendUrl: null,
+      providers: [],
+      sources: [],
+      groupBy: 'bundle',
       dryRun: false,
       labels: ['trustify-da', 'security'],
       branchPrefix: 'trustify-da',
-      configPath: '.trustify-da.yml',
+      remediation: {},
     };
 
     await runRemediateMode(config);
@@ -113,8 +118,14 @@ describe('remediate mode', () => {
 
     const config: ActionConfig = {
       mode: 'remediate',
+      backendUrl: null,
+      providers: [],
+      sources: [],
+      groupBy: 'bundle',
       dryRun: true,
-      configPath: '.trustify-da.yml',
+      labels: ['trustify-da'],
+      branchPrefix: 'trustify-da',
+      remediation: {},
     };
 
     await runRemediateMode(config);
@@ -130,16 +141,49 @@ describe('remediate mode', () => {
     expect(gitCalls.length).toBe(0);
   });
 
+  it('passes remediation.exclude from config to runRemediation', async () => {
+    const { runRemediation } = await import(
+      '@trustify-da/trustify-da-javascript-client/dist/src/remediate.js'
+    );
+
+    const config: ActionConfig = {
+      mode: 'remediate',
+      backendUrl: null,
+      providers: [],
+      sources: [],
+      groupBy: 'bundle',
+      dryRun: true,
+      labels: ['trustify-da'],
+      branchPrefix: 'trustify-da',
+      remediation: { exclude: ['pkg:maven/com.example/*', 'pkg:npm/@scope/*'] },
+    };
+
+    await runRemediateMode(config);
+
+    expect(runRemediation).toHaveBeenCalledWith(
+      expect.any(String),
+      expect.objectContaining({
+        exclude: ['pkg:maven/com.example/*', 'pkg:npm/@scope/*'],
+      })
+    );
+  });
+
   it('should exit early when no remediations are found', async () => {
     const { runRemediation } = await import(
       '@trustify-da/trustify-da-javascript-client/dist/src/remediate.js'
     );
-    vi.mocked(runRemediation).mockResolvedValueOnce({ exitCode: 0, remediations: [], manifests: [], appliedFiles: [] });
+    vi.mocked(runRemediation).mockResolvedValueOnce({ exitCode: 0, remediations: [], manifests: [], appliedFiles: [], skipped: [] });
 
     const config: ActionConfig = {
       mode: 'remediate',
+      backendUrl: null,
+      providers: [],
+      sources: [],
+      groupBy: 'bundle',
       dryRun: false,
-      configPath: '.trustify-da.yml',
+      labels: ['trustify-da'],
+      branchPrefix: 'trustify-da',
+      remediation: {},
     };
 
     await runRemediateMode(config);
@@ -167,10 +211,14 @@ describe('remediate mode', () => {
 
     const config: ActionConfig = {
       mode: 'remediate',
+      backendUrl: null,
+      providers: [],
+      sources: [],
+      groupBy: 'bundle',
       dryRun: false,
       labels: ['custom-label', 'vulnerability'],
       branchPrefix: 'custom-prefix',
-      configPath: '.trustify-da.yml',
+      remediation: {},
     };
 
     await runRemediateMode(config);
@@ -206,6 +254,7 @@ describe('remediate mode', () => {
         exitCode: 0,
         manifests: [],
         appliedFiles: [],
+        skipped: [],
         remediations: [
           makeRemediation({
             purl: 'pkg:maven/org.apache.commons/commons-text@1.9',
@@ -244,10 +293,14 @@ describe('remediate mode', () => {
 
       const config: ActionConfig = {
         mode: 'remediate',
-        dryRun: false,
+        backendUrl: null,
+        providers: [],
+        sources: [],
         groupBy: 'dependency',
+        dryRun: false,
+        labels: ['trustify-da'],
         branchPrefix: 'trustify-da',
-        configPath: '.trustify-da.yml',
+        remediation: {},
       };
 
       await runRemediateMode(config);
@@ -291,6 +344,7 @@ describe('remediate mode', () => {
         exitCode: 0,
         manifests: [],
         appliedFiles: [],
+        skipped: [],
         remediations: [
           makeRemediation({
             purl: 'pkg:maven/org.apache.commons/commons-text@1.9',
@@ -331,10 +385,14 @@ describe('remediate mode', () => {
 
       const config: ActionConfig = {
         mode: 'remediate',
-        dryRun: false,
+        backendUrl: null,
+        providers: [],
+        sources: [],
         groupBy: 'dependency',
+        dryRun: false,
+        labels: ['trustify-da'],
         branchPrefix: 'trustify-da',
-        configPath: '.trustify-da.yml',
+        remediation: {},
       };
 
       await runRemediateMode(config);
@@ -386,6 +444,7 @@ describe('remediate mode', () => {
         exitCode: 0,
         manifests: [],
         appliedFiles: [],
+        skipped: [],
         remediations: [
           makeRemediation({
             groupId: 'org.apache.commons',
@@ -405,10 +464,14 @@ describe('remediate mode', () => {
 
       const config: ActionConfig = {
         mode: 'remediate',
-        dryRun: false,
+        backendUrl: null,
+        providers: [],
+        sources: [],
         groupBy: 'dependency',
+        dryRun: false,
+        labels: ['trustify-da'],
         branchPrefix: 'trustify-da',
-        configPath: '.trustify-da.yml',
+        remediation: {},
       };
 
       await runRemediateMode(config);
