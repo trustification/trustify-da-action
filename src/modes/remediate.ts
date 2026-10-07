@@ -14,6 +14,13 @@ import { createOrUpdatePR } from '../github.js';
 // conditionals. Bundle mode leaves `changes` undefined (the working tree already
 // holds every fix); dependency mode carries the resolved per-path `after`
 // content to write on its own branch.
+interface SkippedRemediation {
+  groupId: string;
+  artifactId: string;
+  newVersion: string;
+  reason: string;
+}
+
 interface PRGroup {
   key: string;
   branchName: string;
@@ -58,12 +65,13 @@ export async function runRemediateMode(config: ActionConfig): Promise<void> {
 
   // Run remediation via JS client with error handling
   core.info('Scanning manifests and extracting remediations...');
-  let result: { exitCode: number; remediations: AppliedRemediation[] };
+  let result//: { exitCode: number; remediations: AppliedRemediation[]; skipped: SkippedRemediation[] };
   try {
     result = await runRemediation(workspacePath, {
       dryRun: config.dryRun,
-      providers: config.providers?.join(','),
-      sources: config.sources?.join(','),
+      providers: config.providers.length > 0 ? config.providers.join(',') : undefined,
+      sources: config.sources.length > 0 ? config.sources.join(',') : undefined,
+      exclude: config.remediation?.exclude,
       // Opt into per-dependency change data only when we need isolated PRs.
       perDependencyChanges: groupBy === 'dependency',
     });
@@ -74,6 +82,11 @@ export async function runRemediateMode(config: ActionConfig): Promise<void> {
   // Check exit code (0 = success, 2 = dry-run success)
   if (result.exitCode !== 0 && result.exitCode !== 2) {
     throw new Error(`Remediation failed with exit code ${result.exitCode}`);
+  }
+
+  for (const s of result.skipped) {
+    const name = s.groupId ? `${s.groupId}:${s.artifactId}` : s.artifactId;
+    core.warning(`Skipped ${name}@${s.newVersion}: ${s.reason}`);
   }
 
   const totalVulnerabilities = result.remediations.reduce(
@@ -97,9 +110,9 @@ export async function runRemediateMode(config: ActionConfig): Promise<void> {
   }
 
   if (groupBy === 'dependency') {
-    await runDependencyMode(result.remediations, config, workspacePath);
+    await runDependencyMode(result.remediations, config, workspacePath, result.skipped);
   } else {
-    await runBundleMode(result.remediations, config, workspacePath);
+    await runBundleMode(result.remediations, config, workspacePath, result.skipped);
   }
 }
 
@@ -109,7 +122,8 @@ export async function runRemediateMode(config: ActionConfig): Promise<void> {
 async function runBundleMode(
   remediations: AppliedRemediation[],
   config: ActionConfig,
-  workspacePath: string
+  workspacePath: string,
+  skipped: SkippedRemediation[]
 ): Promise<void> {
   const changedFiles = await getChangedFiles(workspacePath);
   if (changedFiles.length === 0) {
@@ -133,7 +147,8 @@ async function runBundleMode(
     config,
     changedFiles,
     workspacePath,
-    baseSha
+    baseSha,
+    skipped
   );
   core.setOutput('pr-url', prUrl);
   core.info('Created 1 PR');
@@ -147,7 +162,8 @@ async function runBundleMode(
 async function runDependencyMode(
   remediations: AppliedRemediation[],
   config: ActionConfig,
-  workspacePath: string
+  workspacePath: string,
+  skipped: SkippedRemediation[]
 ): Promise<void> {
   const rawGroups = groupByChangeKey(remediations);
   if (rawGroups.length === 0) {
@@ -198,7 +214,8 @@ async function runDependencyMode(
       config,
       raw.changes.map((c) => c.path),
       workspacePath,
-      baseSha
+      baseSha,
+      skipped
     );
     purls.push(prUrl);
   }
@@ -282,7 +299,8 @@ async function createPRForGroup(
   config: ActionConfig,
   changedFilesList: string[],
   workspacePath: string,
-  baseSha: string
+  baseSha: string,
+  skipped: SkippedRemediation[]
 ): Promise<string> {
   // Switch to a clean branch cut from the base commit BEFORE writing this group's
   // content. Materializing first would leave the previous group's branch dirty and
@@ -295,7 +313,7 @@ async function createPRForGroup(
   const prUrl = await createOrUpdatePR(
     {
       title: group.title,
-      body: buildPrBody(group, config, changedFilesList),
+      body: buildPrBody(group, config, changedFilesList, skipped),
       head: group.branchName,
       base: github.context.payload.repository?.default_branch ?? 'main',
       labels: config.labels,
@@ -397,7 +415,7 @@ async function pushBranch(branchName: string, workspacePath: string): Promise<vo
  * grouping mode so bundle PRs render a bundle report and dependency PRs a
  * dependency report.
  */
-function buildPrBody(group: PRGroup, config: ActionConfig, changedFilesList: string[]): string {
+function buildPrBody(group: PRGroup, config: ActionConfig, changedFilesList: string[], skipped: SkippedRemediation[]): string {
   const groupBy = config.groupBy === 'dependency' ? 'dependency' : 'bundle';
   const appliedVersion = group.appliedVersion;
   // The client report renders each section heading from `fixedInVersion`. For a
@@ -412,10 +430,11 @@ function buildPrBody(group: PRGroup, config: ActionConfig, changedFilesList: str
   const divergence = appliedVersion
     ? renderDivergenceTable(group.remediations, appliedVersion)
     : '';
+  const skippedSection = renderSkippedSection(skipped);
 
   return `## Automated Dependency Remediation
 
-${[divergence, report].filter(Boolean).join('\n\n')}
+${[divergence, report, skippedSection].filter(Boolean).join('\n\n')}
 
 ### Changed Files
 ${changedFilesList.map((f) => `- \`${f}\``).join('\n')}
@@ -446,6 +465,23 @@ function renderDivergenceTable(remediations: AppliedRemediation[], appliedVersio
     'These artifacts share one version site, so a single version was written for all of them.',
     '',
     '| Artifact | Recommended | Applied |',
+    '| --- | --- | --- |',
+    ...rows,
+  ].join('\n');
+}
+
+function renderSkippedSection(skipped: SkippedRemediation[]): string {
+  if (skipped.length === 0) return '';
+  const rows = skipped.map((s) => {
+    const name = s.groupId ? `${s.groupId}:${s.artifactId}` : s.artifactId;
+    return `| ${name} | ${s.newVersion} | ${s.reason} |`;
+  });
+  return [
+    '### Skipped Remediations',
+    '',
+    'These remediations were skipped because they share a version edit site with an excluded dependency.',
+    '',
+    '| Dependency | Version | Reason |',
     '| --- | --- | --- |',
     ...rows,
   ].join('\n');

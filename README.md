@@ -28,7 +28,7 @@ Automatically create PRs to fix vulnerable dependencies:
 
 ### Check Mode
 
-Analyze dependencies and fail the build on high-severity findings:
+Analyze dependencies and fail the build on findings:
 
 ```yaml
 - name: Check Dependencies
@@ -36,7 +36,6 @@ Analyze dependencies and fail the build on high-severity findings:
   with:
     mode: check
     backend-url: https://trustify.example.com
-    group-by: severity
 ```
 
 ### SBOM Mode
@@ -59,10 +58,11 @@ Generate and upload SBOM artifacts:
 | `backend-url` | Trustify backend URL | No | - |
 | `providers` | Comma-separated list of vulnerability providers | No | - |
 | `sources` | Comma-separated list of manifest paths to analyze | No | Auto-detect |
-| `group-by` | Grouping strategy: `package`, `severity`, or `file` | No | `package` |
+| `group-by` | Grouping strategy for remediation PRs: `dependency` or `bundle` | No | `dependency` |
 | `dry-run` | Preview changes without creating PRs (remediate mode) | No | `false` |
+| `labels` | Comma-separated labels to apply to remediation PRs | No | `trustify-da` |
+| `branch-prefix` | Branch name prefix for remediation PRs | No | `trustify-da` |
 | `sbom-targets` | Upload targets: `artifact`, `oci` (sbom mode) | No | `artifact` |
-| `config-path` | Path to `.trustify-da.yml` config file | No | `.trustify-da.yml` |
 
 ## Outputs
 
@@ -80,20 +80,30 @@ Generate and upload SBOM artifacts:
 
 ## Configuration File
 
-You can provide a `.trustify-da.yml` file in your repository:
+You can provide a `.trustify-da.yml` file in your repository root (or any parent
+directory — the action walks up from the workspace to find it):
 
 ```yaml
-backendUrl: https://trustify.example.com
+backend-url: https://trustify.example.com
 providers:
   - osv
   - snyk
-groupBy: severity
 sources:
   - pom.xml
   - package.json
+remediation:
+  group-by: dependency
+  labels:
+    - trustify-da
+    - security
+  branch-prefix: trustify-da
+  exclude:
+    - "@internal/private-pkg"
 ```
 
-Action inputs override config file values.
+Action inputs override config file values. Environment variables (`TRUSTIFY_DA_BACKEND_URL`,
+`TRUSTIFY_DA_PROVIDERS`, `TRUSTIFY_DA_SOURCES`) sit between the two: action input > env var >
+config file > default.
 
 ## License
 

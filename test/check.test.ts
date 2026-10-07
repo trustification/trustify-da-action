@@ -72,8 +72,13 @@ function makeConfig(overrides: Partial<ActionConfig> = {}): ActionConfig {
   return {
     mode: 'check',
     backendUrl: 'https://trustify.test',
+    providers: [],
+    sources: [],
+    groupBy: 'bundle',
     dryRun: false,
-    configPath: '.trustify-da.yml',
+    labels: ['trustify-da'],
+    branchPrefix: 'trustify-da',
+    remediation: {},
     ...overrides,
   };
 }

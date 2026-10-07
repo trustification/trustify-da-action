@@ -33,9 +33,14 @@ describe.skipIf(!process.env.TRUSTIFY_DA_BACKEND_URL)('remediate mode (e2e)', ()
 
     const config: ActionConfig = {
       mode: 'remediate',
-      dryRun: true,
+      backendUrl: null,
+      providers: [],
+      sources: [],
       groupBy: 'bundle',
-      configPath: '.trustify-da.yml',
+      dryRun: true,
+      labels: ['trustify-da'],
+      branchPrefix: 'trustify-da',
+      remediation: {},
     };
 
     await runRemediateMode(config);
