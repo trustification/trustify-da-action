@@ -43118,9 +43118,9 @@ async function loadConfig2(workspacePath) {
   const rawPrefix = branchPrefixInput || remediation["branch-prefix"] || "trustify-da";
   const branchPrefix = rawPrefix.replace(/\/+$/, "") || "trustify-da";
   const failOn = {
-    critical: parseThreshold(core2.getInput("fail-on-critical")) ?? check["fail-on"]?.critical,
-    high: parseThreshold(core2.getInput("fail-on-high")) ?? check["fail-on"]?.high,
-    licenseConflicts: parseThreshold(core2.getInput("fail-on-license-conflicts")) ?? check["fail-on"]?.["license-conflicts"]
+    critical: resolveThreshold(core2.getInput("fail-on-critical"), check["fail-on"]?.critical),
+    high: resolveThreshold(core2.getInput("fail-on-high"), check["fail-on"]?.high),
+    licenseConflicts: resolveThreshold(core2.getInput("fail-on-license-conflicts"), check["fail-on"]?.["license-conflicts"])
   };
   return {
     mode,
@@ -43136,11 +43136,16 @@ async function loadConfig2(workspacePath) {
     failOn
   };
 }
+function resolveThreshold(input, configValue) {
+  const parsed = parseThreshold(input);
+  if (parsed === void 0) return configValue;
+  return parsed ?? void 0;
+}
 function parseThreshold(value) {
   const trimmed = value.trim();
   if (trimmed === "") return void 0;
   if (trimmed.toLowerCase() === "true") return 0;
-  if (trimmed.toLowerCase() === "false") return void 0;
+  if (trimmed.toLowerCase() === "false") return null;
   const parsed = Number.parseInt(trimmed, 10);
   if (Number.isNaN(parsed) || parsed < 0) {
     core2.warning(`Invalid threshold value '${trimmed}' \u2014 expected a non-negative integer or true/false. Ignoring.`);

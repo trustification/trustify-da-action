@@ -314,6 +314,17 @@ describe('loadConfig', () => {
       expect(config.failOn.licenseConflicts).toBe(0);
     });
 
+    it('"false" input overrides config file threshold (disables gate)', async () => {
+      mockInputs({ mode: 'check', 'fail-on-critical': 'false' });
+      vi.mocked(resolveConfig).mockReturnValue(
+        resolvedDefaults({ check: { 'fail-on': { critical: 0 } } }),
+      );
+
+      const config = await loadConfig();
+
+      expect(config.failOn.critical).toBeUndefined();
+    });
+
     it('leaves thresholds undefined when absent from both input and config', async () => {
       mockInputs({ mode: 'check' });
 
