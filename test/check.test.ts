@@ -79,6 +79,7 @@ function makeConfig(overrides: Partial<ActionConfig> = {}): ActionConfig {
     labels: ['trustify-da'],
     branchPrefix: 'trustify-da',
     remediation: {},
+    failOn: {},
     ...overrides,
   };
 }
@@ -514,6 +515,110 @@ describe('check mode', () => {
     expect(md).not.toContain('## License Analysis');
     expect(outputValue('license-conflicts')).toBe(0);
     expect(outputValue('critical-count')).toBe(1);
+  });
+
+  describe('fail-on thresholds', () => {
+    /** Sets up a scan with the given severity counts. */
+    function setupScan(severity: { critical?: number; high?: number; medium?: number; low?: number }) {
+      vi.mocked(findManifests).mockReturnValue([`${WORKSPACE}/pom.xml`]);
+      vi.mocked(daClient.stackAnalysis).mockResolvedValue(
+        makeReport({ severity }) as never
+      );
+    }
+
+    /** Sets up a scan with the given number of license conflicts. */
+    function setupLicenseConflicts(count: number) {
+      vi.mocked(findManifests).mockReturnValue([`${WORKSPACE}/pom.xml`]);
+      vi.mocked(daClient.stackAnalysis).mockResolvedValue(makeReport({}) as never);
+      vi.mocked(getProjectLicense).mockReturnValue({
+        fromManifest: 'Apache-2.0',
+        fromFile: null,
+        mismatch: false,
+      } as never);
+      const entries: Array<[string, { licenses: string[]; category: string }]> = [];
+      for (let i = 0; i < count; i++) {
+        entries.push([
+          `pkg:maven/com.example/dep-${i}@1.0.0`,
+          { licenses: ['GPL-3.0'], category: 'STRONG_COPYLEFT' },
+        ]);
+      }
+      vi.mocked(licensesFromReport).mockReturnValue(new Map(entries));
+      vi.mocked(getCompatibility).mockReturnValue('incompatible');
+    }
+
+    /** Verifies that `core.setFailed` was called with a message containing the given substring. */
+    function expectFailed(substring: string) {
+      expect(core.setFailed).toHaveBeenCalledWith(expect.stringContaining(substring));
+    }
+
+    it('fails when critical count meets threshold 0 (fail on any)', async () => {
+      // Given a scan with 1 critical vulnerability and threshold 0
+      setupScan({ critical: 1 });
+
+      // When running check mode with fail-on-critical: 0
+      await runCheckMode(makeConfig({ failOn: { critical: 0 } }));
+
+      // Then the step fails with a policy gate message
+      expectFailed('critical: 1 found (threshold: 0)');
+    });
+
+    it('fails when count equals the threshold exactly', async () => {
+      // Given a scan with exactly 10 high vulnerabilities and threshold 10
+      setupScan({ high: 10 });
+
+      // When running check mode with fail-on-high: 10
+      await runCheckMode(makeConfig({ failOn: { high: 10 } }));
+
+      // Then the step fails
+      expectFailed('high: 10 found (threshold: 10)');
+    });
+
+    it('passes when count is below the threshold', async () => {
+      // Given a scan with 9 high vulnerabilities and threshold 10
+      setupScan({ high: 9 });
+
+      // When running check mode with fail-on-high: 10
+      await runCheckMode(makeConfig({ failOn: { high: 10 } }));
+
+      // Then the step does not fail
+      expect(core.setFailed).not.toHaveBeenCalled();
+    });
+
+    it('skips the failure gate when no threshold is set', async () => {
+      // Given a scan with vulnerabilities but no thresholds configured
+      setupScan({ critical: 5, high: 20 });
+
+      // When running check mode with no fail-on thresholds
+      await runCheckMode(makeConfig({ failOn: {} }));
+
+      // Then the step does not fail — no policy gate is applied
+      expect(core.setFailed).not.toHaveBeenCalled();
+    });
+
+    it('fails on license conflicts when threshold is met', async () => {
+      // Given a scan with 2 license conflicts and threshold 1
+      setupLicenseConflicts(2);
+
+      // When running check mode with fail-on-license-conflicts: 1
+      await runCheckMode(makeConfig({ failOn: { licenseConflicts: 1 } }));
+
+      // Then the step fails with a license conflict message
+      expectFailed('license conflicts: 2 found (threshold: 1)');
+    });
+
+    it('reports all breached thresholds in a single failure message', async () => {
+      // Given a scan breaching both critical and high thresholds
+      setupScan({ critical: 3, high: 15 });
+
+      // When running check mode with both thresholds set
+      await runCheckMode(makeConfig({ failOn: { critical: 1, high: 10 } }));
+
+      // Then both violations appear in the failure message
+      const failedCall = vi.mocked(core.setFailed).mock.calls[0]?.[0] as string;
+      expect(failedCall).toContain('critical: 3 found');
+      expect(failedCall).toContain('high: 15 found');
+      expect(core.setFailed).toHaveBeenCalledOnce();
+    });
   });
 
   it('derives the project license category from its SPDX id', async () => {

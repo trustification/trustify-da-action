@@ -2,7 +2,15 @@ import * as core from '@actions/core';
 import {
   resolveConfig,
   type RemediationConfig,
+  type CheckConfig,
 } from '@trustify-da/trustify-da-javascript-client/dist/src/config.js';
+
+/** Resolved fail-on thresholds for check mode policy gates. */
+export interface FailOnThresholds {
+  critical?: number;
+  high?: number;
+  licenseConflicts?: number;
+}
 
 export interface ActionConfig {
   mode: string;
@@ -15,6 +23,7 @@ export interface ActionConfig {
   branchPrefix: string;
   sbomTargets?: string[];
   remediation: RemediationConfig;
+  failOn: FailOnThresholds;
 }
 
 /**
@@ -51,6 +60,7 @@ export async function loadConfig(workspacePath?: string): Promise<ActionConfig> 
   );
 
   const remediation = (resolved.remediation ?? {}) as RemediationConfig;
+  const check = (resolved.check ?? {}) as CheckConfig;
 
   if (!['bundle', 'dependency'].includes(resolved.groupBy)) {
     core.warning(
@@ -72,6 +82,12 @@ export async function loadConfig(workspacePath?: string): Promise<ActionConfig> 
   const rawPrefix = branchPrefixInput || remediation['branch-prefix'] || 'trustify-da';
   const branchPrefix = rawPrefix.replace(/\/+$/, '') || 'trustify-da';
 
+  const failOn: FailOnThresholds = {
+    critical: parseThreshold(core.getInput('fail-on-critical')) ?? check['fail-on']?.critical,
+    high: parseThreshold(core.getInput('fail-on-high')) ?? check['fail-on']?.high,
+    licenseConflicts: parseThreshold(core.getInput('fail-on-license-conflicts')) ?? check['fail-on']?.['license-conflicts'],
+  };
+
   return {
     mode,
     backendUrl: resolved.backendUrl,
@@ -85,5 +101,24 @@ export async function loadConfig(workspacePath?: string): Promise<ActionConfig> 
       ? sbomTargetsInput.split(',').map((t) => t.trim())
       : undefined,
     remediation,
+    failOn,
   };
+}
+
+/**
+ * Parses a threshold value from an action input string. Accepts integers and
+ * booleans: `true` maps to 0 (fail on any), `false` and empty string map to
+ * undefined (no gate).
+ */
+function parseThreshold(value: string): number | undefined {
+  const trimmed = value.trim();
+  if (trimmed === '') return undefined;
+  if (trimmed.toLowerCase() === 'true') return 0;
+  if (trimmed.toLowerCase() === 'false') return undefined;
+  const parsed = Number.parseInt(trimmed, 10);
+  if (Number.isNaN(parsed) || parsed < 0) {
+    core.warning(`Invalid threshold value '${trimmed}' — expected a non-negative integer or true/false. Ignoring.`);
+    return undefined;
+  }
+  return parsed;
 }

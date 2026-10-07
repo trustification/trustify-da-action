@@ -240,6 +240,100 @@ describe('loadConfig', () => {
     await expect(loadConfig()).resolves.toBeDefined();
   });
 
+  describe('fail-on thresholds', () => {
+    it('parses integer threshold from action input', async () => {
+      mockInputs({ mode: 'check', 'fail-on-critical': '5' });
+
+      const config = await loadConfig();
+
+      expect(config.failOn.critical).toBe(5);
+    });
+
+    it('treats "true" as threshold 0 (fail on any)', async () => {
+      mockInputs({ mode: 'check', 'fail-on-critical': 'true' });
+
+      const config = await loadConfig();
+
+      expect(config.failOn.critical).toBe(0);
+    });
+
+    it('treats "false" as undefined (no gate)', async () => {
+      mockInputs({ mode: 'check', 'fail-on-critical': 'false' });
+
+      const config = await loadConfig();
+
+      expect(config.failOn.critical).toBeUndefined();
+    });
+
+    it('treats threshold 0 as a valid value (not as unset)', async () => {
+      mockInputs({ mode: 'check', 'fail-on-high': '0' });
+
+      const config = await loadConfig();
+
+      expect(config.failOn.high).toBe(0);
+    });
+
+    it('falls back to config file threshold when action input is absent', async () => {
+      mockInputs({ mode: 'check' });
+      vi.mocked(resolveConfig).mockReturnValue(
+        resolvedDefaults({ check: { 'fail-on': { critical: 3 } } }),
+      );
+
+      const config = await loadConfig();
+
+      expect(config.failOn.critical).toBe(3);
+    });
+
+    it('action input threshold overrides config file threshold', async () => {
+      mockInputs({ mode: 'check', 'fail-on-critical': '1' });
+      vi.mocked(resolveConfig).mockReturnValue(
+        resolvedDefaults({ check: { 'fail-on': { critical: 10 } } }),
+      );
+
+      const config = await loadConfig();
+
+      expect(config.failOn.critical).toBe(1);
+    });
+
+    it('parses license-conflicts threshold', async () => {
+      mockInputs({ mode: 'check', 'fail-on-license-conflicts': '2' });
+
+      const config = await loadConfig();
+
+      expect(config.failOn.licenseConflicts).toBe(2);
+    });
+
+    it('falls back to config file license-conflicts threshold', async () => {
+      mockInputs({ mode: 'check' });
+      vi.mocked(resolveConfig).mockReturnValue(
+        resolvedDefaults({ check: { 'fail-on': { 'license-conflicts': 0 } } }),
+      );
+
+      const config = await loadConfig();
+
+      expect(config.failOn.licenseConflicts).toBe(0);
+    });
+
+    it('leaves thresholds undefined when absent from both input and config', async () => {
+      mockInputs({ mode: 'check' });
+
+      const config = await loadConfig();
+
+      expect(config.failOn.critical).toBeUndefined();
+      expect(config.failOn.high).toBeUndefined();
+      expect(config.failOn.licenseConflicts).toBeUndefined();
+    });
+
+    it('warns on invalid threshold value and treats as undefined', async () => {
+      mockInputs({ mode: 'check', 'fail-on-critical': 'banana' });
+
+      const config = await loadConfig();
+
+      expect(config.failOn.critical).toBeUndefined();
+      expect(core.warning).toHaveBeenCalledWith(expect.stringContaining('Invalid threshold'));
+    });
+  });
+
   it('exposes the remediation config object for downstream use', async () => {
     mockInputs({ mode: 'remediate' });
     const remediation = { labels: ['a'], 'branch-prefix': 'b/', exclude: ['pkg:maven/x/*'] };

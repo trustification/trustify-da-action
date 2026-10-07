@@ -101,6 +101,7 @@ describe('remediate mode', () => {
       labels: ['trustify-da', 'security'],
       branchPrefix: 'trustify-da',
       remediation: {},
+      failOn: {},
     };
 
     await runRemediateMode(config);
@@ -126,6 +127,7 @@ describe('remediate mode', () => {
       labels: ['trustify-da'],
       branchPrefix: 'trustify-da',
       remediation: {},
+      failOn: {},
     };
 
     await runRemediateMode(config);
@@ -156,6 +158,7 @@ describe('remediate mode', () => {
       labels: ['trustify-da'],
       branchPrefix: 'trustify-da',
       remediation: { exclude: ['pkg:maven/com.example/*', 'pkg:npm/@scope/*'] },
+      failOn: {},
     };
 
     await runRemediateMode(config);
@@ -184,6 +187,7 @@ describe('remediate mode', () => {
       labels: ['trustify-da'],
       branchPrefix: 'trustify-da',
       remediation: {},
+      failOn: {},
     };
 
     await runRemediateMode(config);
@@ -219,6 +223,7 @@ describe('remediate mode', () => {
       labels: ['custom-label', 'vulnerability'],
       branchPrefix: 'custom-prefix',
       remediation: {},
+      failOn: {},
     };
 
     await runRemediateMode(config);
@@ -301,6 +306,7 @@ describe('remediate mode', () => {
         labels: ['trustify-da'],
         branchPrefix: 'trustify-da',
         remediation: {},
+        failOn: {},
       };
 
       await runRemediateMode(config);
@@ -393,6 +399,7 @@ describe('remediate mode', () => {
         labels: ['trustify-da'],
         branchPrefix: 'trustify-da',
         remediation: {},
+        failOn: {},
       };
 
       await runRemediateMode(config);
@@ -472,6 +479,7 @@ describe('remediate mode', () => {
         labels: ['trustify-da'],
         branchPrefix: 'trustify-da',
         remediation: {},
+        failOn: {},
       };
 
       await runRemediateMode(config);

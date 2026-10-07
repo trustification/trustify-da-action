@@ -19737,11 +19737,11 @@ Support boolean input list: \`true | True | TRUE | false | False | FALSE\``);
       (0, command_1.issue)("echo", enabled ? "on" : "off");
     }
     exports2.setCommandEcho = setCommandEcho;
-    function setFailed2(message) {
+    function setFailed3(message) {
       process.exitCode = ExitCode.Failure;
       error(message);
     }
-    exports2.setFailed = setFailed2;
+    exports2.setFailed = setFailed3;
     function isDebug() {
       return process.env["RUNNER_DEBUG"] === "1";
     }
@@ -43105,6 +43105,7 @@ async function loadConfig2(workspacePath) {
     process.env
   );
   const remediation = resolved.remediation ?? {};
+  const check = resolved.check ?? {};
   if (!["bundle", "dependency"].includes(resolved.groupBy)) {
     core2.warning(
       `Unexpected value '${resolved.groupBy}' found for 'groupBy', expected one of 'bundle'/'dependency'. Falling back to 'dependency'.`
@@ -43116,6 +43117,11 @@ async function loadConfig2(workspacePath) {
   const labels = mergedLabels.length > 0 ? mergedLabels : ["trustify-da"];
   const rawPrefix = branchPrefixInput || remediation["branch-prefix"] || "trustify-da";
   const branchPrefix = rawPrefix.replace(/\/+$/, "") || "trustify-da";
+  const failOn = {
+    critical: parseThreshold(core2.getInput("fail-on-critical")) ?? check["fail-on"]?.critical,
+    high: parseThreshold(core2.getInput("fail-on-high")) ?? check["fail-on"]?.high,
+    licenseConflicts: parseThreshold(core2.getInput("fail-on-license-conflicts")) ?? check["fail-on"]?.["license-conflicts"]
+  };
   return {
     mode,
     backendUrl: resolved.backendUrl,
@@ -43126,8 +43132,21 @@ async function loadConfig2(workspacePath) {
     labels,
     branchPrefix,
     sbomTargets: sbomTargetsInput ? sbomTargetsInput.split(",").map((t) => t.trim()) : void 0,
-    remediation
+    remediation,
+    failOn
   };
+}
+function parseThreshold(value) {
+  const trimmed = value.trim();
+  if (trimmed === "") return void 0;
+  if (trimmed.toLowerCase() === "true") return 0;
+  if (trimmed.toLowerCase() === "false") return void 0;
+  const parsed = Number.parseInt(trimmed, 10);
+  if (Number.isNaN(parsed) || parsed < 0) {
+    core2.warning(`Invalid threshold value '${trimmed}' \u2014 expected a non-negative integer or true/false. Ignoring.`);
+    return void 0;
+  }
+  return parsed;
 }
 
 // src/modes/remediate.ts
@@ -62365,6 +62384,7 @@ async function runCheckMode(config) {
     manifests.map((m) => relative(workspacePath, m) || m)
   );
   setOutputs(result);
+  evaluateFailOn(config, result);
 }
 function buildAnalysisOptions(config, backendUrl) {
   const opts = {
@@ -62596,6 +62616,21 @@ function setOutputs(result) {
   core5.setOutput("low-count", result.severity.low);
   core5.setOutput("remediation-count", result.remediationCount);
   core5.setOutput("license-conflicts", result.licenseConflicts.length);
+}
+function evaluateFailOn(config, result) {
+  const violations = [];
+  if (config.failOn.critical !== void 0 && result.severity.critical >= config.failOn.critical) {
+    violations.push(`critical: ${result.severity.critical} found (threshold: ${config.failOn.critical})`);
+  }
+  if (config.failOn.high !== void 0 && result.severity.high >= config.failOn.high) {
+    violations.push(`high: ${result.severity.high} found (threshold: ${config.failOn.high})`);
+  }
+  if (config.failOn.licenseConflicts !== void 0 && result.licenseConflicts.length >= config.failOn.licenseConflicts) {
+    violations.push(`license conflicts: ${result.licenseConflicts.length} found (threshold: ${config.failOn.licenseConflicts})`);
+  }
+  if (violations.length > 0) {
+    core5.setFailed(`Policy gate failed \u2014 ${violations.join("; ")}`);
+  }
 }
 
 // src/modes/sbom.ts
