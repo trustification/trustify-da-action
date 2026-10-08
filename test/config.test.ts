@@ -343,6 +343,33 @@ describe('loadConfig', () => {
       expect(config.failOn.critical).toBeUndefined();
       expect(core.warning).toHaveBeenCalledWith(expect.stringContaining('Invalid threshold'));
     });
+
+    it('rejects "0.5" as a threshold (parseInt truncation guard)', async () => {
+      mockInputs({ mode: 'check', 'fail-on-critical': '0.5' });
+
+      const config = await loadConfig();
+
+      expect(config.failOn.critical).toBeUndefined();
+      expect(core.warning).toHaveBeenCalledWith(expect.stringContaining('Invalid threshold'));
+    });
+
+    it('rejects "1e3" as a threshold (parseInt truncation guard)', async () => {
+      mockInputs({ mode: 'check', 'fail-on-critical': '1e3' });
+
+      const config = await loadConfig();
+
+      expect(config.failOn.critical).toBeUndefined();
+      expect(core.warning).toHaveBeenCalledWith(expect.stringContaining('Invalid threshold'));
+    });
+
+    it('rejects "3abc" as a threshold (parseInt truncation guard)', async () => {
+      mockInputs({ mode: 'check', 'fail-on-critical': '3abc' });
+
+      const config = await loadConfig();
+
+      expect(config.failOn.critical).toBeUndefined();
+      expect(core.warning).toHaveBeenCalledWith(expect.stringContaining('Invalid threshold'));
+    });
   });
 
   it('exposes the remediation config object for downstream use', async () => {

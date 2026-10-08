@@ -457,13 +457,13 @@ function setOutputs(result: CheckResult): void {
 function evaluateFailOn(config: ActionConfig, result: CheckResult): void {
   const violations: string[] = [];
 
-  if (config.failOn.critical !== undefined && result.severity.critical >= config.failOn.critical) {
+  if (config.failOn.critical !== undefined && result.severity.critical > 0 && result.severity.critical >= config.failOn.critical) {
     violations.push(`critical: ${result.severity.critical} found (threshold: ${config.failOn.critical})`);
   }
-  if (config.failOn.high !== undefined && result.severity.high >= config.failOn.high) {
+  if (config.failOn.high !== undefined && result.severity.high > 0 && result.severity.high >= config.failOn.high) {
     violations.push(`high: ${result.severity.high} found (threshold: ${config.failOn.high})`);
   }
-  if (config.failOn.licenseConflicts !== undefined && result.licenseConflicts.length >= config.failOn.licenseConflicts) {
+  if (config.failOn.licenseConflicts !== undefined && result.licenseConflicts.length > 0 && result.licenseConflicts.length >= config.failOn.licenseConflicts) {
     violations.push(`license conflicts: ${result.licenseConflicts.length} found (threshold: ${config.failOn.licenseConflicts})`);
   }
 

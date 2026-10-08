@@ -562,6 +562,17 @@ describe('check mode', () => {
       expectFailed('critical: 1 found (threshold: 0)');
     });
 
+    it('passes on a clean scan even with threshold 0', async () => {
+      // Given a clean scan with 0 critical vulnerabilities and threshold 0
+      setupScan({ critical: 0 });
+
+      // When running check mode with fail-on-critical: 0
+      await runCheckMode(makeConfig({ failOn: { critical: 0 } }));
+
+      // Then the step does not fail — there are no actual vulnerabilities
+      expect(core.setFailed).not.toHaveBeenCalled();
+    });
+
     it('fails when count equals the threshold exactly', async () => {
       // Given a scan with exactly 10 high vulnerabilities and threshold 10
       setupScan({ high: 10 });

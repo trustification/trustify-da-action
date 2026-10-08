@@ -43137,21 +43137,15 @@ async function loadConfig2(workspacePath) {
   };
 }
 function resolveThreshold(input, configValue) {
-  const parsed = parseThreshold(input);
-  if (parsed === void 0) return configValue;
-  return parsed ?? void 0;
-}
-function parseThreshold(value) {
-  const trimmed = value.trim();
-  if (trimmed === "") return void 0;
+  const trimmed = input.trim();
+  if (trimmed === "") return configValue;
   if (trimmed.toLowerCase() === "true") return 0;
-  if (trimmed.toLowerCase() === "false") return null;
-  const parsed = Number.parseInt(trimmed, 10);
-  if (Number.isNaN(parsed) || parsed < 0) {
+  if (trimmed.toLowerCase() === "false") return void 0;
+  if (!/^\d+$/.test(trimmed)) {
     core2.warning(`Invalid threshold value '${trimmed}' \u2014 expected a non-negative integer or true/false. Ignoring.`);
-    return void 0;
+    return configValue;
   }
-  return parsed;
+  return Number.parseInt(trimmed, 10) ?? void 0;
 }
 
 // src/modes/remediate.ts
@@ -62624,13 +62618,13 @@ function setOutputs(result) {
 }
 function evaluateFailOn(config, result) {
   const violations = [];
-  if (config.failOn.critical !== void 0 && result.severity.critical >= config.failOn.critical) {
+  if (config.failOn.critical !== void 0 && result.severity.critical > 0 && result.severity.critical >= config.failOn.critical) {
     violations.push(`critical: ${result.severity.critical} found (threshold: ${config.failOn.critical})`);
   }
-  if (config.failOn.high !== void 0 && result.severity.high >= config.failOn.high) {
+  if (config.failOn.high !== void 0 && result.severity.high > 0 && result.severity.high >= config.failOn.high) {
     violations.push(`high: ${result.severity.high} found (threshold: ${config.failOn.high})`);
   }
-  if (config.failOn.licenseConflicts !== void 0 && result.licenseConflicts.length >= config.failOn.licenseConflicts) {
+  if (config.failOn.licenseConflicts !== void 0 && result.licenseConflicts.length > 0 && result.licenseConflicts.length >= config.failOn.licenseConflicts) {
     violations.push(`license conflicts: ${result.licenseConflicts.length} found (threshold: ${config.failOn.licenseConflicts})`);
   }
   if (violations.length > 0) {

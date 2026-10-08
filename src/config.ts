@@ -111,26 +111,13 @@ export async function loadConfig(workspacePath?: string): Promise<ActionConfig> 
  * gate), otherwise falls back to the config file value.
  */
 function resolveThreshold(input: string, configValue: number | undefined): number | undefined {
-  const parsed = parseThreshold(input);
-  if (parsed === undefined) return configValue;
-  return parsed ?? undefined;
-}
-
-/**
- * Parses a threshold value from an action input string. Returns:
- * - `number` for a valid integer or `true` (mapped to 0)
- * - `null` for an explicit `false` (disables the gate, overriding config)
- * - `undefined` for empty/absent input (falls through to config file)
- */
-function parseThreshold(value: string): number | null | undefined {
-  const trimmed = value.trim();
-  if (trimmed === '') return undefined;
-  if (trimmed.toLowerCase() === 'true') return 0;
-  if (trimmed.toLowerCase() === 'false') return null;
-  const parsed = Number.parseInt(trimmed, 10);
-  if (Number.isNaN(parsed) || parsed < 0) {
-    core.warning(`Invalid threshold value '${trimmed}' — expected a non-negative integer or true/false. Ignoring.`);
-    return undefined;
-  }
-  return parsed;
+  const trimmed = input.trim();
+    if (trimmed === '') return configValue;
+    if (trimmed.toLowerCase() === 'true') return 0;
+    if (trimmed.toLowerCase() === 'false') return undefined;
+    if (!/^\d+$/.test(trimmed)) {
+      core.warning(`Invalid threshold value '${trimmed}' — expected a non-negative integer or true/false. Ignoring.`);
+      return configValue;
+    }
+    return Number.parseInt(trimmed, 10) ?? undefined;
 }
