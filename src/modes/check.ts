@@ -116,6 +116,7 @@ export async function runCheckMode(config: ActionConfig): Promise<void> {
     manifests.map((m) => relative(workspacePath, m) || m)
   );
   setOutputs(result);
+  evaluateFailOn(config, result);
 }
 
 /**
@@ -447,4 +448,26 @@ function setOutputs(result: CheckResult): void {
   core.setOutput('low-count', result.severity.low);
   core.setOutput('remediation-count', result.remediationCount);
   core.setOutput('license-conflicts', result.licenseConflicts.length);
+}
+
+/**
+ * Evaluates fail-on thresholds and fails the step when any threshold is
+ * breached. Collects all violations into a single `core.setFailed()` call.
+ */
+function evaluateFailOn(config: ActionConfig, result: CheckResult): void {
+  const violations: string[] = [];
+
+  if (config.failOn.critical !== undefined && result.severity.critical > 0 && result.severity.critical >= config.failOn.critical) {
+    violations.push(`critical: ${result.severity.critical} found (threshold: ${config.failOn.critical})`);
+  }
+  if (config.failOn.high !== undefined && result.severity.high > 0 && result.severity.high >= config.failOn.high) {
+    violations.push(`high: ${result.severity.high} found (threshold: ${config.failOn.high})`);
+  }
+  if (config.failOn.licenseConflicts !== undefined && result.licenseConflicts.length > 0 && result.licenseConflicts.length >= config.failOn.licenseConflicts) {
+    violations.push(`license conflicts: ${result.licenseConflicts.length} found (threshold: ${config.failOn.licenseConflicts})`);
+  }
+
+  if (violations.length > 0) {
+    core.setFailed(`Policy gate failed — ${violations.join('; ')}`);
+  }
 }
