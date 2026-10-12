@@ -41,6 +41,7 @@ describe.skipIf(!process.env.TRUSTIFY_DA_BACKEND_URL)('remediate mode (e2e)', ()
       labels: ['trustify-da'],
       branchPrefix: 'trustify-da',
       remediation: {},
+      failOn: {},
     };
 
     await runRemediateMode(config);

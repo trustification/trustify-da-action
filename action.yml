@@ -31,6 +31,15 @@ inputs:
   branch-prefix:
     description: 'Branch name prefix for remediation PRs; defaults to "trustify-da" (also settable via .trustify-da.yml)'
     required: false
+  fail-on-critical:
+    description: 'Fail the step when critical vulnerabilities meet or exceed this threshold (check mode). Use 0 or true to fail on any; false or omit to disable.'
+    required: false
+  fail-on-high:
+    description: 'Fail the step when high vulnerabilities meet or exceed this threshold (check mode). Use 0 or true to fail on any; false or omit to disable.'
+    required: false
+  fail-on-license-conflicts:
+    description: 'Fail the step when license conflicts meet or exceed this threshold (check mode). Use 0 or true to fail on any; false or omit to disable.'
+    required: false
   sbom-targets:
     description: 'Comma-separated list of SBOM upload targets (artifact, oci)'
     required: false

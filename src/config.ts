@@ -2,7 +2,15 @@ import * as core from '@actions/core';
 import {
   resolveConfig,
   type RemediationConfig,
+  type CheckConfig,
 } from '@trustify-da/trustify-da-javascript-client/dist/src/config.js';
+
+/** Resolved fail-on thresholds for check mode policy gates. */
+export interface FailOnThresholds {
+  critical?: number;
+  high?: number;
+  licenseConflicts?: number;
+}
 
 export interface ActionConfig {
   mode: string;
@@ -15,6 +23,7 @@ export interface ActionConfig {
   branchPrefix: string;
   sbomTargets?: string[];
   remediation: RemediationConfig;
+  failOn: FailOnThresholds;
 }
 
 /**
@@ -51,6 +60,7 @@ export async function loadConfig(workspacePath?: string): Promise<ActionConfig> 
   );
 
   const remediation = (resolved.remediation ?? {}) as RemediationConfig;
+  const check = (resolved.check ?? {}) as CheckConfig;
 
   if (!['bundle', 'dependency'].includes(resolved.groupBy)) {
     core.warning(
@@ -72,6 +82,12 @@ export async function loadConfig(workspacePath?: string): Promise<ActionConfig> 
   const rawPrefix = branchPrefixInput || remediation['branch-prefix'] || 'trustify-da';
   const branchPrefix = rawPrefix.replace(/\/+$/, '') || 'trustify-da';
 
+  const failOn: FailOnThresholds = {
+    critical: resolveThreshold(core.getInput('fail-on-critical'), check['fail-on']?.critical),
+    high: resolveThreshold(core.getInput('fail-on-high'), check['fail-on']?.high),
+    licenseConflicts: resolveThreshold(core.getInput('fail-on-license-conflicts'), check['fail-on']?.['license-conflicts']),
+  };
+
   return {
     mode,
     backendUrl: resolved.backendUrl,
@@ -85,5 +101,23 @@ export async function loadConfig(workspacePath?: string): Promise<ActionConfig> 
       ? sbomTargetsInput.split(',').map((t) => t.trim())
       : undefined,
     remediation,
+    failOn,
   };
+}
+
+/**
+ * Merges an action input threshold with a config file threshold. Returns the
+ * action input when explicitly set (including `false` to disable a config-level
+ * gate), otherwise falls back to the config file value.
+ */
+function resolveThreshold(input: string, configValue: number | undefined): number | undefined {
+  const trimmed = input.trim();
+    if (trimmed === '') return configValue;
+    if (trimmed.toLowerCase() === 'true') return 0;
+    if (trimmed.toLowerCase() === 'false') return undefined;
+    if (!/^\d+$/.test(trimmed)) {
+      core.warning(`Invalid threshold value '${trimmed}' — expected a non-negative integer or true/false. Ignoring.`);
+      return configValue;
+    }
+    return Number.parseInt(trimmed, 10) ?? undefined;
 }
