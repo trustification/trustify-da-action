@@ -23896,9 +23896,9 @@ var require_github = __commonJS({
   }
 });
 
-// node_modules/braces/lib/utils.js
+// ../../guacsec/trustify-da-javascript-client/node_modules/braces/lib/utils.js
 var require_utils5 = __commonJS({
-  "node_modules/braces/lib/utils.js"(exports2) {
+  "../../guacsec/trustify-da-javascript-client/node_modules/braces/lib/utils.js"(exports2) {
     "use strict";
     exports2.isInteger = (num) => {
       if (typeof num === "number") {
@@ -23978,9 +23978,9 @@ var require_utils5 = __commonJS({
   }
 });
 
-// node_modules/braces/lib/stringify.js
+// ../../guacsec/trustify-da-javascript-client/node_modules/braces/lib/stringify.js
 var require_stringify = __commonJS({
-  "node_modules/braces/lib/stringify.js"(exports2, module2) {
+  "../../guacsec/trustify-da-javascript-client/node_modules/braces/lib/stringify.js"(exports2, module2) {
     "use strict";
     var utils = require_utils5();
     module2.exports = (ast, options = {}) => {
@@ -24009,9 +24009,9 @@ var require_stringify = __commonJS({
   }
 });
 
-// node_modules/is-number/index.js
+// ../../guacsec/trustify-da-javascript-client/node_modules/is-number/index.js
 var require_is_number = __commonJS({
-  "node_modules/is-number/index.js"(exports2, module2) {
+  "../../guacsec/trustify-da-javascript-client/node_modules/is-number/index.js"(exports2, module2) {
     "use strict";
     module2.exports = function(num) {
       if (typeof num === "number") {
@@ -24025,9 +24025,9 @@ var require_is_number = __commonJS({
   }
 });
 
-// node_modules/to-regex-range/index.js
+// ../../guacsec/trustify-da-javascript-client/node_modules/to-regex-range/index.js
 var require_to_regex_range = __commonJS({
-  "node_modules/to-regex-range/index.js"(exports2, module2) {
+  "../../guacsec/trustify-da-javascript-client/node_modules/to-regex-range/index.js"(exports2, module2) {
     "use strict";
     var isNumber = require_is_number();
     var toRegexRange = (min, max, options) => {
@@ -24236,9 +24236,9 @@ var require_to_regex_range = __commonJS({
   }
 });
 
-// node_modules/fill-range/index.js
+// ../../guacsec/trustify-da-javascript-client/node_modules/fill-range/index.js
 var require_fill_range = __commonJS({
-  "node_modules/fill-range/index.js"(exports2, module2) {
+  "../../guacsec/trustify-da-javascript-client/node_modules/fill-range/index.js"(exports2, module2) {
     "use strict";
     var util = __require("util");
     var toRegexRange = require_to_regex_range();
@@ -24430,9 +24430,9 @@ var require_fill_range = __commonJS({
   }
 });
 
-// node_modules/braces/lib/compile.js
+// ../../guacsec/trustify-da-javascript-client/node_modules/braces/lib/compile.js
 var require_compile = __commonJS({
-  "node_modules/braces/lib/compile.js"(exports2, module2) {
+  "../../guacsec/trustify-da-javascript-client/node_modules/braces/lib/compile.js"(exports2, module2) {
     "use strict";
     var fill = require_fill_range();
     var utils = require_utils5();
@@ -24482,9 +24482,9 @@ var require_compile = __commonJS({
   }
 });
 
-// node_modules/braces/lib/expand.js
+// ../../guacsec/trustify-da-javascript-client/node_modules/braces/lib/expand.js
 var require_expand = __commonJS({
-  "node_modules/braces/lib/expand.js"(exports2, module2) {
+  "../../guacsec/trustify-da-javascript-client/node_modules/braces/lib/expand.js"(exports2, module2) {
     "use strict";
     var fill = require_fill_range();
     var stringify2 = require_stringify();
@@ -24576,9 +24576,9 @@ var require_expand = __commonJS({
   }
 });
 
-// node_modules/braces/lib/constants.js
+// ../../guacsec/trustify-da-javascript-client/node_modules/braces/lib/constants.js
 var require_constants6 = __commonJS({
-  "node_modules/braces/lib/constants.js"(exports2, module2) {
+  "../../guacsec/trustify-da-javascript-client/node_modules/braces/lib/constants.js"(exports2, module2) {
     "use strict";
     module2.exports = {
       MAX_LENGTH: 1e4,
@@ -24677,9 +24677,9 @@ var require_constants6 = __commonJS({
   }
 });
 
-// node_modules/braces/lib/parse.js
+// ../../guacsec/trustify-da-javascript-client/node_modules/braces/lib/parse.js
 var require_parse2 = __commonJS({
-  "node_modules/braces/lib/parse.js"(exports2, module2) {
+  "../../guacsec/trustify-da-javascript-client/node_modules/braces/lib/parse.js"(exports2, module2) {
     "use strict";
     var stringify2 = require_stringify();
     var {
@@ -24915,9 +24915,9 @@ var require_parse2 = __commonJS({
   }
 });
 
-// node_modules/braces/index.js
+// ../../guacsec/trustify-da-javascript-client/node_modules/braces/index.js
 var require_braces = __commonJS({
-  "node_modules/braces/index.js"(exports2, module2) {
+  "../../guacsec/trustify-da-javascript-client/node_modules/braces/index.js"(exports2, module2) {
     "use strict";
     var stringify2 = require_stringify();
     var compile = require_compile();
@@ -24978,9 +24978,9 @@ var require_braces = __commonJS({
   }
 });
 
-// node_modules/picomatch/lib/constants.js
+// ../../guacsec/trustify-da-javascript-client/node_modules/picomatch/lib/constants.js
 var require_constants7 = __commonJS({
-  "node_modules/picomatch/lib/constants.js"(exports2, module2) {
+  "../../guacsec/trustify-da-javascript-client/node_modules/picomatch/lib/constants.js"(exports2, module2) {
     "use strict";
     var path26 = __require("path");
     var WIN_SLASH = "\\\\/";
@@ -25179,9 +25179,9 @@ var require_constants7 = __commonJS({
   }
 });
 
-// node_modules/picomatch/lib/utils.js
+// ../../guacsec/trustify-da-javascript-client/node_modules/picomatch/lib/utils.js
 var require_utils6 = __commonJS({
-  "node_modules/picomatch/lib/utils.js"(exports2) {
+  "../../guacsec/trustify-da-javascript-client/node_modules/picomatch/lib/utils.js"(exports2) {
     "use strict";
     var path26 = __require("path");
     var win32 = process.platform === "win32";
@@ -25240,9 +25240,9 @@ var require_utils6 = __commonJS({
   }
 });
 
-// node_modules/picomatch/lib/scan.js
+// ../../guacsec/trustify-da-javascript-client/node_modules/picomatch/lib/scan.js
 var require_scan = __commonJS({
-  "node_modules/picomatch/lib/scan.js"(exports2, module2) {
+  "../../guacsec/trustify-da-javascript-client/node_modules/picomatch/lib/scan.js"(exports2, module2) {
     "use strict";
     var utils = require_utils6();
     var {
@@ -25570,9 +25570,9 @@ var require_scan = __commonJS({
   }
 });
 
-// node_modules/picomatch/lib/parse.js
+// ../../guacsec/trustify-da-javascript-client/node_modules/picomatch/lib/parse.js
 var require_parse3 = __commonJS({
-  "node_modules/picomatch/lib/parse.js"(exports2, module2) {
+  "../../guacsec/trustify-da-javascript-client/node_modules/picomatch/lib/parse.js"(exports2, module2) {
     "use strict";
     var constants = require_constants7();
     var utils = require_utils6();
@@ -26572,9 +26572,9 @@ var require_parse3 = __commonJS({
   }
 });
 
-// node_modules/picomatch/lib/picomatch.js
+// ../../guacsec/trustify-da-javascript-client/node_modules/picomatch/lib/picomatch.js
 var require_picomatch = __commonJS({
-  "node_modules/picomatch/lib/picomatch.js"(exports2, module2) {
+  "../../guacsec/trustify-da-javascript-client/node_modules/picomatch/lib/picomatch.js"(exports2, module2) {
     "use strict";
     var path26 = __require("path");
     var scan = require_scan();
@@ -26713,17 +26713,17 @@ var require_picomatch = __commonJS({
   }
 });
 
-// node_modules/picomatch/index.js
+// ../../guacsec/trustify-da-javascript-client/node_modules/picomatch/index.js
 var require_picomatch2 = __commonJS({
-  "node_modules/picomatch/index.js"(exports2, module2) {
+  "../../guacsec/trustify-da-javascript-client/node_modules/picomatch/index.js"(exports2, module2) {
     "use strict";
     module2.exports = require_picomatch();
   }
 });
 
-// node_modules/micromatch/index.js
+// ../../guacsec/trustify-da-javascript-client/node_modules/micromatch/index.js
 var require_micromatch = __commonJS({
-  "node_modules/micromatch/index.js"(exports2, module2) {
+  "../../guacsec/trustify-da-javascript-client/node_modules/micromatch/index.js"(exports2, module2) {
     "use strict";
     var util = __require("util");
     var braces = require_braces();
@@ -26882,9 +26882,9 @@ var require_micromatch = __commonJS({
   }
 });
 
-// node_modules/packageurl-js/src/package-url.js
+// ../../guacsec/trustify-da-javascript-client/node_modules/packageurl-js/src/package-url.js
 var require_package_url = __commonJS({
-  "node_modules/packageurl-js/src/package-url.js"(exports2, module2) {
+  "../../guacsec/trustify-da-javascript-client/node_modules/packageurl-js/src/package-url.js"(exports2, module2) {
     var KnownQualifierNames = Object.freeze({
       // known qualifiers as defined here:
       // https://github.com/package-url/purl-spec/blob/master/PURL-SPECIFICATION.rst#known-qualifiers-keyvalue-pairs
@@ -27026,9 +27026,9 @@ var require_package_url = __commonJS({
   }
 });
 
-// node_modules/packageurl-js/index.js
+// ../../guacsec/trustify-da-javascript-client/node_modules/packageurl-js/index.js
 var require_packageurl_js = __commonJS({
-  "node_modules/packageurl-js/index.js"(exports2, module2) {
+  "../../guacsec/trustify-da-javascript-client/node_modules/packageurl-js/index.js"(exports2, module2) {
     var PackageURL12 = require_package_url();
     module2.exports = {
       PackageURL: PackageURL12
@@ -27036,9 +27036,9 @@ var require_packageurl_js = __commonJS({
   }
 });
 
-// node_modules/ms/index.js
+// ../../guacsec/trustify-da-javascript-client/node_modules/ms/index.js
 var require_ms = __commonJS({
-  "node_modules/ms/index.js"(exports2, module2) {
+  "../../guacsec/trustify-da-javascript-client/node_modules/ms/index.js"(exports2, module2) {
     var s = 1e3;
     var m = s * 60;
     var h = m * 60;
@@ -27152,9 +27152,9 @@ var require_ms = __commonJS({
   }
 });
 
-// node_modules/debug/src/common.js
+// ../../guacsec/trustify-da-javascript-client/node_modules/debug/src/common.js
 var require_common = __commonJS({
-  "node_modules/debug/src/common.js"(exports2, module2) {
+  "../../guacsec/trustify-da-javascript-client/node_modules/debug/src/common.js"(exports2, module2) {
     function setup(env) {
       createDebug3.debug = createDebug3;
       createDebug3.default = createDebug3;
@@ -27329,9 +27329,9 @@ var require_common = __commonJS({
   }
 });
 
-// node_modules/debug/src/browser.js
+// ../../guacsec/trustify-da-javascript-client/node_modules/debug/src/browser.js
 var require_browser = __commonJS({
-  "node_modules/debug/src/browser.js"(exports2, module2) {
+  "../../guacsec/trustify-da-javascript-client/node_modules/debug/src/browser.js"(exports2, module2) {
     exports2.formatArgs = formatArgs;
     exports2.save = save;
     exports2.load = load2;
@@ -27499,9 +27499,9 @@ var require_browser = __commonJS({
   }
 });
 
-// node_modules/has-flag/index.js
+// ../../guacsec/trustify-da-javascript-client/node_modules/has-flag/index.js
 var require_has_flag = __commonJS({
-  "node_modules/has-flag/index.js"(exports2, module2) {
+  "../../guacsec/trustify-da-javascript-client/node_modules/has-flag/index.js"(exports2, module2) {
     "use strict";
     module2.exports = (flag, argv = process.argv) => {
       const prefix = flag.startsWith("-") ? "" : flag.length === 1 ? "-" : "--";
@@ -27512,9 +27512,9 @@ var require_has_flag = __commonJS({
   }
 });
 
-// node_modules/supports-color/index.js
+// ../../guacsec/trustify-da-javascript-client/node_modules/supports-color/index.js
 var require_supports_color = __commonJS({
-  "node_modules/supports-color/index.js"(exports2, module2) {
+  "../../guacsec/trustify-da-javascript-client/node_modules/supports-color/index.js"(exports2, module2) {
     "use strict";
     var os6 = __require("os");
     var tty = __require("tty");
@@ -27614,9 +27614,9 @@ var require_supports_color = __commonJS({
   }
 });
 
-// node_modules/debug/src/node.js
+// ../../guacsec/trustify-da-javascript-client/node_modules/debug/src/node.js
 var require_node = __commonJS({
-  "node_modules/debug/src/node.js"(exports2, module2) {
+  "../../guacsec/trustify-da-javascript-client/node_modules/debug/src/node.js"(exports2, module2) {
     var tty = __require("tty");
     var util = __require("util");
     exports2.init = init5;
@@ -27788,9 +27788,9 @@ var require_node = __commonJS({
   }
 });
 
-// node_modules/debug/src/index.js
+// ../../guacsec/trustify-da-javascript-client/node_modules/debug/src/index.js
 var require_src = __commonJS({
-  "node_modules/debug/src/index.js"(exports2, module2) {
+  "../../guacsec/trustify-da-javascript-client/node_modules/debug/src/index.js"(exports2, module2) {
     if (typeof process === "undefined" || process.type === "renderer" || process.browser === true || process.__nwjs) {
       module2.exports = require_browser();
     } else {
@@ -27799,9 +27799,9 @@ var require_src = __commonJS({
   }
 });
 
-// node_modules/fast-glob/out/utils/array.js
+// ../../guacsec/trustify-da-javascript-client/node_modules/fast-glob/out/utils/array.js
 var require_array = __commonJS({
-  "node_modules/fast-glob/out/utils/array.js"(exports2) {
+  "../../guacsec/trustify-da-javascript-client/node_modules/fast-glob/out/utils/array.js"(exports2) {
     "use strict";
     Object.defineProperty(exports2, "__esModule", { value: true });
     exports2.splitWhen = exports2.flatten = void 0;
@@ -27826,9 +27826,9 @@ var require_array = __commonJS({
   }
 });
 
-// node_modules/fast-glob/out/utils/errno.js
+// ../../guacsec/trustify-da-javascript-client/node_modules/fast-glob/out/utils/errno.js
 var require_errno = __commonJS({
-  "node_modules/fast-glob/out/utils/errno.js"(exports2) {
+  "../../guacsec/trustify-da-javascript-client/node_modules/fast-glob/out/utils/errno.js"(exports2) {
     "use strict";
     Object.defineProperty(exports2, "__esModule", { value: true });
     exports2.isEnoentCodeError = void 0;
@@ -27839,9 +27839,9 @@ var require_errno = __commonJS({
   }
 });
 
-// node_modules/fast-glob/out/utils/fs.js
+// ../../guacsec/trustify-da-javascript-client/node_modules/fast-glob/out/utils/fs.js
 var require_fs = __commonJS({
-  "node_modules/fast-glob/out/utils/fs.js"(exports2) {
+  "../../guacsec/trustify-da-javascript-client/node_modules/fast-glob/out/utils/fs.js"(exports2) {
     "use strict";
     Object.defineProperty(exports2, "__esModule", { value: true });
     exports2.createDirentFromStats = void 0;
@@ -27864,9 +27864,9 @@ var require_fs = __commonJS({
   }
 });
 
-// node_modules/fast-glob/out/utils/path.js
+// ../../guacsec/trustify-da-javascript-client/node_modules/fast-glob/out/utils/path.js
 var require_path = __commonJS({
-  "node_modules/fast-glob/out/utils/path.js"(exports2) {
+  "../../guacsec/trustify-da-javascript-client/node_modules/fast-glob/out/utils/path.js"(exports2) {
     "use strict";
     Object.defineProperty(exports2, "__esModule", { value: true });
     exports2.convertPosixPathToPattern = exports2.convertWindowsPathToPattern = exports2.convertPathToPattern = exports2.escapePosixPath = exports2.escapeWindowsPath = exports2.escape = exports2.removeLeadingDotSegment = exports2.makeAbsolute = exports2.unixify = void 0;
@@ -27917,9 +27917,9 @@ var require_path = __commonJS({
   }
 });
 
-// node_modules/is-extglob/index.js
+// ../../guacsec/trustify-da-javascript-client/node_modules/is-extglob/index.js
 var require_is_extglob = __commonJS({
-  "node_modules/is-extglob/index.js"(exports2, module2) {
+  "../../guacsec/trustify-da-javascript-client/node_modules/is-extglob/index.js"(exports2, module2) {
     module2.exports = function isExtglob(str2) {
       if (typeof str2 !== "string" || str2 === "") {
         return false;
@@ -27934,9 +27934,9 @@ var require_is_extglob = __commonJS({
   }
 });
 
-// node_modules/is-glob/index.js
+// ../../guacsec/trustify-da-javascript-client/node_modules/is-glob/index.js
 var require_is_glob = __commonJS({
-  "node_modules/is-glob/index.js"(exports2, module2) {
+  "../../guacsec/trustify-da-javascript-client/node_modules/is-glob/index.js"(exports2, module2) {
     var isExtglob = require_is_extglob();
     var chars = { "{": "}", "(": ")", "[": "]" };
     var strictCheck = function(str2) {
@@ -28065,9 +28065,9 @@ var require_is_glob = __commonJS({
   }
 });
 
-// node_modules/fast-glob/node_modules/glob-parent/index.js
+// ../../guacsec/trustify-da-javascript-client/node_modules/fast-glob/node_modules/glob-parent/index.js
 var require_glob_parent = __commonJS({
-  "node_modules/fast-glob/node_modules/glob-parent/index.js"(exports2, module2) {
+  "../../guacsec/trustify-da-javascript-client/node_modules/fast-glob/node_modules/glob-parent/index.js"(exports2, module2) {
     "use strict";
     var isGlob = require_is_glob();
     var pathPosixDirname = __require("path").posix.dirname;
@@ -28094,9 +28094,9 @@ var require_glob_parent = __commonJS({
   }
 });
 
-// node_modules/fast-glob/out/utils/pattern.js
+// ../../guacsec/trustify-da-javascript-client/node_modules/fast-glob/out/utils/pattern.js
 var require_pattern = __commonJS({
-  "node_modules/fast-glob/out/utils/pattern.js"(exports2) {
+  "../../guacsec/trustify-da-javascript-client/node_modules/fast-glob/out/utils/pattern.js"(exports2) {
     "use strict";
     Object.defineProperty(exports2, "__esModule", { value: true });
     exports2.isAbsolute = exports2.partitionAbsoluteAndRelative = exports2.removeDuplicateSlashes = exports2.matchAny = exports2.convertPatternsToRe = exports2.makeRe = exports2.getPatternParts = exports2.expandBraceExpansion = exports2.expandPatternsWithBraceExpansion = exports2.isAffectDepthOfReadingPattern = exports2.endsWithSlashGlobStar = exports2.hasGlobStar = exports2.getBaseDirectory = exports2.isPatternRelatedToParentDirectory = exports2.getPatternsOutsideCurrentDirectory = exports2.getPatternsInsideCurrentDirectory = exports2.getPositivePatterns = exports2.getNegativePatterns = exports2.isPositivePattern = exports2.isNegativePattern = exports2.convertToNegativePattern = exports2.convertToPositivePattern = exports2.isDynamicPattern = exports2.isStaticPattern = void 0;
@@ -28259,9 +28259,9 @@ var require_pattern = __commonJS({
   }
 });
 
-// node_modules/merge2/index.js
+// ../../guacsec/trustify-da-javascript-client/node_modules/merge2/index.js
 var require_merge2 = __commonJS({
-  "node_modules/merge2/index.js"(exports2, module2) {
+  "../../guacsec/trustify-da-javascript-client/node_modules/merge2/index.js"(exports2, module2) {
     "use strict";
     var Stream = __require("stream");
     var PassThrough = Stream.PassThrough;
@@ -28378,9 +28378,9 @@ var require_merge2 = __commonJS({
   }
 });
 
-// node_modules/fast-glob/out/utils/stream.js
+// ../../guacsec/trustify-da-javascript-client/node_modules/fast-glob/out/utils/stream.js
 var require_stream = __commonJS({
-  "node_modules/fast-glob/out/utils/stream.js"(exports2) {
+  "../../guacsec/trustify-da-javascript-client/node_modules/fast-glob/out/utils/stream.js"(exports2) {
     "use strict";
     Object.defineProperty(exports2, "__esModule", { value: true });
     exports2.merge = void 0;
@@ -28401,9 +28401,9 @@ var require_stream = __commonJS({
   }
 });
 
-// node_modules/fast-glob/out/utils/string.js
+// ../../guacsec/trustify-da-javascript-client/node_modules/fast-glob/out/utils/string.js
 var require_string = __commonJS({
-  "node_modules/fast-glob/out/utils/string.js"(exports2) {
+  "../../guacsec/trustify-da-javascript-client/node_modules/fast-glob/out/utils/string.js"(exports2) {
     "use strict";
     Object.defineProperty(exports2, "__esModule", { value: true });
     exports2.isEmpty = exports2.isString = void 0;
@@ -28418,9 +28418,9 @@ var require_string = __commonJS({
   }
 });
 
-// node_modules/fast-glob/out/utils/index.js
+// ../../guacsec/trustify-da-javascript-client/node_modules/fast-glob/out/utils/index.js
 var require_utils7 = __commonJS({
-  "node_modules/fast-glob/out/utils/index.js"(exports2) {
+  "../../guacsec/trustify-da-javascript-client/node_modules/fast-glob/out/utils/index.js"(exports2) {
     "use strict";
     Object.defineProperty(exports2, "__esModule", { value: true });
     exports2.string = exports2.stream = exports2.pattern = exports2.path = exports2.fs = exports2.errno = exports2.array = void 0;
@@ -28441,9 +28441,9 @@ var require_utils7 = __commonJS({
   }
 });
 
-// node_modules/fast-glob/out/managers/tasks.js
+// ../../guacsec/trustify-da-javascript-client/node_modules/fast-glob/out/managers/tasks.js
 var require_tasks = __commonJS({
-  "node_modules/fast-glob/out/managers/tasks.js"(exports2) {
+  "../../guacsec/trustify-da-javascript-client/node_modules/fast-glob/out/managers/tasks.js"(exports2) {
     "use strict";
     Object.defineProperty(exports2, "__esModule", { value: true });
     exports2.convertPatternGroupToTask = exports2.convertPatternGroupsToTasks = exports2.groupPatternsByBaseDirectory = exports2.getNegativePatternsAsPositive = exports2.getPositivePatterns = exports2.convertPatternsToTasks = exports2.generate = void 0;
@@ -28537,9 +28537,9 @@ var require_tasks = __commonJS({
   }
 });
 
-// node_modules/@nodelib/fs.stat/out/providers/async.js
+// ../../guacsec/trustify-da-javascript-client/node_modules/@nodelib/fs.stat/out/providers/async.js
 var require_async = __commonJS({
-  "node_modules/@nodelib/fs.stat/out/providers/async.js"(exports2) {
+  "../../guacsec/trustify-da-javascript-client/node_modules/@nodelib/fs.stat/out/providers/async.js"(exports2) {
     "use strict";
     Object.defineProperty(exports2, "__esModule", { value: true });
     exports2.read = void 0;
@@ -28579,9 +28579,9 @@ var require_async = __commonJS({
   }
 });
 
-// node_modules/@nodelib/fs.stat/out/providers/sync.js
+// ../../guacsec/trustify-da-javascript-client/node_modules/@nodelib/fs.stat/out/providers/sync.js
 var require_sync = __commonJS({
-  "node_modules/@nodelib/fs.stat/out/providers/sync.js"(exports2) {
+  "../../guacsec/trustify-da-javascript-client/node_modules/@nodelib/fs.stat/out/providers/sync.js"(exports2) {
     "use strict";
     Object.defineProperty(exports2, "__esModule", { value: true });
     exports2.read = void 0;
@@ -28607,9 +28607,9 @@ var require_sync = __commonJS({
   }
 });
 
-// node_modules/@nodelib/fs.stat/out/adapters/fs.js
+// ../../guacsec/trustify-da-javascript-client/node_modules/@nodelib/fs.stat/out/adapters/fs.js
 var require_fs2 = __commonJS({
-  "node_modules/@nodelib/fs.stat/out/adapters/fs.js"(exports2) {
+  "../../guacsec/trustify-da-javascript-client/node_modules/@nodelib/fs.stat/out/adapters/fs.js"(exports2) {
     "use strict";
     Object.defineProperty(exports2, "__esModule", { value: true });
     exports2.createFileSystemAdapter = exports2.FILE_SYSTEM_ADAPTER = void 0;
@@ -28630,9 +28630,9 @@ var require_fs2 = __commonJS({
   }
 });
 
-// node_modules/@nodelib/fs.stat/out/settings.js
+// ../../guacsec/trustify-da-javascript-client/node_modules/@nodelib/fs.stat/out/settings.js
 var require_settings = __commonJS({
-  "node_modules/@nodelib/fs.stat/out/settings.js"(exports2) {
+  "../../guacsec/trustify-da-javascript-client/node_modules/@nodelib/fs.stat/out/settings.js"(exports2) {
     "use strict";
     Object.defineProperty(exports2, "__esModule", { value: true });
     var fs28 = require_fs2();
@@ -28652,9 +28652,9 @@ var require_settings = __commonJS({
   }
 });
 
-// node_modules/@nodelib/fs.stat/out/index.js
+// ../../guacsec/trustify-da-javascript-client/node_modules/@nodelib/fs.stat/out/index.js
 var require_out = __commonJS({
-  "node_modules/@nodelib/fs.stat/out/index.js"(exports2) {
+  "../../guacsec/trustify-da-javascript-client/node_modules/@nodelib/fs.stat/out/index.js"(exports2) {
     "use strict";
     Object.defineProperty(exports2, "__esModule", { value: true });
     exports2.statSync = exports2.stat = exports2.Settings = void 0;
@@ -28684,9 +28684,9 @@ var require_out = __commonJS({
   }
 });
 
-// node_modules/queue-microtask/index.js
+// ../../guacsec/trustify-da-javascript-client/node_modules/queue-microtask/index.js
 var require_queue_microtask = __commonJS({
-  "node_modules/queue-microtask/index.js"(exports2, module2) {
+  "../../guacsec/trustify-da-javascript-client/node_modules/queue-microtask/index.js"(exports2, module2) {
     var promise;
     module2.exports = typeof queueMicrotask === "function" ? queueMicrotask.bind(typeof window !== "undefined" ? window : global) : (cb) => (promise || (promise = Promise.resolve())).then(cb).catch((err2) => setTimeout(() => {
       throw err2;
@@ -28694,9 +28694,9 @@ var require_queue_microtask = __commonJS({
   }
 });
 
-// node_modules/run-parallel/index.js
+// ../../guacsec/trustify-da-javascript-client/node_modules/run-parallel/index.js
 var require_run_parallel = __commonJS({
-  "node_modules/run-parallel/index.js"(exports2, module2) {
+  "../../guacsec/trustify-da-javascript-client/node_modules/run-parallel/index.js"(exports2, module2) {
     module2.exports = runParallel;
     var queueMicrotask2 = require_queue_microtask();
     function runParallel(tasks, cb) {
@@ -28744,9 +28744,9 @@ var require_run_parallel = __commonJS({
   }
 });
 
-// node_modules/@nodelib/fs.scandir/out/constants.js
+// ../../guacsec/trustify-da-javascript-client/node_modules/@nodelib/fs.scandir/out/constants.js
 var require_constants8 = __commonJS({
-  "node_modules/@nodelib/fs.scandir/out/constants.js"(exports2) {
+  "../../guacsec/trustify-da-javascript-client/node_modules/@nodelib/fs.scandir/out/constants.js"(exports2) {
     "use strict";
     Object.defineProperty(exports2, "__esModule", { value: true });
     exports2.IS_SUPPORT_READDIR_WITH_FILE_TYPES = void 0;
@@ -28764,9 +28764,9 @@ var require_constants8 = __commonJS({
   }
 });
 
-// node_modules/@nodelib/fs.scandir/out/utils/fs.js
+// ../../guacsec/trustify-da-javascript-client/node_modules/@nodelib/fs.scandir/out/utils/fs.js
 var require_fs3 = __commonJS({
-  "node_modules/@nodelib/fs.scandir/out/utils/fs.js"(exports2) {
+  "../../guacsec/trustify-da-javascript-client/node_modules/@nodelib/fs.scandir/out/utils/fs.js"(exports2) {
     "use strict";
     Object.defineProperty(exports2, "__esModule", { value: true });
     exports2.createDirentFromStats = void 0;
@@ -28789,9 +28789,9 @@ var require_fs3 = __commonJS({
   }
 });
 
-// node_modules/@nodelib/fs.scandir/out/utils/index.js
+// ../../guacsec/trustify-da-javascript-client/node_modules/@nodelib/fs.scandir/out/utils/index.js
 var require_utils8 = __commonJS({
-  "node_modules/@nodelib/fs.scandir/out/utils/index.js"(exports2) {
+  "../../guacsec/trustify-da-javascript-client/node_modules/@nodelib/fs.scandir/out/utils/index.js"(exports2) {
     "use strict";
     Object.defineProperty(exports2, "__esModule", { value: true });
     exports2.fs = void 0;
@@ -28800,9 +28800,9 @@ var require_utils8 = __commonJS({
   }
 });
 
-// node_modules/@nodelib/fs.scandir/out/providers/common.js
+// ../../guacsec/trustify-da-javascript-client/node_modules/@nodelib/fs.scandir/out/providers/common.js
 var require_common2 = __commonJS({
-  "node_modules/@nodelib/fs.scandir/out/providers/common.js"(exports2) {
+  "../../guacsec/trustify-da-javascript-client/node_modules/@nodelib/fs.scandir/out/providers/common.js"(exports2) {
     "use strict";
     Object.defineProperty(exports2, "__esModule", { value: true });
     exports2.joinPathSegments = void 0;
@@ -28816,9 +28816,9 @@ var require_common2 = __commonJS({
   }
 });
 
-// node_modules/@nodelib/fs.scandir/out/providers/async.js
+// ../../guacsec/trustify-da-javascript-client/node_modules/@nodelib/fs.scandir/out/providers/async.js
 var require_async2 = __commonJS({
-  "node_modules/@nodelib/fs.scandir/out/providers/async.js"(exports2) {
+  "../../guacsec/trustify-da-javascript-client/node_modules/@nodelib/fs.scandir/out/providers/async.js"(exports2) {
     "use strict";
     Object.defineProperty(exports2, "__esModule", { value: true });
     exports2.readdir = exports2.readdirWithFileTypes = exports2.read = void 0;
@@ -28926,9 +28926,9 @@ var require_async2 = __commonJS({
   }
 });
 
-// node_modules/@nodelib/fs.scandir/out/providers/sync.js
+// ../../guacsec/trustify-da-javascript-client/node_modules/@nodelib/fs.scandir/out/providers/sync.js
 var require_sync2 = __commonJS({
-  "node_modules/@nodelib/fs.scandir/out/providers/sync.js"(exports2) {
+  "../../guacsec/trustify-da-javascript-client/node_modules/@nodelib/fs.scandir/out/providers/sync.js"(exports2) {
     "use strict";
     Object.defineProperty(exports2, "__esModule", { value: true });
     exports2.readdir = exports2.readdirWithFileTypes = exports2.read = void 0;
@@ -28985,9 +28985,9 @@ var require_sync2 = __commonJS({
   }
 });
 
-// node_modules/@nodelib/fs.scandir/out/adapters/fs.js
+// ../../guacsec/trustify-da-javascript-client/node_modules/@nodelib/fs.scandir/out/adapters/fs.js
 var require_fs4 = __commonJS({
-  "node_modules/@nodelib/fs.scandir/out/adapters/fs.js"(exports2) {
+  "../../guacsec/trustify-da-javascript-client/node_modules/@nodelib/fs.scandir/out/adapters/fs.js"(exports2) {
     "use strict";
     Object.defineProperty(exports2, "__esModule", { value: true });
     exports2.createFileSystemAdapter = exports2.FILE_SYSTEM_ADAPTER = void 0;
@@ -29010,9 +29010,9 @@ var require_fs4 = __commonJS({
   }
 });
 
-// node_modules/@nodelib/fs.scandir/out/settings.js
+// ../../guacsec/trustify-da-javascript-client/node_modules/@nodelib/fs.scandir/out/settings.js
 var require_settings2 = __commonJS({
-  "node_modules/@nodelib/fs.scandir/out/settings.js"(exports2) {
+  "../../guacsec/trustify-da-javascript-client/node_modules/@nodelib/fs.scandir/out/settings.js"(exports2) {
     "use strict";
     Object.defineProperty(exports2, "__esModule", { value: true });
     var path26 = __require("path");
@@ -29040,9 +29040,9 @@ var require_settings2 = __commonJS({
   }
 });
 
-// node_modules/@nodelib/fs.scandir/out/index.js
+// ../../guacsec/trustify-da-javascript-client/node_modules/@nodelib/fs.scandir/out/index.js
 var require_out2 = __commonJS({
-  "node_modules/@nodelib/fs.scandir/out/index.js"(exports2) {
+  "../../guacsec/trustify-da-javascript-client/node_modules/@nodelib/fs.scandir/out/index.js"(exports2) {
     "use strict";
     Object.defineProperty(exports2, "__esModule", { value: true });
     exports2.Settings = exports2.scandirSync = exports2.scandir = void 0;
@@ -29072,9 +29072,9 @@ var require_out2 = __commonJS({
   }
 });
 
-// node_modules/reusify/reusify.js
+// ../../guacsec/trustify-da-javascript-client/node_modules/reusify/reusify.js
 var require_reusify = __commonJS({
-  "node_modules/reusify/reusify.js"(exports2, module2) {
+  "../../guacsec/trustify-da-javascript-client/node_modules/reusify/reusify.js"(exports2, module2) {
     "use strict";
     function reusify(Constructor) {
       var head = new Constructor();
@@ -29103,9 +29103,9 @@ var require_reusify = __commonJS({
   }
 });
 
-// node_modules/fastq/queue.js
+// ../../guacsec/trustify-da-javascript-client/node_modules/fastq/queue.js
 var require_queue = __commonJS({
-  "node_modules/fastq/queue.js"(exports2, module2) {
+  "../../guacsec/trustify-da-javascript-client/node_modules/fastq/queue.js"(exports2, module2) {
     "use strict";
     var reusify = require_reusify();
     function fastqueue(context3, worker, _concurrency) {
@@ -29284,12 +29284,11 @@ var require_queue = __commonJS({
           current.value = null;
           current.callback = noop2;
           current.errorHandler = null;
-          current.next = null;
           if (errorHandler2) {
             errorHandler2(new Error("abort"), val);
           }
           callback.call(context4, new Error("abort"));
-          cache.release(current);
+          current.release(current);
           current = next;
         }
         self.drain = noop2;
@@ -29388,9 +29387,9 @@ var require_queue = __commonJS({
   }
 });
 
-// node_modules/@nodelib/fs.walk/out/readers/common.js
+// ../../guacsec/trustify-da-javascript-client/node_modules/@nodelib/fs.walk/out/readers/common.js
 var require_common3 = __commonJS({
-  "node_modules/@nodelib/fs.walk/out/readers/common.js"(exports2) {
+  "../../guacsec/trustify-da-javascript-client/node_modules/@nodelib/fs.walk/out/readers/common.js"(exports2) {
     "use strict";
     Object.defineProperty(exports2, "__esModule", { value: true });
     exports2.joinPathSegments = exports2.replacePathSegmentSeparator = exports2.isAppliedFilter = exports2.isFatalError = void 0;
@@ -29422,9 +29421,9 @@ var require_common3 = __commonJS({
   }
 });
 
-// node_modules/@nodelib/fs.walk/out/readers/reader.js
+// ../../guacsec/trustify-da-javascript-client/node_modules/@nodelib/fs.walk/out/readers/reader.js
 var require_reader = __commonJS({
-  "node_modules/@nodelib/fs.walk/out/readers/reader.js"(exports2) {
+  "../../guacsec/trustify-da-javascript-client/node_modules/@nodelib/fs.walk/out/readers/reader.js"(exports2) {
     "use strict";
     Object.defineProperty(exports2, "__esModule", { value: true });
     var common2 = require_common3();
@@ -29439,9 +29438,9 @@ var require_reader = __commonJS({
   }
 });
 
-// node_modules/@nodelib/fs.walk/out/readers/async.js
+// ../../guacsec/trustify-da-javascript-client/node_modules/@nodelib/fs.walk/out/readers/async.js
 var require_async3 = __commonJS({
-  "node_modules/@nodelib/fs.walk/out/readers/async.js"(exports2) {
+  "../../guacsec/trustify-da-javascript-client/node_modules/@nodelib/fs.walk/out/readers/async.js"(exports2) {
     "use strict";
     Object.defineProperty(exports2, "__esModule", { value: true });
     var events_1 = __require("events");
@@ -29542,9 +29541,9 @@ var require_async3 = __commonJS({
   }
 });
 
-// node_modules/@nodelib/fs.walk/out/providers/async.js
+// ../../guacsec/trustify-da-javascript-client/node_modules/@nodelib/fs.walk/out/providers/async.js
 var require_async4 = __commonJS({
-  "node_modules/@nodelib/fs.walk/out/providers/async.js"(exports2) {
+  "../../guacsec/trustify-da-javascript-client/node_modules/@nodelib/fs.walk/out/providers/async.js"(exports2) {
     "use strict";
     Object.defineProperty(exports2, "__esModule", { value: true });
     var async_1 = require_async3();
@@ -29578,9 +29577,9 @@ var require_async4 = __commonJS({
   }
 });
 
-// node_modules/@nodelib/fs.walk/out/providers/stream.js
+// ../../guacsec/trustify-da-javascript-client/node_modules/@nodelib/fs.walk/out/providers/stream.js
 var require_stream2 = __commonJS({
-  "node_modules/@nodelib/fs.walk/out/providers/stream.js"(exports2) {
+  "../../guacsec/trustify-da-javascript-client/node_modules/@nodelib/fs.walk/out/providers/stream.js"(exports2) {
     "use strict";
     Object.defineProperty(exports2, "__esModule", { value: true });
     var stream_1 = __require("stream");
@@ -29619,9 +29618,9 @@ var require_stream2 = __commonJS({
   }
 });
 
-// node_modules/@nodelib/fs.walk/out/readers/sync.js
+// ../../guacsec/trustify-da-javascript-client/node_modules/@nodelib/fs.walk/out/readers/sync.js
 var require_sync3 = __commonJS({
-  "node_modules/@nodelib/fs.walk/out/readers/sync.js"(exports2) {
+  "../../guacsec/trustify-da-javascript-client/node_modules/@nodelib/fs.walk/out/readers/sync.js"(exports2) {
     "use strict";
     Object.defineProperty(exports2, "__esModule", { value: true });
     var fsScandir = require_out2();
@@ -29683,9 +29682,9 @@ var require_sync3 = __commonJS({
   }
 });
 
-// node_modules/@nodelib/fs.walk/out/providers/sync.js
+// ../../guacsec/trustify-da-javascript-client/node_modules/@nodelib/fs.walk/out/providers/sync.js
 var require_sync4 = __commonJS({
-  "node_modules/@nodelib/fs.walk/out/providers/sync.js"(exports2) {
+  "../../guacsec/trustify-da-javascript-client/node_modules/@nodelib/fs.walk/out/providers/sync.js"(exports2) {
     "use strict";
     Object.defineProperty(exports2, "__esModule", { value: true });
     var sync_1 = require_sync3();
@@ -29703,9 +29702,9 @@ var require_sync4 = __commonJS({
   }
 });
 
-// node_modules/@nodelib/fs.walk/out/settings.js
+// ../../guacsec/trustify-da-javascript-client/node_modules/@nodelib/fs.walk/out/settings.js
 var require_settings3 = __commonJS({
-  "node_modules/@nodelib/fs.walk/out/settings.js"(exports2) {
+  "../../guacsec/trustify-da-javascript-client/node_modules/@nodelib/fs.walk/out/settings.js"(exports2) {
     "use strict";
     Object.defineProperty(exports2, "__esModule", { value: true });
     var path26 = __require("path");
@@ -29735,9 +29734,9 @@ var require_settings3 = __commonJS({
   }
 });
 
-// node_modules/@nodelib/fs.walk/out/index.js
+// ../../guacsec/trustify-da-javascript-client/node_modules/@nodelib/fs.walk/out/index.js
 var require_out3 = __commonJS({
-  "node_modules/@nodelib/fs.walk/out/index.js"(exports2) {
+  "../../guacsec/trustify-da-javascript-client/node_modules/@nodelib/fs.walk/out/index.js"(exports2) {
     "use strict";
     Object.defineProperty(exports2, "__esModule", { value: true });
     exports2.Settings = exports2.walkStream = exports2.walkSync = exports2.walk = void 0;
@@ -29775,9 +29774,9 @@ var require_out3 = __commonJS({
   }
 });
 
-// node_modules/fast-glob/out/readers/reader.js
+// ../../guacsec/trustify-da-javascript-client/node_modules/fast-glob/out/readers/reader.js
 var require_reader2 = __commonJS({
-  "node_modules/fast-glob/out/readers/reader.js"(exports2) {
+  "../../guacsec/trustify-da-javascript-client/node_modules/fast-glob/out/readers/reader.js"(exports2) {
     "use strict";
     Object.defineProperty(exports2, "__esModule", { value: true });
     var path26 = __require("path");
@@ -29814,9 +29813,9 @@ var require_reader2 = __commonJS({
   }
 });
 
-// node_modules/fast-glob/out/readers/stream.js
+// ../../guacsec/trustify-da-javascript-client/node_modules/fast-glob/out/readers/stream.js
 var require_stream3 = __commonJS({
-  "node_modules/fast-glob/out/readers/stream.js"(exports2) {
+  "../../guacsec/trustify-da-javascript-client/node_modules/fast-glob/out/readers/stream.js"(exports2) {
     "use strict";
     Object.defineProperty(exports2, "__esModule", { value: true });
     var stream_1 = __require("stream");
@@ -29871,9 +29870,9 @@ var require_stream3 = __commonJS({
   }
 });
 
-// node_modules/fast-glob/out/readers/async.js
+// ../../guacsec/trustify-da-javascript-client/node_modules/fast-glob/out/readers/async.js
 var require_async5 = __commonJS({
-  "node_modules/fast-glob/out/readers/async.js"(exports2) {
+  "../../guacsec/trustify-da-javascript-client/node_modules/fast-glob/out/readers/async.js"(exports2) {
     "use strict";
     Object.defineProperty(exports2, "__esModule", { value: true });
     var fsWalk = require_out3();
@@ -29910,9 +29909,9 @@ var require_async5 = __commonJS({
   }
 });
 
-// node_modules/fast-glob/out/providers/matchers/matcher.js
+// ../../guacsec/trustify-da-javascript-client/node_modules/fast-glob/out/providers/matchers/matcher.js
 var require_matcher = __commonJS({
-  "node_modules/fast-glob/out/providers/matchers/matcher.js"(exports2) {
+  "../../guacsec/trustify-da-javascript-client/node_modules/fast-glob/out/providers/matchers/matcher.js"(exports2) {
     "use strict";
     Object.defineProperty(exports2, "__esModule", { value: true });
     var utils = require_utils7();
@@ -29961,9 +29960,9 @@ var require_matcher = __commonJS({
   }
 });
 
-// node_modules/fast-glob/out/providers/matchers/partial.js
+// ../../guacsec/trustify-da-javascript-client/node_modules/fast-glob/out/providers/matchers/partial.js
 var require_partial = __commonJS({
-  "node_modules/fast-glob/out/providers/matchers/partial.js"(exports2) {
+  "../../guacsec/trustify-da-javascript-client/node_modules/fast-glob/out/providers/matchers/partial.js"(exports2) {
     "use strict";
     Object.defineProperty(exports2, "__esModule", { value: true });
     var matcher_1 = require_matcher();
@@ -29998,9 +29997,9 @@ var require_partial = __commonJS({
   }
 });
 
-// node_modules/fast-glob/out/providers/filters/deep.js
+// ../../guacsec/trustify-da-javascript-client/node_modules/fast-glob/out/providers/filters/deep.js
 var require_deep = __commonJS({
-  "node_modules/fast-glob/out/providers/filters/deep.js"(exports2) {
+  "../../guacsec/trustify-da-javascript-client/node_modules/fast-glob/out/providers/filters/deep.js"(exports2) {
     "use strict";
     Object.defineProperty(exports2, "__esModule", { value: true });
     var utils = require_utils7();
@@ -30063,9 +30062,9 @@ var require_deep = __commonJS({
   }
 });
 
-// node_modules/fast-glob/out/providers/filters/entry.js
+// ../../guacsec/trustify-da-javascript-client/node_modules/fast-glob/out/providers/filters/entry.js
 var require_entry = __commonJS({
-  "node_modules/fast-glob/out/providers/filters/entry.js"(exports2) {
+  "../../guacsec/trustify-da-javascript-client/node_modules/fast-glob/out/providers/filters/entry.js"(exports2) {
     "use strict";
     Object.defineProperty(exports2, "__esModule", { value: true });
     var utils = require_utils7();
@@ -30151,9 +30150,9 @@ var require_entry = __commonJS({
   }
 });
 
-// node_modules/fast-glob/out/providers/filters/error.js
+// ../../guacsec/trustify-da-javascript-client/node_modules/fast-glob/out/providers/filters/error.js
 var require_error = __commonJS({
-  "node_modules/fast-glob/out/providers/filters/error.js"(exports2) {
+  "../../guacsec/trustify-da-javascript-client/node_modules/fast-glob/out/providers/filters/error.js"(exports2) {
     "use strict";
     Object.defineProperty(exports2, "__esModule", { value: true });
     var utils = require_utils7();
@@ -30172,9 +30171,9 @@ var require_error = __commonJS({
   }
 });
 
-// node_modules/fast-glob/out/providers/transformers/entry.js
+// ../../guacsec/trustify-da-javascript-client/node_modules/fast-glob/out/providers/transformers/entry.js
 var require_entry2 = __commonJS({
-  "node_modules/fast-glob/out/providers/transformers/entry.js"(exports2) {
+  "../../guacsec/trustify-da-javascript-client/node_modules/fast-glob/out/providers/transformers/entry.js"(exports2) {
     "use strict";
     Object.defineProperty(exports2, "__esModule", { value: true });
     var utils = require_utils7();
@@ -30204,9 +30203,9 @@ var require_entry2 = __commonJS({
   }
 });
 
-// node_modules/fast-glob/out/providers/provider.js
+// ../../guacsec/trustify-da-javascript-client/node_modules/fast-glob/out/providers/provider.js
 var require_provider = __commonJS({
-  "node_modules/fast-glob/out/providers/provider.js"(exports2) {
+  "../../guacsec/trustify-da-javascript-client/node_modules/fast-glob/out/providers/provider.js"(exports2) {
     "use strict";
     Object.defineProperty(exports2, "__esModule", { value: true });
     var path26 = __require("path");
@@ -30258,9 +30257,9 @@ var require_provider = __commonJS({
   }
 });
 
-// node_modules/fast-glob/out/providers/async.js
+// ../../guacsec/trustify-da-javascript-client/node_modules/fast-glob/out/providers/async.js
 var require_async6 = __commonJS({
-  "node_modules/fast-glob/out/providers/async.js"(exports2) {
+  "../../guacsec/trustify-da-javascript-client/node_modules/fast-glob/out/providers/async.js"(exports2) {
     "use strict";
     Object.defineProperty(exports2, "__esModule", { value: true });
     var async_1 = require_async5();
@@ -30287,9 +30286,9 @@ var require_async6 = __commonJS({
   }
 });
 
-// node_modules/fast-glob/out/providers/stream.js
+// ../../guacsec/trustify-da-javascript-client/node_modules/fast-glob/out/providers/stream.js
 var require_stream4 = __commonJS({
-  "node_modules/fast-glob/out/providers/stream.js"(exports2) {
+  "../../guacsec/trustify-da-javascript-client/node_modules/fast-glob/out/providers/stream.js"(exports2) {
     "use strict";
     Object.defineProperty(exports2, "__esModule", { value: true });
     var stream_1 = __require("stream");
@@ -30321,9 +30320,9 @@ var require_stream4 = __commonJS({
   }
 });
 
-// node_modules/fast-glob/out/readers/sync.js
+// ../../guacsec/trustify-da-javascript-client/node_modules/fast-glob/out/readers/sync.js
 var require_sync5 = __commonJS({
-  "node_modules/fast-glob/out/readers/sync.js"(exports2) {
+  "../../guacsec/trustify-da-javascript-client/node_modules/fast-glob/out/readers/sync.js"(exports2) {
     "use strict";
     Object.defineProperty(exports2, "__esModule", { value: true });
     var fsStat = require_out();
@@ -30369,9 +30368,9 @@ var require_sync5 = __commonJS({
   }
 });
 
-// node_modules/fast-glob/out/providers/sync.js
+// ../../guacsec/trustify-da-javascript-client/node_modules/fast-glob/out/providers/sync.js
 var require_sync6 = __commonJS({
-  "node_modules/fast-glob/out/providers/sync.js"(exports2) {
+  "../../guacsec/trustify-da-javascript-client/node_modules/fast-glob/out/providers/sync.js"(exports2) {
     "use strict";
     Object.defineProperty(exports2, "__esModule", { value: true });
     var sync_1 = require_sync5();
@@ -30398,9 +30397,9 @@ var require_sync6 = __commonJS({
   }
 });
 
-// node_modules/fast-glob/out/settings.js
+// ../../guacsec/trustify-da-javascript-client/node_modules/fast-glob/out/settings.js
 var require_settings4 = __commonJS({
-  "node_modules/fast-glob/out/settings.js"(exports2) {
+  "../../guacsec/trustify-da-javascript-client/node_modules/fast-glob/out/settings.js"(exports2) {
     "use strict";
     Object.defineProperty(exports2, "__esModule", { value: true });
     exports2.DEFAULT_FILE_SYSTEM_ADAPTER = void 0;
@@ -30458,9 +30457,9 @@ var require_settings4 = __commonJS({
   }
 });
 
-// node_modules/fast-glob/out/index.js
+// ../../guacsec/trustify-da-javascript-client/node_modules/fast-glob/out/index.js
 var require_out4 = __commonJS({
-  "node_modules/fast-glob/out/index.js"(exports2, module2) {
+  "../../guacsec/trustify-da-javascript-client/node_modules/fast-glob/out/index.js"(exports2, module2) {
     "use strict";
     var taskManager = require_tasks();
     var async_1 = require_async6();
@@ -30559,9 +30558,9 @@ var require_out4 = __commonJS({
   }
 });
 
-// node_modules/@yarnpkg/parsers/lib/grammars/shell.js
+// ../../guacsec/trustify-da-javascript-client/node_modules/@yarnpkg/parsers/lib/grammars/shell.js
 var require_shell = __commonJS({
-  "node_modules/@yarnpkg/parsers/lib/grammars/shell.js"(exports2, module2) {
+  "../../guacsec/trustify-da-javascript-client/node_modules/@yarnpkg/parsers/lib/grammars/shell.js"(exports2, module2) {
     "use strict";
     function peg$subclass(child, parent) {
       function ctor() {
@@ -34140,9 +34139,9 @@ var require_shell = __commonJS({
   }
 });
 
-// node_modules/@yarnpkg/parsers/lib/shell.js
+// ../../guacsec/trustify-da-javascript-client/node_modules/@yarnpkg/parsers/lib/shell.js
 var require_shell2 = __commonJS({
-  "node_modules/@yarnpkg/parsers/lib/shell.js"(exports2) {
+  "../../guacsec/trustify-da-javascript-client/node_modules/@yarnpkg/parsers/lib/shell.js"(exports2) {
     "use strict";
     Object.defineProperty(exports2, "__esModule", { value: true });
     exports2.parseShell = parseShell;
@@ -34305,9 +34304,9 @@ var require_shell2 = __commonJS({
   }
 });
 
-// node_modules/@yarnpkg/parsers/lib/grammars/resolution.js
+// ../../guacsec/trustify-da-javascript-client/node_modules/@yarnpkg/parsers/lib/grammars/resolution.js
 var require_resolution = __commonJS({
-  "node_modules/@yarnpkg/parsers/lib/grammars/resolution.js"(exports2, module2) {
+  "../../guacsec/trustify-da-javascript-client/node_modules/@yarnpkg/parsers/lib/grammars/resolution.js"(exports2, module2) {
     "use strict";
     function peg$subclass(child, parent) {
       function ctor() {
@@ -34749,9 +34748,9 @@ var require_resolution = __commonJS({
   }
 });
 
-// node_modules/@yarnpkg/parsers/lib/resolution.js
+// ../../guacsec/trustify-da-javascript-client/node_modules/@yarnpkg/parsers/lib/resolution.js
 var require_resolution2 = __commonJS({
-  "node_modules/@yarnpkg/parsers/lib/resolution.js"(exports2) {
+  "../../guacsec/trustify-da-javascript-client/node_modules/@yarnpkg/parsers/lib/resolution.js"(exports2) {
     "use strict";
     Object.defineProperty(exports2, "__esModule", { value: true });
     exports2.parseResolution = parseResolution;
@@ -34785,9 +34784,9 @@ var require_resolution2 = __commonJS({
   }
 });
 
-// node_modules/js-yaml/lib/common.js
+// ../../guacsec/trustify-da-javascript-client/node_modules/js-yaml/lib/common.js
 var require_common4 = __commonJS({
-  "node_modules/js-yaml/lib/common.js"(exports2, module2) {
+  "../../guacsec/trustify-da-javascript-client/node_modules/js-yaml/lib/common.js"(exports2, module2) {
     "use strict";
     function isNothing(subject) {
       return typeof subject === "undefined" || subject === null;
@@ -34829,9 +34828,9 @@ var require_common4 = __commonJS({
   }
 });
 
-// node_modules/js-yaml/lib/exception.js
+// ../../guacsec/trustify-da-javascript-client/node_modules/js-yaml/lib/exception.js
 var require_exception = __commonJS({
-  "node_modules/js-yaml/lib/exception.js"(exports2, module2) {
+  "../../guacsec/trustify-da-javascript-client/node_modules/js-yaml/lib/exception.js"(exports2, module2) {
     "use strict";
     function formatError(exception2, compact) {
       let where = "";
@@ -34867,9 +34866,9 @@ var require_exception = __commonJS({
   }
 });
 
-// node_modules/js-yaml/lib/snippet.js
+// ../../guacsec/trustify-da-javascript-client/node_modules/js-yaml/lib/snippet.js
 var require_snippet = __commonJS({
-  "node_modules/js-yaml/lib/snippet.js"(exports2, module2) {
+  "../../guacsec/trustify-da-javascript-client/node_modules/js-yaml/lib/snippet.js"(exports2, module2) {
     "use strict";
     var common2 = require_common4();
     function getLine(buffer, lineStart, lineEnd, position, maxLineLength) {
@@ -34947,9 +34946,9 @@ var require_snippet = __commonJS({
   }
 });
 
-// node_modules/js-yaml/lib/type.js
+// ../../guacsec/trustify-da-javascript-client/node_modules/js-yaml/lib/type.js
 var require_type = __commonJS({
-  "node_modules/js-yaml/lib/type.js"(exports2, module2) {
+  "../../guacsec/trustify-da-javascript-client/node_modules/js-yaml/lib/type.js"(exports2, module2) {
     "use strict";
     var YAMLException2 = require_exception();
     var TYPE_CONSTRUCTOR_OPTIONS = [
@@ -35011,9 +35010,9 @@ var require_type = __commonJS({
   }
 });
 
-// node_modules/js-yaml/lib/schema.js
+// ../../guacsec/trustify-da-javascript-client/node_modules/js-yaml/lib/schema.js
 var require_schema = __commonJS({
-  "node_modules/js-yaml/lib/schema.js"(exports2, module2) {
+  "../../guacsec/trustify-da-javascript-client/node_modules/js-yaml/lib/schema.js"(exports2, module2) {
     "use strict";
     var YAMLException2 = require_exception();
     var Type2 = require_type();
@@ -35100,9 +35099,9 @@ var require_schema = __commonJS({
   }
 });
 
-// node_modules/js-yaml/lib/type/str.js
+// ../../guacsec/trustify-da-javascript-client/node_modules/js-yaml/lib/type/str.js
 var require_str = __commonJS({
-  "node_modules/js-yaml/lib/type/str.js"(exports2, module2) {
+  "../../guacsec/trustify-da-javascript-client/node_modules/js-yaml/lib/type/str.js"(exports2, module2) {
     "use strict";
     var Type2 = require_type();
     module2.exports = new Type2("tag:yaml.org,2002:str", {
@@ -35114,9 +35113,9 @@ var require_str = __commonJS({
   }
 });
 
-// node_modules/js-yaml/lib/type/seq.js
+// ../../guacsec/trustify-da-javascript-client/node_modules/js-yaml/lib/type/seq.js
 var require_seq = __commonJS({
-  "node_modules/js-yaml/lib/type/seq.js"(exports2, module2) {
+  "../../guacsec/trustify-da-javascript-client/node_modules/js-yaml/lib/type/seq.js"(exports2, module2) {
     "use strict";
     var Type2 = require_type();
     module2.exports = new Type2("tag:yaml.org,2002:seq", {
@@ -35128,9 +35127,9 @@ var require_seq = __commonJS({
   }
 });
 
-// node_modules/js-yaml/lib/type/map.js
+// ../../guacsec/trustify-da-javascript-client/node_modules/js-yaml/lib/type/map.js
 var require_map = __commonJS({
-  "node_modules/js-yaml/lib/type/map.js"(exports2, module2) {
+  "../../guacsec/trustify-da-javascript-client/node_modules/js-yaml/lib/type/map.js"(exports2, module2) {
     "use strict";
     var Type2 = require_type();
     module2.exports = new Type2("tag:yaml.org,2002:map", {
@@ -35142,9 +35141,9 @@ var require_map = __commonJS({
   }
 });
 
-// node_modules/js-yaml/lib/schema/failsafe.js
+// ../../guacsec/trustify-da-javascript-client/node_modules/js-yaml/lib/schema/failsafe.js
 var require_failsafe = __commonJS({
-  "node_modules/js-yaml/lib/schema/failsafe.js"(exports2, module2) {
+  "../../guacsec/trustify-da-javascript-client/node_modules/js-yaml/lib/schema/failsafe.js"(exports2, module2) {
     "use strict";
     var Schema2 = require_schema();
     module2.exports = new Schema2({
@@ -35157,9 +35156,9 @@ var require_failsafe = __commonJS({
   }
 });
 
-// node_modules/js-yaml/lib/type/null.js
+// ../../guacsec/trustify-da-javascript-client/node_modules/js-yaml/lib/type/null.js
 var require_null2 = __commonJS({
-  "node_modules/js-yaml/lib/type/null.js"(exports2, module2) {
+  "../../guacsec/trustify-da-javascript-client/node_modules/js-yaml/lib/type/null.js"(exports2, module2) {
     "use strict";
     var Type2 = require_type();
     function resolveYamlNull(data) {
@@ -35200,9 +35199,9 @@ var require_null2 = __commonJS({
   }
 });
 
-// node_modules/js-yaml/lib/type/bool.js
+// ../../guacsec/trustify-da-javascript-client/node_modules/js-yaml/lib/type/bool.js
 var require_bool = __commonJS({
-  "node_modules/js-yaml/lib/type/bool.js"(exports2, module2) {
+  "../../guacsec/trustify-da-javascript-client/node_modules/js-yaml/lib/type/bool.js"(exports2, module2) {
     "use strict";
     var Type2 = require_type();
     function resolveYamlBoolean(data) {
@@ -35237,9 +35236,9 @@ var require_bool = __commonJS({
   }
 });
 
-// node_modules/js-yaml/lib/type/int.js
+// ../../guacsec/trustify-da-javascript-client/node_modules/js-yaml/lib/type/int.js
 var require_int = __commonJS({
-  "node_modules/js-yaml/lib/type/int.js"(exports2, module2) {
+  "../../guacsec/trustify-da-javascript-client/node_modules/js-yaml/lib/type/int.js"(exports2, module2) {
     "use strict";
     var common2 = require_common4();
     var Type2 = require_type();
@@ -35353,9 +35352,9 @@ var require_int = __commonJS({
   }
 });
 
-// node_modules/js-yaml/lib/type/float.js
+// ../../guacsec/trustify-da-javascript-client/node_modules/js-yaml/lib/type/float.js
 var require_float = __commonJS({
-  "node_modules/js-yaml/lib/type/float.js"(exports2, module2) {
+  "../../guacsec/trustify-da-javascript-client/node_modules/js-yaml/lib/type/float.js"(exports2, module2) {
     "use strict";
     var common2 = require_common4();
     var Type2 = require_type();
@@ -35438,9 +35437,9 @@ var require_float = __commonJS({
   }
 });
 
-// node_modules/js-yaml/lib/schema/json.js
+// ../../guacsec/trustify-da-javascript-client/node_modules/js-yaml/lib/schema/json.js
 var require_json = __commonJS({
-  "node_modules/js-yaml/lib/schema/json.js"(exports2, module2) {
+  "../../guacsec/trustify-da-javascript-client/node_modules/js-yaml/lib/schema/json.js"(exports2, module2) {
     "use strict";
     module2.exports = require_failsafe().extend({
       implicit: [
@@ -35453,17 +35452,17 @@ var require_json = __commonJS({
   }
 });
 
-// node_modules/js-yaml/lib/schema/core.js
+// ../../guacsec/trustify-da-javascript-client/node_modules/js-yaml/lib/schema/core.js
 var require_core2 = __commonJS({
-  "node_modules/js-yaml/lib/schema/core.js"(exports2, module2) {
+  "../../guacsec/trustify-da-javascript-client/node_modules/js-yaml/lib/schema/core.js"(exports2, module2) {
     "use strict";
     module2.exports = require_json();
   }
 });
 
-// node_modules/js-yaml/lib/type/timestamp.js
+// ../../guacsec/trustify-da-javascript-client/node_modules/js-yaml/lib/type/timestamp.js
 var require_timestamp = __commonJS({
-  "node_modules/js-yaml/lib/type/timestamp.js"(exports2, module2) {
+  "../../guacsec/trustify-da-javascript-client/node_modules/js-yaml/lib/type/timestamp.js"(exports2, module2) {
     "use strict";
     var Type2 = require_type();
     var YAML_DATE_REGEXP = new RegExp(
@@ -35523,9 +35522,9 @@ var require_timestamp = __commonJS({
   }
 });
 
-// node_modules/js-yaml/lib/type/merge.js
+// ../../guacsec/trustify-da-javascript-client/node_modules/js-yaml/lib/type/merge.js
 var require_merge = __commonJS({
-  "node_modules/js-yaml/lib/type/merge.js"(exports2, module2) {
+  "../../guacsec/trustify-da-javascript-client/node_modules/js-yaml/lib/type/merge.js"(exports2, module2) {
     "use strict";
     var Type2 = require_type();
     function resolveYamlMerge(data) {
@@ -35538,9 +35537,9 @@ var require_merge = __commonJS({
   }
 });
 
-// node_modules/js-yaml/lib/type/binary.js
+// ../../guacsec/trustify-da-javascript-client/node_modules/js-yaml/lib/type/binary.js
 var require_binary = __commonJS({
-  "node_modules/js-yaml/lib/type/binary.js"(exports2, module2) {
+  "../../guacsec/trustify-da-javascript-client/node_modules/js-yaml/lib/type/binary.js"(exports2, module2) {
     "use strict";
     var Type2 = require_type();
     var BASE64_MAP = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=\n\r";
@@ -35630,9 +35629,9 @@ var require_binary = __commonJS({
   }
 });
 
-// node_modules/js-yaml/lib/type/omap.js
+// ../../guacsec/trustify-da-javascript-client/node_modules/js-yaml/lib/type/omap.js
 var require_omap = __commonJS({
-  "node_modules/js-yaml/lib/type/omap.js"(exports2, module2) {
+  "../../guacsec/trustify-da-javascript-client/node_modules/js-yaml/lib/type/omap.js"(exports2, module2) {
     "use strict";
     var Type2 = require_type();
     var _hasOwnProperty = Object.prototype.hasOwnProperty;
@@ -35669,9 +35668,9 @@ var require_omap = __commonJS({
   }
 });
 
-// node_modules/js-yaml/lib/type/pairs.js
+// ../../guacsec/trustify-da-javascript-client/node_modules/js-yaml/lib/type/pairs.js
 var require_pairs = __commonJS({
-  "node_modules/js-yaml/lib/type/pairs.js"(exports2, module2) {
+  "../../guacsec/trustify-da-javascript-client/node_modules/js-yaml/lib/type/pairs.js"(exports2, module2) {
     "use strict";
     var Type2 = require_type();
     var _toString = Object.prototype.toString;
@@ -35707,9 +35706,9 @@ var require_pairs = __commonJS({
   }
 });
 
-// node_modules/js-yaml/lib/type/set.js
+// ../../guacsec/trustify-da-javascript-client/node_modules/js-yaml/lib/type/set.js
 var require_set = __commonJS({
-  "node_modules/js-yaml/lib/type/set.js"(exports2, module2) {
+  "../../guacsec/trustify-da-javascript-client/node_modules/js-yaml/lib/type/set.js"(exports2, module2) {
     "use strict";
     var Type2 = require_type();
     var _hasOwnProperty = Object.prototype.hasOwnProperty;
@@ -35734,9 +35733,9 @@ var require_set = __commonJS({
   }
 });
 
-// node_modules/js-yaml/lib/schema/default.js
+// ../../guacsec/trustify-da-javascript-client/node_modules/js-yaml/lib/schema/default.js
 var require_default2 = __commonJS({
-  "node_modules/js-yaml/lib/schema/default.js"(exports2, module2) {
+  "../../guacsec/trustify-da-javascript-client/node_modules/js-yaml/lib/schema/default.js"(exports2, module2) {
     "use strict";
     module2.exports = require_core2().extend({
       implicit: [
@@ -35753,9 +35752,9 @@ var require_default2 = __commonJS({
   }
 });
 
-// node_modules/js-yaml/lib/loader.js
+// ../../guacsec/trustify-da-javascript-client/node_modules/js-yaml/lib/loader.js
 var require_loader = __commonJS({
-  "node_modules/js-yaml/lib/loader.js"(exports2, module2) {
+  "../../guacsec/trustify-da-javascript-client/node_modules/js-yaml/lib/loader.js"(exports2, module2) {
     "use strict";
     var common2 = require_common4();
     var YAMLException2 = require_exception();
@@ -37133,9 +37132,9 @@ var require_loader = __commonJS({
   }
 });
 
-// node_modules/js-yaml/lib/dumper.js
+// ../../guacsec/trustify-da-javascript-client/node_modules/js-yaml/lib/dumper.js
 var require_dumper = __commonJS({
-  "node_modules/js-yaml/lib/dumper.js"(exports2, module2) {
+  "../../guacsec/trustify-da-javascript-client/node_modules/js-yaml/lib/dumper.js"(exports2, module2) {
     "use strict";
     var common2 = require_common4();
     var YAMLException2 = require_exception();
@@ -37786,9 +37785,9 @@ var require_dumper = __commonJS({
   }
 });
 
-// node_modules/js-yaml/index.js
+// ../../guacsec/trustify-da-javascript-client/node_modules/js-yaml/index.js
 var require_js_yaml = __commonJS({
-  "node_modules/js-yaml/index.js"(exports2, module2) {
+  "../../guacsec/trustify-da-javascript-client/node_modules/js-yaml/index.js"(exports2, module2) {
     "use strict";
     var loader2 = require_loader();
     var dumper2 = require_dumper();
@@ -37828,9 +37827,9 @@ var require_js_yaml = __commonJS({
   }
 });
 
-// node_modules/@yarnpkg/parsers/lib/grammars/syml.js
+// ../../guacsec/trustify-da-javascript-client/node_modules/@yarnpkg/parsers/lib/grammars/syml.js
 var require_syml = __commonJS({
-  "node_modules/@yarnpkg/parsers/lib/grammars/syml.js"(exports2, module2) {
+  "../../guacsec/trustify-da-javascript-client/node_modules/@yarnpkg/parsers/lib/grammars/syml.js"(exports2, module2) {
     "use strict";
     function peg$subclass(child, parent) {
       function ctor() {
@@ -39640,9 +39639,9 @@ var require_syml = __commonJS({
   }
 });
 
-// node_modules/@yarnpkg/parsers/lib/syml.js
+// ../../guacsec/trustify-da-javascript-client/node_modules/@yarnpkg/parsers/lib/syml.js
 var require_syml2 = __commonJS({
-  "node_modules/@yarnpkg/parsers/lib/syml.js"(exports2) {
+  "../../guacsec/trustify-da-javascript-client/node_modules/@yarnpkg/parsers/lib/syml.js"(exports2) {
     "use strict";
     Object.defineProperty(exports2, "__esModule", { value: true });
     exports2.PreserveOrdering = void 0;
@@ -39775,9 +39774,9 @@ ${fields}`;
   }
 });
 
-// node_modules/@yarnpkg/parsers/lib/index.js
+// ../../guacsec/trustify-da-javascript-client/node_modules/@yarnpkg/parsers/lib/index.js
 var require_lib2 = __commonJS({
-  "node_modules/@yarnpkg/parsers/lib/index.js"(exports2) {
+  "../../guacsec/trustify-da-javascript-client/node_modules/@yarnpkg/parsers/lib/index.js"(exports2) {
     "use strict";
     Object.defineProperty(exports2, "__esModule", { value: true });
     exports2.stringifySyml = exports2.parseSyml = exports2.stringifyResolution = exports2.parseResolution = exports2.stringifyValueArgument = exports2.stringifyShellLine = exports2.stringifyRedirectArgument = exports2.stringifyEnvSegment = exports2.stringifyCommandLineThen = exports2.stringifyCommandLine = exports2.stringifyCommandChainThen = exports2.stringifyCommandChain = exports2.stringifyCommand = exports2.stringifyArithmeticExpression = exports2.stringifyArgumentSegment = exports2.stringifyArgument = exports2.stringifyShell = exports2.parseShell = void 0;
@@ -39847,11 +39846,11 @@ var core7 = __toESM(require_core(), 1);
 // src/config.ts
 var core2 = __toESM(require_core(), 1);
 
-// node_modules/@trustify-da/trustify-da-javascript-client/dist/src/config.js
+// ../../guacsec/trustify-da-javascript-client/dist/src/config.js
 import fs2 from "node:fs";
 import path from "node:path";
 
-// node_modules/js-yaml/dist/js-yaml.mjs
+// ../../guacsec/trustify-da-javascript-client/node_modules/js-yaml/dist/js-yaml.mjs
 function getDefaultExportFromCjs(x) {
   return x && x.__esModule && Object.prototype.hasOwnProperty.call(x, "default") ? x["default"] : x;
 }
@@ -42917,7 +42916,7 @@ var {
   safeDump
 } = yaml;
 
-// node_modules/@trustify-da/trustify-da-javascript-client/dist/src/config.js
+// ../../guacsec/trustify-da-javascript-client/dist/src/config.js
 var CONFIG_FILENAMES = [".trustify-da.yml", ".trustify-da.yaml"];
 function isMapping(value) {
   if (value == null || typeof value !== "object" || Array.isArray(value)) {
@@ -43156,18 +43155,18 @@ import { createHash } from "node:crypto";
 import { writeFile } from "node:fs/promises";
 import { resolve } from "node:path";
 
-// node_modules/@trustify-da/trustify-da-javascript-client/dist/src/remediate.js
+// ../../guacsec/trustify-da-javascript-client/dist/src/remediate.js
 var import_micromatch2 = __toESM(require_micromatch(), 1);
 var import_packageurl_js11 = __toESM(require_packageurl_js(), 1);
 import fs27 from "node:fs";
 import path25 from "node:path";
 
-// node_modules/@trustify-da/trustify-da-javascript-client/dist/src/analysis.js
+// ../../guacsec/trustify-da-javascript-client/dist/src/analysis.js
 import fs26 from "node:fs";
 import path24 from "node:path";
 import { EOL as EOL8 } from "os";
 
-// node_modules/@trustify-da/trustify-da-javascript-client/dist/src/license/license_utils.js
+// ../../guacsec/trustify-da-javascript-client/dist/src/license/license_utils.js
 import fs3 from "node:fs";
 import path2 from "node:path";
 var LICENSE_FILES = ["LICENSE", "LICENSE.md", "LICENSE.txt"];
@@ -43265,15 +43264,15 @@ function getCompatibility(projectCategory, dependencyCategory) {
   return "compatible";
 }
 
-// node_modules/@trustify-da/trustify-da-javascript-client/dist/src/license/licenses_api.js
+// ../../guacsec/trustify-da-javascript-client/dist/src/license/licenses_api.js
 var import_packageurl_js10 = __toESM(require_packageurl_js(), 1);
 
-// node_modules/@trustify-da/trustify-da-javascript-client/dist/src/index.js
+// ../../guacsec/trustify-da-javascript-client/dist/src/index.js
 import fs24 from "node:fs";
 import path22 from "node:path";
 import { EOL as EOL7 } from "os";
 
-// node_modules/@trustify-da/trustify-da-javascript-client/node_modules/yocto-queue/index.js
+// ../../guacsec/trustify-da-javascript-client/node_modules/yocto-queue/index.js
 var Node = class {
   value;
   next;
@@ -43339,7 +43338,7 @@ var Queue = class {
   }
 };
 
-// node_modules/@trustify-da/trustify-da-javascript-client/node_modules/p-limit/index.js
+// ../../guacsec/trustify-da-javascript-client/node_modules/p-limit/index.js
 function pLimit(concurrency) {
   let rejectOnClear = false;
   if (typeof concurrency === "object") {
@@ -43416,7 +43415,7 @@ function pLimit(concurrency) {
     },
     map: {
       async value(iterable, function_) {
-        const promises = Array.from(iterable, (value, index) => generator(function_, value, index));
+        const promises = Array.from(iterable, (value, index) => this(function_, value, index));
         return Promise.all(promises);
       }
     }
@@ -43429,19 +43428,19 @@ function validateConcurrency(concurrency) {
   }
 }
 
-// node_modules/@trustify-da/trustify-da-javascript-client/dist/src/tools.js
+// ../../guacsec/trustify-da-javascript-client/dist/src/tools.js
 import { execFileSync } from "child_process";
 import fs4 from "node:fs";
 import path3 from "node:path";
 import { EOL } from "os";
 
-// node_modules/@trustify-da/trustify-da-javascript-client/node_modules/https-proxy-agent/dist/index.js
+// ../../guacsec/trustify-da-javascript-client/node_modules/https-proxy-agent/dist/index.js
 var import_debug2 = __toESM(require_src(), 1);
 import * as net2 from "net";
 import * as tls from "tls";
 import assert from "assert";
 
-// node_modules/@trustify-da/trustify-da-javascript-client/node_modules/agent-base/dist/index.js
+// ../../guacsec/trustify-da-javascript-client/node_modules/agent-base/dist/index.js
 import * as net from "net";
 import * as http from "http";
 import { Agent as HttpsAgent } from "https";
@@ -43558,10 +43557,10 @@ var Agent2 = class extends http.Agent {
   }
 };
 
-// node_modules/@trustify-da/trustify-da-javascript-client/node_modules/https-proxy-agent/dist/index.js
+// ../../guacsec/trustify-da-javascript-client/node_modules/https-proxy-agent/dist/index.js
 import { URL as URL2 } from "url";
 
-// node_modules/@trustify-da/trustify-da-javascript-client/node_modules/https-proxy-agent/dist/parse-proxy-response.js
+// ../../guacsec/trustify-da-javascript-client/node_modules/https-proxy-agent/dist/parse-proxy-response.js
 var import_debug = __toESM(require_src(), 1);
 var debug = (0, import_debug.default)("https-proxy-agent:parse-proxy-response");
 function parseProxyResponse(socket) {
@@ -43646,7 +43645,7 @@ function parseProxyResponse(socket) {
   });
 }
 
-// node_modules/proxy-agent-negotiate/dist/index.js
+// ../../guacsec/trustify-da-javascript-client/node_modules/proxy-agent-negotiate/dist/index.js
 function createNegotiateAuth() {
   return async ({ response, scheme }) => {
     if (scheme.toLowerCase() !== "negotiate") {
@@ -43676,7 +43675,7 @@ function createNegotiateAuth() {
   };
 }
 
-// node_modules/@trustify-da/trustify-da-javascript-client/node_modules/https-proxy-agent/dist/index.js
+// ../../guacsec/trustify-da-javascript-client/node_modules/https-proxy-agent/dist/index.js
 var debug2 = (0, import_debug2.default)("https-proxy-agent");
 var setServernameFromNonIpHost = (options) => {
   if (options.servername === void 0 && options.host && !net2.isIP(options.host)) {
@@ -43848,7 +43847,7 @@ function omit2(obj, ...keys) {
   return ret;
 }
 
-// node_modules/@trustify-da/trustify-da-javascript-client/dist/src/tools.js
+// ../../guacsec/trustify-da-javascript-client/dist/src/tools.js
 var import_packageurl_js = __toESM(require_packageurl_js(), 1);
 var RegexNotToBeLogged = /TRUSTIFY_DA_(.*_)?TOKEN|ex-.*-token|trust-.*-token/;
 function logValueFromObjects(key, opts, defValue) {
@@ -44007,7 +44006,7 @@ function setCustomHeader(headerName, headers, optsKey, opts) {
   }
 }
 
-// node_modules/@trustify-da/trustify-da-javascript-client/dist/src/batch_opts.js
+// ../../guacsec/trustify-da-javascript-client/dist/src/batch_opts.js
 function resolveContinueOnError(opts = {}) {
   if (typeof opts.continueOnError === "boolean") {
     return opts.continueOnError;
@@ -44029,7 +44028,7 @@ function resolveBatchMetadata(opts = {}) {
   return false;
 }
 
-// node_modules/@trustify-da/trustify-da-javascript-client/dist/src/package_version.js
+// ../../guacsec/trustify-da-javascript-client/dist/src/package_version.js
 import fs5 from "node:fs";
 import path4 from "node:path";
 import * as url from "url";
@@ -44052,15 +44051,15 @@ function getPackageVersion() {
   }
 }
 
-// node_modules/@trustify-da/trustify-da-javascript-client/dist/src/provider.js
+// ../../guacsec/trustify-da-javascript-client/dist/src/provider.js
 import path21 from "node:path";
 
-// node_modules/@trustify-da/trustify-da-javascript-client/dist/src/providers/golang_gomodules.js
+// ../../guacsec/trustify-da-javascript-client/dist/src/providers/golang_gomodules.js
 var import_packageurl_js3 = __toESM(require_packageurl_js(), 1);
 import fs7 from "node:fs";
 import path6 from "node:path";
 
-// node_modules/@trustify-da/trustify-da-javascript-client/dist/src/cyclone_dx_sbom.js
+// ../../guacsec/trustify-da-javascript-client/dist/src/cyclone_dx_sbom.js
 var import_packageurl_js2 = __toESM(require_packageurl_js(), 1);
 import { EOL as EOL2 } from "os";
 var PACKAGE_VERSION = getPackageVersion();
@@ -44360,7 +44359,7 @@ var CycloneDxSbom = class {
   }
 };
 
-// node_modules/@trustify-da/trustify-da-javascript-client/dist/src/sbom.js
+// ../../guacsec/trustify-da-javascript-client/dist/src/sbom.js
 var Sbom = class {
   sbomModel;
   #startTime;
@@ -44467,7 +44466,7 @@ var Sbom = class {
   }
 };
 
-// node_modules/@trustify-da/trustify-da-javascript-client/dist/src/workspace.js
+// ../../guacsec/trustify-da-javascript-client/dist/src/workspace.js
 var import_fast_glob = __toESM(require_out4(), 1);
 import fs6 from "node:fs";
 import path5 from "node:path";
@@ -44641,10 +44640,10 @@ async function discoverWorkspaceCrates(workspaceRoot, opts = {}) {
   return filterManifestPathsByDiscoveryIgnore(manifestPaths, root, ignorePatterns);
 }
 
-// node_modules/@trustify-da/trustify-da-javascript-client/dist/src/providers/gomod_parser.js
+// ../../guacsec/trustify-da-javascript-client/dist/src/providers/gomod_parser.js
 import { readFile } from "node:fs/promises";
 
-// node_modules/web-tree-sitter/web-tree-sitter.js
+// ../../guacsec/trustify-da-javascript-client/node_modules/web-tree-sitter/web-tree-sitter.js
 var __defProp2 = Object.defineProperty;
 var __name = (target, value) => __defProp2(target, "name", { value, configurable: true });
 var Edit = class {
@@ -48615,7 +48614,7 @@ var Query = class {
   }
 };
 
-// node_modules/@trustify-da/trustify-da-javascript-client/dist/src/providers/gomod_parser.js
+// ../../guacsec/trustify-da-javascript-client/dist/src/providers/gomod_parser.js
 var wasmUrl = new URL("./tree-sitter-gomod.wasm", import.meta.url);
 async function init2() {
   await Parser.init();
@@ -48631,7 +48630,7 @@ async function getRequireQuery() {
   return new Query(language, "(require_spec (module_path) @name (version) @version) @spec");
 }
 
-// node_modules/@trustify-da/trustify-da-javascript-client/dist/src/providers/golang_gomodules.js
+// ../../guacsec/trustify-da-javascript-client/dist/src/providers/golang_gomodules.js
 var golang_gomodules_default = { isSupported, validateLockFile, provideComponent, provideStack, readLicenseFromManifest, packageManagerName() {
   return "go";
 } };
@@ -48970,14 +48969,14 @@ async function discoverGoWorkspaceModules(workspaceRoot, opts = {}) {
   return filterManifestPathsByDiscoveryIgnore(manifestPaths, root, ignorePatterns);
 }
 
-// node_modules/@trustify-da/trustify-da-javascript-client/dist/src/providers/java_gradle.js
+// ../../guacsec/trustify-da-javascript-client/dist/src/providers/java_gradle.js
 import crypto from "node:crypto";
 import fs8 from "node:fs";
 import os from "node:os";
 import path8 from "node:path";
 import { EOL as EOL3 } from "os";
 
-// node_modules/smol-toml/dist/date.js
+// ../../guacsec/trustify-da-javascript-client/node_modules/smol-toml/dist/date.js
 var DATE_TIME_RE = /^(\d{4}-\d{2}-\d{2})?[T ]?(?:(\d{2}):\d{2}(?::\d{2}(?:\.\d+)?)?)?(Z|[-+]\d{2}:\d{2})?$/i;
 var TomlDate = class _TomlDate extends Date {
   #hasDate = false;
@@ -49069,7 +49068,7 @@ var TomlDate = class _TomlDate extends Date {
   }
 };
 
-// node_modules/smol-toml/dist/error.js
+// ../../guacsec/trustify-da-javascript-client/node_modules/smol-toml/dist/error.js
 function getLineColFromPtr(string, ptr) {
   let lines = string.slice(0, ptr).split(/\r\n|\n|\r/g);
   return [lines.length, lines.pop().length + 1];
@@ -49109,111 +49108,57 @@ ${codeblock}`, options);
   }
 };
 
-// node_modules/smol-toml/dist/util.js
-function indexOfNewline(str2, start2 = 0) {
-  let idx = str2.indexOf("\n", start2);
-  if (str2.charCodeAt(idx - 1) === 13)
-    idx--;
-  return idx;
-}
-function skipComment(ctx) {
-  for (; ctx.p < ctx.s.length; ctx.p++) {
-    let c = ctx.s.charCodeAt(ctx.p);
-    if (c === 10)
-      break;
-    if (c === 13 && ctx.s.charCodeAt(ctx.p + 1) === 10) {
-      ctx.p++;
-      break;
-    }
-    if (c < 32 && c !== 9 || c === 127) {
-      throw new TomlError("control characters are not allowed in comments", {
-        toml: ctx.s,
-        ptr: ctx.p
-      });
-    }
-  }
-}
-function skipVoid(ctx, banNewLines, banComments) {
-  let c;
-  while (1) {
-    while ((c = ctx.s.charCodeAt(ctx.p)) === 32 || c === 9 || !banNewLines && (c === 10 || c === 13 && ctx.s.charCodeAt(ctx.p + 1) === 10))
-      ctx.p++;
-    if (banComments || c !== 35)
-      break;
-    skipComment(ctx);
-  }
-}
-function skipUntil(ctx, sep3, end) {
-  let ptr = ctx.p;
-  if (!end) {
-    ptr = indexOfNewline(ctx.s, ptr);
-    ctx.p = ptr < 0 ? ctx.s.length : ptr;
-    return;
-  }
-  for (; ctx.p < ctx.s.length; ctx.p++) {
-    let c = ctx.s.charCodeAt(ctx.p);
-    if (c === 35) {
-      skipComment(ctx);
-    } else if (c === end || c === sep3) {
-      return;
-    }
-  }
-  throw new TomlError("cannot find end of structure", {
-    toml: ctx.s,
-    ptr
-  });
-}
-
-// node_modules/smol-toml/dist/primitive.js
+// ../../guacsec/trustify-da-javascript-client/node_modules/smol-toml/dist/primitive.js
 var INT_REGEX = /^((0x[0-9a-fA-F](_?[0-9a-fA-F])*)|(([+-]|0[ob])?\d(_?\d)*))$/;
 var FLOAT_REGEX = /^[+-]?\d(_?\d)*(\.\d(_?\d)*)?([eE][+-]?\d(_?\d)*)?$/;
 var LEADING_ZERO = /^[+-]?0[0-9_]/;
-function parseString(ctx) {
-  let start2 = ctx.p;
-  let c = ctx.s.charCodeAt(ctx.p++);
+function parseString(str2, ptr) {
+  let c = str2[ptr++];
   let first2 = c;
-  let isLiteral = c === 39;
-  let isMultiline = c === ctx.s.charCodeAt(ctx.p) && c === ctx.s.charCodeAt(ctx.p + 1);
+  let isLiteral = c === "'";
+  let isMultiline = c === str2[ptr] && c === str2[ptr + 1];
   if (isMultiline) {
-    if ((c = ctx.s.charCodeAt(ctx.p += 2)) === 10)
-      ctx.p++;
-    else if (c === 13 && ctx.s.charCodeAt(ctx.p + 1) === 10)
-      ctx.p += 2;
+    if (str2[ptr += 2] === "\n")
+      ptr++;
+    else if (str2[ptr] === "\r" && str2[ptr + 1] === "\n")
+      ptr += 2;
   }
   let parsed = "";
-  let sliceStart = ctx.p;
+  let sliceStart = ptr;
   let state = 0;
-  for (; ctx.p < ctx.s.length; ctx.p++) {
-    c = ctx.s.charCodeAt(ctx.p);
-    if (isMultiline && (c === 10 || c === 13 && ctx.s.charCodeAt(ctx.p + 1) === 10)) {
+  for (let i2 = ptr; i2 < str2.length; i2++) {
+    c = str2[i2];
+    if (isMultiline && (c === "\n" || c === "\r" && str2[i2 + 1] === "\n")) {
       state = state && 3;
-    } else if (c < 32 && c !== 9 || c === 127) {
+    } else if (c < " " && c !== "	" || c === "\x7F") {
       throw new TomlError("control characters are not allowed in strings", {
-        toml: ctx.s,
-        ptr: ctx.p
+        toml: str2,
+        ptr: i2
       });
-    } else if ((!state || state === 3) && c === first2 && (!isMultiline || ctx.s.charCodeAt(ctx.p + 1) === first2 && ctx.s.charCodeAt(ctx.p + 2) === first2)) {
+    } else if ((!state || state === 3) && c === first2 && (!isMultiline || str2[i2 + 1] === first2 && str2[i2 + 2] === first2)) {
       if (isMultiline) {
-        if (ctx.s.charCodeAt(ctx.p + 3) === first2)
-          ctx.p++;
-        if (ctx.s.charCodeAt(ctx.p + 3) === first2)
-          ctx.p++;
+        if (str2[i2 + 3] === first2)
+          i2++;
+        if (str2[i2 + 3] === first2)
+          i2++;
       }
-      if (!state)
-        parsed += ctx.s.slice(sliceStart, ctx.p);
-      ctx.p += isMultiline ? 3 : 1;
-      return parsed;
+      return [
+        // If we're in a newline escape still, then there's nothing to add.
+        // Also try to avoid concat if there's nothing to add to parsed, or nothing has been added to parsed.
+        state ? parsed : parsed + str2.slice(sliceStart, i2),
+        i2 + (isMultiline ? 3 : 1)
+      ];
     } else if (!state) {
-      if (!isLiteral && c === 92) {
-        parsed += ctx.s.slice(sliceStart, sliceStart = ctx.p);
+      if (!isLiteral && c === "\\") {
+        parsed += str2.slice(sliceStart, sliceStart = i2);
         state = 1;
       }
     } else if (state === 1) {
-      if (c === 120 || c === 117 || c === 85) {
+      if (c === "x" || c === "u" || c === "U") {
         let value = 0;
-        let len = c === 120 ? 2 : c === 117 ? 4 : 8;
-        for (let j = 0; j < len; j++, ctx.p++) {
-          let hex = ctx.s.charCodeAt(ctx.p + 1);
+        let len = c === "x" ? 2 : c === "u" ? 4 : 8;
+        for (let j = 0; j < len; j++, i2++) {
+          let hex = str2.charCodeAt(i2 + 1);
           let digit = (
             /* 0-9 */
             hex >= 48 && hex <= 57 ? hex - 48 : (
@@ -49225,68 +49170,57 @@ function parseString(ctx) {
             )
           );
           if (digit < 0)
-            throw new TomlError("invalid non-hex character in unicode escape", { toml: ctx.s, ptr: ctx.p + 1 });
+            throw new TomlError("invalid non-hex character in unicode escape", { toml: str2, ptr: i2 + 1 });
           value = value << 4 | digit;
         }
         if (value < 0 || value > 1114111 || value >= 55296 && value <= 57343) {
-          throw new TomlError("invalid unicode escape", { toml: ctx.s, ptr: ctx.p });
+          throw new TomlError("invalid unicode escape", { toml: str2, ptr: i2 });
         }
         parsed += String.fromCodePoint(value);
-        sliceStart = ctx.p + 1;
+        sliceStart = i2 + 1;
         state = 0;
-      } else if (c === 32 || c === 9) {
+      } else if (c === " " || c === "	") {
         state = 2;
       } else {
-        if (c === 98)
+        if (c === "b")
           parsed += "\b";
-        else if (c === 116)
+        else if (c === "t")
           parsed += "	";
-        else if (c === 110)
+        else if (c === "n")
           parsed += "\n";
-        else if (c === 102)
+        else if (c === "f")
           parsed += "\f";
-        else if (c === 114)
+        else if (c === "r")
           parsed += "\r";
-        else if (c === 101)
+        else if (c === "e")
           parsed += "\x1B";
-        else if (c === 34)
+        else if (c === '"')
           parsed += '"';
-        else if (c === 92)
+        else if (c === "\\")
           parsed += "\\";
         else
-          throw new TomlError("unrecognized escape sequence", { toml: ctx.s, ptr: ctx.p });
-        sliceStart = ctx.p + 1;
+          throw new TomlError("unrecognized escape sequence", { toml: str2, ptr: i2 });
+        sliceStart = i2 + 1;
         state = 0;
       }
-    } else if (c !== 32 && c !== 9) {
+    } else if (c !== " " && c !== "	") {
       if (state === 2) {
         throw new TomlError("invalid escape: only line-ending whitespace may be escaped", {
-          toml: ctx.s,
+          toml: str2,
           ptr: sliceStart
         });
       }
-      state = !isLiteral && c === 92 ? 1 : 0;
-      sliceStart = ctx.p;
+      state = !isLiteral && c === "\\" ? 1 : 0;
+      sliceStart = i2;
     }
   }
-  throw new TomlError("unfinished string", { toml: ctx.s, ptr: start2 });
+  throw new TomlError("unfinished string", { toml: str2, ptr });
 }
-function sliceAndTrimEndOf(ctx, start2, end) {
-  let value = ctx.s.slice(start2, end);
-  let commentIdx = value.indexOf("#");
-  if (commentIdx > 0) {
-    skipComment({ s: value, p: commentIdx, d: 0 });
-    value = value.slice(0, commentIdx);
-  }
-  return value.trimEnd();
-}
-function parseValue(ctx, integersAsBigInt, end) {
-  let ptr = ctx.p;
-  let err2 = { toml: ctx.s, ptr };
-  skipUntil(ctx, 44, end);
-  let value = sliceAndTrimEndOf(ctx, ptr, ctx.p);
-  if (!value)
-    throw new TomlError("incomplete declaration: value expected", err2);
+function parseValue(value, toml, ptr, integersAsBigInt) {
+  if (value === "true")
+    return true;
+  if (value === "false")
+    return false;
   if (value === "-inf")
     return -Infinity;
   if (value === "inf" || value === "+inf")
@@ -49298,16 +49232,25 @@ function parseValue(ctx, integersAsBigInt, end) {
   let isInt = INT_REGEX.test(value);
   if (isInt || FLOAT_REGEX.test(value)) {
     if (LEADING_ZERO.test(value)) {
-      throw new TomlError("leading zeroes are not allowed", err2);
+      throw new TomlError("leading zeroes are not allowed", {
+        toml,
+        ptr
+      });
     }
     value = value.replace(/_/g, "");
     let numeric = +value;
     if (isNaN(numeric)) {
-      throw new TomlError("invalid number", err2);
+      throw new TomlError("invalid number", {
+        toml,
+        ptr
+      });
     }
     if (isInt) {
       if ((isInt = !Number.isSafeInteger(numeric)) && !integersAsBigInt) {
-        throw new TomlError("integer value cannot be represented losslessly", err2);
+        throw new TomlError("integer value cannot be represented losslessly", {
+          toml,
+          ptr
+        });
       }
       if (isInt || integersAsBigInt === true)
         numeric = BigInt(value);
@@ -49315,187 +49258,282 @@ function parseValue(ctx, integersAsBigInt, end) {
     return numeric;
   }
   const date = new TomlDate(value);
-  if (!date.isValid())
-    throw new TomlError("invalid value", err2);
+  if (!date.isValid()) {
+    throw new TomlError("invalid value", {
+      toml,
+      ptr
+    });
+  }
   return date;
 }
 
-// node_modules/smol-toml/dist/extract.js
-function extractValue(ctx, end, integersAsBigInt) {
-  let ptr = ctx.p;
-  let c = ctx.s.charCodeAt(ptr);
-  if (c === 91 || c === 123) {
-    if (!ctx.d--) {
-      throw new TomlError("document contains excessively nested structures. aborting.", {
-        toml: ctx.s,
+// ../../guacsec/trustify-da-javascript-client/node_modules/smol-toml/dist/util.js
+function indexOfNewline(str2, start2 = 0, end = str2.length) {
+  let idx = str2.indexOf("\n", start2);
+  if (str2[idx - 1] === "\r")
+    idx--;
+  return idx <= end ? idx : -1;
+}
+function skipComment(str2, ptr) {
+  for (let i2 = ptr; i2 < str2.length; i2++) {
+    let c = str2[i2];
+    if (c === "\n")
+      return i2;
+    if (c === "\r" && str2[i2 + 1] === "\n")
+      return i2 + 1;
+    if (c < " " && c !== "	" || c === "\x7F") {
+      throw new TomlError("control characters are not allowed in comments", {
+        toml: str2,
         ptr
       });
     }
-    let value = c === 91 ? parseArray(ctx, integersAsBigInt) : parseInlineTable(ctx, integersAsBigInt);
-    ctx.d++;
-    return value;
   }
-  if (c === 34 || c === 39) {
-    return parseString(ctx);
+  return str2.length;
+}
+function skipVoid(str2, ptr, banNewLines, banComments) {
+  let c;
+  while (1) {
+    while ((c = str2[ptr]) === " " || c === "	" || !banNewLines && (c === "\n" || c === "\r" && str2[ptr + 1] === "\n"))
+      ptr++;
+    if (banComments || c !== "#")
+      break;
+    ptr = skipComment(str2, ptr);
   }
-  if (c === 116) {
-    if (ctx.s.charCodeAt(++ctx.p) !== 114 || ctx.s.charCodeAt(++ctx.p) !== 117 || ctx.s.charCodeAt(++ctx.p) !== 101)
-      throw new TomlError("invalid value", { toml: ctx.s, ptr });
-    ctx.p++;
-    return true;
+  return ptr;
+}
+function skipUntil(str2, ptr, sep3, end, banNewLines = false) {
+  if (!end) {
+    ptr = indexOfNewline(str2, ptr);
+    return ptr < 0 ? str2.length : ptr;
   }
-  if (c === 102) {
-    if (ctx.s.charCodeAt(++ctx.p) !== 97 || ctx.s.charCodeAt(++ctx.p) !== 108 || ctx.s.charCodeAt(++ctx.p) !== 115 || ctx.s.charCodeAt(++ctx.p) !== 101)
-      throw new TomlError("invalid value", { toml: ctx.s, ptr });
-    ctx.p++;
-    return false;
+  for (let i2 = ptr; i2 < str2.length; i2++) {
+    let c = str2[i2];
+    if (c === "#") {
+      i2 = indexOfNewline(str2, i2);
+      if (i2 < 0)
+        break;
+    } else if (c === sep3) {
+      return i2 + 1;
+    } else if (c === end || banNewLines && (c === "\n" || c === "\r" && str2[i2 + 1] === "\n")) {
+      return i2;
+    }
   }
-  return parseValue(ctx, integersAsBigInt, end);
+  throw new TomlError("cannot find end of structure", {
+    toml: str2,
+    ptr
+  });
 }
 
-// node_modules/smol-toml/dist/struct.js
+// ../../guacsec/trustify-da-javascript-client/node_modules/smol-toml/dist/extract.js
+function sliceAndTrimEndOf(str2, startPtr, endPtr) {
+  let value = str2.slice(startPtr, endPtr);
+  let commentIdx = value.indexOf("#");
+  if (commentIdx > -1) {
+    skipComment(str2, commentIdx);
+    value = value.slice(0, commentIdx);
+  }
+  return [value.trimEnd(), commentIdx];
+}
+function extractValue(str2, ptr, end, depth, integersAsBigInt) {
+  if (depth === 0) {
+    throw new TomlError("document contains excessively nested structures. aborting.", {
+      toml: str2,
+      ptr
+    });
+  }
+  let c = str2[ptr];
+  if (c === "[" || c === "{") {
+    let [value, endPtr2] = c === "[" ? parseArray(str2, ptr, depth, integersAsBigInt) : parseInlineTable(str2, ptr, depth, integersAsBigInt);
+    if (end) {
+      endPtr2 = skipVoid(str2, endPtr2);
+      if (str2[endPtr2] === ",")
+        endPtr2++;
+      else if (str2[endPtr2] !== end) {
+        throw new TomlError("expected comma or end of structure", {
+          toml: str2,
+          ptr: endPtr2
+        });
+      }
+    }
+    return [value, endPtr2];
+  }
+  if (c === '"' || c === "'") {
+    let [parsed, endPtr2] = parseString(str2, ptr);
+    if (end) {
+      endPtr2 = skipVoid(str2, endPtr2);
+      if (str2[endPtr2] && str2[endPtr2] !== "," && str2[endPtr2] !== end && str2[endPtr2] !== "\n" && str2[endPtr2] !== "\r") {
+        throw new TomlError("unexpected character encountered", {
+          toml: str2,
+          ptr: endPtr2
+        });
+      }
+      if (str2[endPtr2] === ",")
+        endPtr2++;
+    }
+    return [parsed, endPtr2];
+  }
+  let endPtr = skipUntil(str2, ptr, ",", end);
+  let slice = sliceAndTrimEndOf(str2, ptr, endPtr - (str2[endPtr - 1] === "," ? 1 : 0));
+  if (!slice[0]) {
+    throw new TomlError("incomplete key-value declaration: no value specified", {
+      toml: str2,
+      ptr
+    });
+  }
+  if (end && slice[1] > -1) {
+    endPtr = skipVoid(str2, ptr + slice[1]);
+    if (str2[endPtr] === ",")
+      endPtr++;
+  }
+  return [
+    parseValue(slice[0], str2, ptr, integersAsBigInt),
+    endPtr
+  ];
+}
+
+// ../../guacsec/trustify-da-javascript-client/node_modules/smol-toml/dist/struct.js
 var KEY_PART_RE = /^[a-zA-Z0-9-_]+[ \t]*$/;
-function parseKey(ctx, end = "=") {
-  let start2 = ctx.p;
-  let dot = start2 - 1;
+function parseKey(str2, ptr, end = "=") {
+  let dot = ptr - 1;
   let parsed = [];
-  let endPtr = ctx.s.indexOf(end, start2);
+  let endPtr = str2.indexOf(end, ptr);
   if (endPtr < 0) {
     throw new TomlError("incomplete key-value: cannot find end of key", {
-      toml: ctx.s,
-      ptr: start2
+      toml: str2,
+      ptr
     });
   }
   do {
-    let c = ctx.s.charCodeAt(ctx.p = ++dot);
-    if (c !== 32 && c !== 9) {
-      if (c === 34 || c === 39) {
-        if (c === ctx.s.charCodeAt(ctx.p + 1) && c === ctx.s.charCodeAt(ctx.p + 2)) {
+    let c = str2[ptr = ++dot];
+    if (c !== " " && c !== "	") {
+      if (c === '"' || c === "'") {
+        if (c === str2[ptr + 1] && c === str2[ptr + 2]) {
           throw new TomlError("multiline strings are not allowed in keys", {
-            toml: ctx.s,
-            ptr: ctx.p
+            toml: str2,
+            ptr
           });
         }
-        let part = parseString(ctx);
-        dot = ctx.s.indexOf(".", ctx.p);
-        let strEnd = ctx.s.slice(ctx.p, dot < 0 || dot > endPtr ? endPtr : dot);
+        let [part, eos] = parseString(str2, ptr);
+        dot = str2.indexOf(".", eos);
+        let strEnd = str2.slice(eos, dot < 0 || dot > endPtr ? endPtr : dot);
         let newLine = indexOfNewline(strEnd);
         if (newLine > -1) {
           throw new TomlError("newlines are not allowed in keys", {
-            toml: ctx.s,
-            ptr: newLine
+            toml: str2,
+            ptr: ptr + dot + newLine
           });
         }
         if (strEnd.trimStart()) {
           throw new TomlError("found extra tokens after the string part", {
-            toml: ctx.s,
-            ptr: ctx.p
+            toml: str2,
+            ptr: eos
           });
         }
-        if (endPtr < ctx.p) {
-          endPtr = ctx.s.indexOf(end, ctx.p);
+        if (endPtr < eos) {
+          endPtr = str2.indexOf(end, eos);
           if (endPtr < 0) {
             throw new TomlError("incomplete key-value: cannot find end of key", {
-              toml: ctx.s,
-              ptr: start2
+              toml: str2,
+              ptr
             });
           }
         }
         parsed.push(part);
       } else {
-        dot = ctx.s.indexOf(".", ctx.p);
-        let part = ctx.s.slice(ctx.p, dot < 0 || dot > endPtr ? endPtr : dot);
+        dot = str2.indexOf(".", ptr);
+        let part = str2.slice(ptr, dot < 0 || dot > endPtr ? endPtr : dot);
         if (!KEY_PART_RE.test(part)) {
           throw new TomlError("only letter, numbers, dashes and underscores are allowed in keys", {
-            toml: ctx.s,
-            ptr: ctx.p
+            toml: str2,
+            ptr
           });
         }
         parsed.push(part.trimEnd());
       }
     }
   } while (dot + 1 && dot < endPtr);
-  ctx.p = endPtr + 1;
-  skipVoid(ctx, true, true);
-  return parsed;
+  return [parsed, skipVoid(str2, endPtr + 1, true, true)];
 }
-function parseInlineTable(ctx, integersAsBigInt) {
+function parseInlineTable(str2, ptr, depth, integersAsBigInt) {
   let res = {};
   let seen = /* @__PURE__ */ new Set();
   let c;
-  ctx.p++;
-  while (ctx.p < ctx.s.length) {
-    skipVoid(ctx);
-    if ((c = ctx.s.charCodeAt(ctx.p)) === 125) {
-      ctx.p++;
-      return res;
-    }
-    let k;
-    let t = res;
-    let hasOwn = false;
-    let p = ctx.p;
-    let key = parseKey(ctx);
-    for (let i2 = 0; i2 < key.length; i2++) {
-      if (i2)
-        t = hasOwn ? t[k] : t[k] = {};
-      k = key[i2];
-      if ((hasOwn = Object.hasOwn(t, k)) && (typeof t[k] !== "object" || seen.has(t[k]))) {
+  ptr++;
+  while ((c = str2[ptr++]) !== "}" && c) {
+    if (c === ",") {
+      throw new TomlError("expected value, found comma", {
+        toml: str2,
+        ptr: ptr - 1
+      });
+    } else if (c === "#")
+      ptr = skipComment(str2, ptr);
+    else if (c !== " " && c !== "	" && c !== "\n" && c !== "\r") {
+      let k;
+      let t = res;
+      let hasOwn = false;
+      let [key, keyEndPtr] = parseKey(str2, ptr - 1);
+      for (let i2 = 0; i2 < key.length; i2++) {
+        if (i2)
+          t = hasOwn ? t[k] : t[k] = {};
+        k = key[i2];
+        if ((hasOwn = Object.hasOwn(t, k)) && (typeof t[k] !== "object" || seen.has(t[k]))) {
+          throw new TomlError("trying to redefine an already defined value", {
+            toml: str2,
+            ptr
+          });
+        }
+        if (!hasOwn && k === "__proto__") {
+          Object.defineProperty(t, k, { enumerable: true, configurable: true, writable: true });
+        }
+      }
+      if (hasOwn) {
         throw new TomlError("trying to redefine an already defined value", {
-          toml: ctx.s,
-          ptr: p
+          toml: str2,
+          ptr
         });
       }
-      if (!hasOwn && k === "__proto__") {
-        Object.defineProperty(t, k, { enumerable: true, configurable: true, writable: true });
-      }
-    }
-    if (hasOwn) {
-      throw new TomlError("trying to redefine an already defined value", {
-        toml: ctx.s,
-        ptr: ctx.p
-      });
-    }
-    let value = extractValue(ctx, 125, integersAsBigInt);
-    seen.add(t[k] = value);
-    skipVoid(ctx);
-    if ((c = ctx.s.charCodeAt(ctx.p++)) === 125) {
-      return res;
-    }
-    if (c !== 44) {
-      throw new TomlError("expected comma or end of structure", { toml: ctx.s, ptr: ctx.p - 1 });
+      let [value, valueEndPtr] = extractValue(str2, keyEndPtr, "}", depth - 1, integersAsBigInt);
+      seen.add(value);
+      t[k] = value;
+      ptr = valueEndPtr;
     }
   }
-  throw new TomlError("unfinished table encountered", {
-    toml: ctx.s,
-    ptr: ctx.p
-  });
+  if (!c) {
+    throw new TomlError("unfinished table encountered", {
+      toml: str2,
+      ptr
+    });
+  }
+  return [res, ptr];
 }
-function parseArray(ctx, integersAsBigInt) {
+function parseArray(str2, ptr, depth, integersAsBigInt) {
   let res = [];
   let c;
-  ctx.p++;
-  while (ctx.p < ctx.s.length) {
-    skipVoid(ctx);
-    if ((c = ctx.s.charCodeAt(ctx.p)) === 93) {
-      ctx.p++;
-      return res;
-    }
-    res.push(extractValue(ctx, 93, integersAsBigInt));
-    skipVoid(ctx);
-    if ((c = ctx.s.charCodeAt(ctx.p++)) === 93) {
-      return res;
-    }
-    if (c !== 44) {
-      throw new TomlError("expected comma or end of structure", { toml: ctx.s, ptr: ctx.p - 1 });
+  ptr++;
+  while ((c = str2[ptr++]) !== "]" && c) {
+    if (c === ",") {
+      throw new TomlError("expected value, found comma", {
+        toml: str2,
+        ptr: ptr - 1
+      });
+    } else if (c === "#")
+      ptr = skipComment(str2, ptr);
+    else if (c !== " " && c !== "	" && c !== "\n" && c !== "\r") {
+      let e = extractValue(str2, ptr - 1, "]", depth - 1, integersAsBigInt);
+      res.push(e[0]);
+      ptr = e[1];
     }
   }
-  throw new TomlError("unfinished array encountered", {
-    toml: ctx.s,
-    ptr: ctx.p
-  });
+  if (!c) {
+    throw new TomlError("unfinished array encountered", {
+      toml: str2,
+      ptr
+    });
+  }
+  return [res, ptr];
 }
 
-// node_modules/smol-toml/dist/parse.js
+// ../../guacsec/trustify-da-javascript-client/node_modules/smol-toml/dist/parse.js
 function peekTable(key, table, meta, type2) {
   let t = table;
   let m = meta;
@@ -49556,29 +49594,25 @@ function peekTable(key, table, meta, type2) {
   return [k, t, state.c];
 }
 function parse2(toml, { maxDepth = 1e3, integersAsBigInt } = {}) {
-  let ctx = { s: toml, p: 0, d: maxDepth };
   let res = {};
   let meta = {};
-  let tmp;
   let tbl = res;
   let m = meta;
-  skipVoid(ctx);
-  while (ctx.p < toml.length) {
-    if (toml.charCodeAt(ctx.p) === 91) {
-      let isTableArray = toml.charCodeAt(++ctx.p) === 91;
-      tmp = ctx.p += +isTableArray;
-      let k = parseKey(ctx, "]");
+  for (let ptr = skipVoid(toml, 0); ptr < toml.length; ) {
+    if (toml[ptr] === "[") {
+      let isTableArray = toml[++ptr] === "[";
+      let k = parseKey(toml, ptr += +isTableArray, "]");
       if (isTableArray) {
-        if (toml.charCodeAt(ctx.p - 1) !== 93) {
+        if (toml[k[1] - 1] !== "]") {
           throw new TomlError("expected end of table declaration", {
             toml,
-            ptr: ctx.p - 1
+            ptr: k[1] - 1
           });
         }
-        ctx.p++;
+        k[1]++;
       }
       let p = peekTable(
-        k,
+        k[0],
         res,
         meta,
         isTableArray ? 2 : 1
@@ -49587,16 +49621,16 @@ function parse2(toml, { maxDepth = 1e3, integersAsBigInt } = {}) {
       if (!p) {
         throw new TomlError("trying to redefine an already defined table or value", {
           toml,
-          ptr: tmp
+          ptr
         });
       }
       m = p[2];
       tbl = p[1];
+      ptr = k[1];
     } else {
-      tmp = ctx.p;
-      let k = parseKey(ctx);
+      let k = parseKey(toml, ptr);
       let p = peekTable(
-        k,
+        k[0],
         tbl,
         m,
         0
@@ -49605,24 +49639,26 @@ function parse2(toml, { maxDepth = 1e3, integersAsBigInt } = {}) {
       if (!p) {
         throw new TomlError("trying to redefine an already defined table or value", {
           toml,
-          ptr: tmp
+          ptr
         });
       }
-      p[1][p[0]] = extractValue(ctx, void 0, integersAsBigInt);
+      let v = extractValue(toml, k[1], void 0, maxDepth, integersAsBigInt);
+      p[1][p[0]] = v[0];
+      ptr = v[1];
     }
-    skipVoid(ctx, true);
-    if (ctx.p < toml.length && (tmp = toml.charCodeAt(ctx.p)) !== 10 && tmp !== 13) {
+    ptr = skipVoid(toml, ptr, true);
+    if (toml[ptr] && toml[ptr] !== "\n" && toml[ptr] !== "\r") {
       throw new TomlError("each key-value declaration must be followed by an end-of-line", {
         toml,
-        ptr: ctx.p
+        ptr
       });
     }
-    skipVoid(ctx);
+    ptr = skipVoid(toml, ptr);
   }
   return res;
 }
 
-// node_modules/@trustify-da/trustify-da-javascript-client/dist/src/providers/base_java.js
+// ../../guacsec/trustify-da-javascript-client/dist/src/providers/base_java.js
 var import_packageurl_js4 = __toESM(require_packageurl_js(), 1);
 import path7 from "node:path";
 var ecosystem_maven = "maven";
@@ -49822,7 +49858,7 @@ var Base_Java = class _Base_Java {
   }
 };
 
-// node_modules/@trustify-da/trustify-da-javascript-client/dist/src/providers/java_gradle.js
+// ../../guacsec/trustify-da-javascript-client/dist/src/providers/java_gradle.js
 var ROOT_PROJECT_KEY_NAME = "root-project";
 var TRUSTIFY_DA_IGNORE_REGEX_LINE = /.*\s?(exhortignore|trustify-da-ignore)\s*$/g;
 var TRUSTIFY_DA_IGNORE_REGEX = /\/\/\s?(exhortignore|trustify-da-ignore)/;
@@ -49851,13 +49887,17 @@ var Java_gradle = class extends Base_Java {
    * @returns {boolean} - return true if the manifest name-type is the supported type (example build.gradle)
    */
   isSupported(manifestName) {
-    return this._getManifestName() === manifestName;
+    return this._getManifestName() === manifestName || manifestName.endsWith(".versions.toml");
   }
   /**
    * @param {string} manifestDir - the directory where the manifest lies
+   * @returns {boolean}
    */
-  validateLockFile() {
-    return true;
+  validateLockFile(manifestDir) {
+    if (fs8.existsSync(path8.join(manifestDir, this._getManifestName()))) {
+      return true;
+    }
+    return fs8.existsSync(path8.join(path8.dirname(manifestDir), this._getManifestName()));
   }
   /**
    * Gradle manifests (build.gradle, build.gradle.kts) have no standard license field.
@@ -49873,10 +49913,31 @@ var Java_gradle = class extends Base_Java {
    * @param {{}} [opts={}] - optional various options to pass along the application
    * @returns {Provided}
    */
+  /**
+   * For TOML version catalogs, resolves to the parent build.gradle[.kts].
+   * Returns the manifest unchanged for regular Gradle build files.
+   * @param {string} manifest
+   * @returns {string}
+   * @throws {Error} if the TOML file has no parent build file
+   */
+  #resolveBuildManifest(manifest) {
+    if (!path8.basename(manifest).endsWith(".versions.toml")) {
+      return manifest;
+    }
+    const projectRoot = path8.dirname(path8.dirname(manifest));
+    for (const name2 of ["build.gradle.kts", "build.gradle"]) {
+      const candidate = path8.join(projectRoot, name2);
+      if (fs8.existsSync(candidate)) {
+        return candidate;
+      }
+    }
+    throw new Error(`No parent build.gradle found for ${path8.basename(manifest)}`);
+  }
   async provideStack(manifest, opts = {}) {
+    const buildManifest = this.#resolveBuildManifest(manifest);
     return {
       ecosystem: ecosystem_gradle,
-      content: await this.#createSbomStackAnalysis(manifest, opts),
+      content: await this.#createSbomStackAnalysis(buildManifest, opts),
       contentType: "application/vnd.cyclonedx+json"
     };
   }
@@ -49887,9 +49948,10 @@ var Java_gradle = class extends Base_Java {
    * @returns {Provided}
    */
   async provideComponent(manifest, opts = {}) {
+    const buildManifest = this.#resolveBuildManifest(manifest);
     return {
       ecosystem: ecosystem_gradle,
-      content: await this.#getSbomForComponentAnalysis(manifest, opts),
+      content: await this.#getSbomForComponentAnalysis(buildManifest, opts),
       contentType: "application/vnd.cyclonedx+json"
     };
   }
@@ -49986,7 +50048,7 @@ var Java_gradle = class extends Base_Java {
    * Create a Dot Graph dependency tree for a manifest path.
    * @param {string} manifest - path for pom.xml
    * @param {{}} [opts={}] - optional various options to pass along the application
-   * @returns {string} the Dot Graph content
+   * @returns {Promise<string>} the Dot Graph content
    * @private
    */
   async #createSbomStackAnalysis(manifest, opts = {}) {
@@ -50037,7 +50099,7 @@ var Java_gradle = class extends Base_Java {
   /**
    * Create a dependency list for a manifest content.
    * @param {{}} [opts={}] - optional various options to pass along the application
-   * @returns {string} - sbom string of the direct dependencies of build.gradle
+   * @returns {Promise<string>} - sbom string of the direct dependencies of build.gradle
    * @private
    */
   async #getSbomForComponentAnalysis(manifestPath, opts = {}) {
@@ -50436,7 +50498,7 @@ function parseComponentId(id) {
   return { group, name: name2, version };
 }
 
-// node_modules/@trustify-da/trustify-da-javascript-client/dist/src/providers/java_gradle_groovy.js
+// ../../guacsec/trustify-da-javascript-client/dist/src/providers/java_gradle_groovy.js
 var GROOVY_DEP_REGEX = /^[a-zA-Z]+\s/;
 var GRADLE_GROOVY_FILE = "build.gradle";
 var Java_gradle_groovy = class extends Java_gradle {
@@ -50454,7 +50516,7 @@ var Java_gradle_groovy = class extends Java_gradle {
   }
 };
 
-// node_modules/@trustify-da/trustify-da-javascript-client/dist/src/providers/java_gradle_kotlin.js
+// ../../guacsec/trustify-da-javascript-client/dist/src/providers/java_gradle_kotlin.js
 var KOTLIN_DEP_REGEX = /^[a-zA-Z]+\s?\((.*)\)/;
 var GRADLE_KOTLIN_FILE = "build.gradle.kts";
 var Java_gradle_kotlin = class extends Java_gradle {
@@ -50476,14 +50538,14 @@ var Java_gradle_kotlin = class extends Java_gradle {
   }
 };
 
-// node_modules/@trustify-da/trustify-da-javascript-client/dist/src/providers/java_maven.js
+// ../../guacsec/trustify-da-javascript-client/dist/src/providers/java_maven.js
 import crypto2 from "node:crypto";
 import fs9 from "node:fs";
 import os2 from "node:os";
 import path9 from "node:path";
 import { EOL as EOL4 } from "os";
 
-// node_modules/fast-xml-parser/src/util.js
+// ../../guacsec/trustify-da-javascript-client/node_modules/fast-xml-parser/src/util.js
 var nameStartChar = ":A-Za-z_\\u00C0-\\u00D6\\u00D8-\\u00F6\\u00F8-\\u02FF\\u0370-\\u037D\\u037F-\\u1FFF\\u200C-\\u200D\\u2070-\\u218F\\u2C00-\\u2FEF\\u3001-\\uD7FF\\uF900-\\uFDCF\\uFDF0-\\uFFFD";
 var nameChar = nameStartChar + "\\-.\\d\\u00B7\\u0300-\\u036F\\u203F-\\u2040";
 var nameRegexp = "[" + nameStartChar + "][" + nameChar + "]*";
@@ -50524,7 +50586,7 @@ var DANGEROUS_PROPERTY_NAMES = [
 ];
 var criticalProperties = ["__proto__", "constructor", "prototype"];
 
-// node_modules/fast-xml-parser/src/validator.js
+// ../../guacsec/trustify-da-javascript-client/node_modules/fast-xml-parser/src/validator.js
 var defaultOptions = {
   allowBooleanAttributes: false,
   //A tag can have attributes without any value
@@ -50746,55 +50808,9 @@ function readAttributeStr(xmlData, i2) {
     tagClosed
   };
 }
-function scanAttributeTokens(attrStr) {
-  const tokens = [];
-  const len = attrStr.length;
-  let i2 = 0;
-  while (i2 < len) {
-    const tokenStart = i2;
-    while (i2 < len && isWhiteSpace(attrStr[i2])) i2++;
-    if (i2 >= len) break;
-    if (attrStr[i2] === "=") {
-      i2 = tokenStart + 1;
-      continue;
-    }
-    const leadingWs = attrStr.slice(tokenStart, i2);
-    const nameStart = i2;
-    while (i2 < len && !isWhiteSpace(attrStr[i2]) && attrStr[i2] !== "=") i2++;
-    const name2 = attrStr.slice(nameStart, i2);
-    let equalsGroup;
-    let j = i2;
-    while (j < len && isWhiteSpace(attrStr[j])) j++;
-    if (j < len && attrStr[j] === "=") {
-      equalsGroup = attrStr.slice(i2, j + 1);
-      i2 = j + 1;
-    }
-    let quoteChar;
-    let value;
-    let k = i2;
-    while (k < len && isWhiteSpace(attrStr[k])) k++;
-    if (k < len && (attrStr[k] === '"' || attrStr[k] === "'")) {
-      const valueStart = k + 1;
-      const closeIdx = attrStr.indexOf(attrStr[k], valueStart);
-      if (closeIdx !== -1) {
-        quoteChar = attrStr[k];
-        value = attrStr.slice(valueStart, closeIdx);
-        i2 = closeIdx + 1;
-      }
-    }
-    const token = { startIndex: tokenStart };
-    token[1] = leadingWs;
-    token[2] = name2;
-    token[3] = equalsGroup;
-    token[4] = quoteChar !== void 0 ? true : void 0;
-    token[5] = quoteChar;
-    token[6] = value;
-    tokens.push(token);
-  }
-  return tokens;
-}
+var validAttrStrRegxp = new RegExp(`(\\s*)([^\\s=]+)(\\s*=)?(\\s*(['"])(([\\s\\S])*?)\\5)?`, "g");
 function validateAttributeString(attrStr, options) {
-  const matches = scanAttributeTokens(attrStr);
+  const matches = getAllMatches(attrStr, validAttrStrRegxp);
   const attrNames = {};
   for (let i2 = 0; i2 < matches.length; i2++) {
     if (matches[i2][1].length === 0) {
@@ -50876,7 +50892,7 @@ function getPositionFromMatch(match2) {
   return match2.startIndex + match2[1].length;
 }
 
-// node_modules/@nodable/entities/src/entities.js
+// ../../guacsec/trustify-da-javascript-client/node_modules/@nodable/entities/src/entities.js
 var CURRENCY = {
   cent: "\xA2",
   pound: "\xA3",
@@ -50924,7 +50940,7 @@ var COMMON_HTML = {
   frac34: "\xBE"
 };
 
-// node_modules/@nodable/entities/src/EntityDecoder.js
+// ../../guacsec/trustify-da-javascript-client/node_modules/@nodable/entities/src/EntityDecoder.js
 var ENTITY_ACTION = Object.freeze({
   /** Resolve and expand the entity normally. */
   ALLOW: "allow",
@@ -51368,7 +51384,7 @@ var EntityDecoder = class {
   }
 };
 
-// node_modules/fast-xml-parser/src/xmlparser/OptionsBuilder.js
+// ../../guacsec/trustify-da-javascript-client/node_modules/fast-xml-parser/src/xmlparser/OptionsBuilder.js
 var defaultOnDangerousProperty = (name2) => {
   if (DANGEROUS_PROPERTY_NAMES.includes(name2)) {
     return "__" + name2;
@@ -51503,7 +51519,7 @@ var buildOptions = function(options) {
   return built;
 };
 
-// node_modules/fast-xml-parser/src/xmlparser/xmlNode.js
+// ../../guacsec/trustify-da-javascript-client/node_modules/fast-xml-parser/src/xmlparser/xmlNode.js
 var METADATA_SYMBOL;
 if (typeof Symbol !== "function") {
   METADATA_SYMBOL = "@@xmlMetadata";
@@ -51527,17 +51543,8 @@ var XmlNode = class {
     } else {
       this.child.push({ [node.tagname]: node.child });
     }
-    this.addStartIndex(startIndex);
-  }
-  addStartIndex(startIndex) {
     if (startIndex !== void 0) {
       this.child[this.child.length - 1][METADATA_SYMBOL] = { startIndex };
-    }
-  }
-  addEndIndex(endIndex) {
-    const lastChild = this.child[this.child.length - 1];
-    if (lastChild !== void 0 && lastChild[METADATA_SYMBOL] !== void 0 && lastChild[METADATA_SYMBOL].endIndex === void 0) {
-      lastChild[METADATA_SYMBOL].endIndex = endIndex;
     }
   }
   /** symbol used for metadata */
@@ -51546,7 +51553,7 @@ var XmlNode = class {
   }
 };
 
-// node_modules/xml-naming/src/index.js
+// ../../guacsec/trustify-da-javascript-client/node_modules/fast-xml-parser/node_modules/xml-naming/src/index.js
 var nameStartChar10 = ":A-Za-z_\xC0-\xD6\xD8-\xF6\xF8-\u02FF\u0370-\u037D\u037F-\u0486\u0488-\u1FFF\u200C-\u200D\u2070-\u218F\u2C00-\u2FEF\u3001-\uD7FF\uF900-\uFDCF\uFDF0-\uFFFD";
 var nameChar10 = nameStartChar10 + "\\-\\.\\d\xB7\u0300-\u036F\u203F-\u2040";
 var nameStartChar11 = ":A-Za-z_\xC0-\u02FF\u0370-\u037D\u037F-\u0486\u0488-\u1FFF\u200C-\u200D\u2070-\u218F\u2C00-\u2FEF\u3001-\uD7FF\uF900-\uFDCF\uFDF0-\uFFFD\u{10000}-\u{EFFFF}";
@@ -51574,7 +51581,7 @@ var getRegexes = (xmlVersion = "1.0", asciiOnly = false) => {
 };
 var qName = (str2, { xmlVersion = "1.0", asciiOnly = false } = {}) => getRegexes(xmlVersion, asciiOnly).qName.test(str2);
 
-// node_modules/fast-xml-parser/src/xmlparser/DocTypeReader.js
+// ../../guacsec/trustify-da-javascript-client/node_modules/fast-xml-parser/src/xmlparser/DocTypeReader.js
 var DocTypeReader = class {
   constructor(options, xmlVersion) {
     this.suppressValidationErr = !options;
@@ -51591,19 +51598,8 @@ var DocTypeReader = class {
       i2 = i2 + 9;
       let angleBracketsCount = 1;
       let hasBody = false, comment = false;
-      let quoteChar = null;
       let exp = "";
       for (; i2 < xmlData.length; i2++) {
-        if (quoteChar !== null) {
-          if (xmlData[i2] === quoteChar) quoteChar = null;
-          exp += xmlData[i2];
-          continue;
-        }
-        if (!hasBody && !comment && (xmlData[i2] === '"' || xmlData[i2] === "'")) {
-          quoteChar = xmlData[i2];
-          exp += xmlData[i2];
-          continue;
-        }
         if (xmlData[i2] === "<" && !comment) {
           if (hasBody && hasSeq(xmlData, "!ENTITY", i2)) {
             i2 += 7;
@@ -51650,7 +51646,7 @@ var DocTypeReader = class {
           exp += xmlData[i2];
         }
       }
-      if (quoteChar !== null || angleBracketsCount !== 0) {
+      if (angleBracketsCount !== 0) {
         throw new Error(`Unclosed DOCTYPE`);
       }
     } else {
@@ -51865,7 +51861,7 @@ function validateEntityName2(name2, xmlVersion) {
     throw new Error(`Invalid entity name ${name2}`);
 }
 
-// node_modules/anynum/digitTable.js
+// ../../guacsec/trustify-da-javascript-client/node_modules/anynum/digitTable.js
 var SCRIPT_ZEROS = [
   // Basic Latin (ASCII) — included for completeness / pass-through
   48,
@@ -52015,7 +52011,7 @@ for (const zero of SCRIPT_ZEROS) {
   }
 }
 
-// node_modules/anynum/anynum.js
+// ../../guacsec/trustify-da-javascript-client/node_modules/anynum/anynum.js
 var CHAR_0 = 48;
 var CHAR_9 = 57;
 var CHAR_MINUS = 45;
@@ -52093,7 +52089,7 @@ function anynum(str2) {
 }
 var anynum_default = anynum;
 
-// node_modules/strnum/strnum.js
+// ../../guacsec/trustify-da-javascript-client/node_modules/strnum/strnum.js
 var hexRegex = /^[-+]?0x[a-fA-F0-9]+$/;
 var binRegex = /^0b[01]+$/;
 var octRegex = /^0o[0-7]+$/;
@@ -52197,9 +52193,7 @@ function resolveEnotation(str2, trimmedStr, options) {
 }
 function trimZeros(numStr) {
   if (numStr && numStr.indexOf(".") !== -1) {
-    let end = numStr.length;
-    while (end > 0 && numStr.charCodeAt(end - 1) === 48) end--;
-    numStr = numStr.slice(0, end);
+    numStr = numStr.replace(/0+$/, "");
     if (numStr === ".") numStr = "0";
     else if (numStr[0] === ".") numStr = "0" + numStr;
     else if (numStr[numStr.length - 1] === ".") numStr = numStr.substring(0, numStr.length - 1);
@@ -52231,7 +52225,7 @@ function handleInfinity(str2, num, options) {
   }
 }
 
-// node_modules/fast-xml-parser/src/ignoreAttributes.js
+// ../../guacsec/trustify-da-javascript-client/node_modules/fast-xml-parser/src/ignoreAttributes.js
 function getIgnoreAttributesFn(ignoreAttributes) {
   if (typeof ignoreAttributes === "function") {
     return ignoreAttributes;
@@ -52251,7 +52245,7 @@ function getIgnoreAttributesFn(ignoreAttributes) {
   return () => false;
 }
 
-// node_modules/path-expression-matcher/src/Expression.js
+// ../../guacsec/trustify-da-javascript-client/node_modules/path-expression-matcher/src/Expression.js
 var Expression = class {
   /**
    * Create a new Expression
@@ -52414,7 +52408,7 @@ var Expression = class {
   }
 };
 
-// node_modules/path-expression-matcher/src/ExpressionSet.js
+// ../../guacsec/trustify-da-javascript-client/node_modules/path-expression-matcher/src/ExpressionSet.js
 var ExpressionSet = class {
   constructor() {
     this._byDepthAndTag = /* @__PURE__ */ new Map();
@@ -52583,7 +52577,7 @@ var ExpressionSet = class {
   }
 };
 
-// node_modules/path-expression-matcher/src/Matcher.js
+// ../../guacsec/trustify-da-javascript-client/node_modules/path-expression-matcher/src/Matcher.js
 var MatcherView = class {
   /**
    * @param {Matcher} matcher - The parent Matcher instance to read from.
@@ -53100,7 +53094,7 @@ var Matcher = class {
   }
 };
 
-// node_modules/is-unsafe/src/contexts/html.js
+// ../../guacsec/trustify-da-javascript-client/node_modules/is-unsafe/src/contexts/html.js
 var HTML_PATTERNS = [
   {
     id: "html-script-open",
@@ -53193,7 +53187,7 @@ var HTML_PATTERNS = [
 ];
 var html_default = HTML_PATTERNS;
 
-// node_modules/is-unsafe/src/contexts/xml.js
+// ../../guacsec/trustify-da-javascript-client/node_modules/is-unsafe/src/contexts/xml.js
 var XML_PATTERNS = [
   {
     id: "xml-cdata-injection",
@@ -53261,7 +53255,7 @@ var XML_PATTERNS = [
 ];
 var xml_default = XML_PATTERNS;
 
-// node_modules/is-unsafe/src/contexts/svg.js
+// ../../guacsec/trustify-da-javascript-client/node_modules/is-unsafe/src/contexts/svg.js
 var SVG_PATTERNS = [
   {
     id: "svg-script-element",
@@ -53333,7 +53327,7 @@ var SVG_PATTERNS = [
 ];
 var svg_default = SVG_PATTERNS;
 
-// node_modules/is-unsafe/src/contexts/sql.js
+// ../../guacsec/trustify-da-javascript-client/node_modules/is-unsafe/src/contexts/sql.js
 var SQL_PATTERNS = [
   {
     id: "sql-block-comment-open",
@@ -53415,7 +53409,7 @@ var SQL_PATTERNS = [
 ];
 var sql_default = SQL_PATTERNS;
 
-// node_modules/is-unsafe/src/contexts/shell.js
+// ../../guacsec/trustify-da-javascript-client/node_modules/is-unsafe/src/contexts/shell.js
 var SHELL_PATTERNS = [
   {
     id: "shell-path-traversal-unix",
@@ -53513,7 +53507,7 @@ var SHELL_PATTERNS = [
 ];
 var shell_default = SHELL_PATTERNS;
 
-// node_modules/is-unsafe/src/contexts/redos.js
+// ../../guacsec/trustify-da-javascript-client/node_modules/is-unsafe/src/contexts/redos.js
 var REDOS_PATTERNS = [
   {
     id: "redos-nested-quantifier-plus",
@@ -53562,7 +53556,7 @@ var REDOS_PATTERNS = [
 ];
 var redos_default = REDOS_PATTERNS;
 
-// node_modules/is-unsafe/src/contexts/nosql.js
+// ../../guacsec/trustify-da-javascript-client/node_modules/is-unsafe/src/contexts/nosql.js
 var sep = `["'\\s]*:`;
 var NOSQL_PATTERNS = [
   // ─── MongoDB $ operator injection ────────────────────────────────────────
@@ -53652,7 +53646,7 @@ var NOSQL_PATTERNS = [
 ];
 var nosql_default = NOSQL_PATTERNS;
 
-// node_modules/is-unsafe/src/contexts/log.js
+// ../../guacsec/trustify-da-javascript-client/node_modules/is-unsafe/src/contexts/log.js
 var LOG_PATTERNS = [
   // ─── CRLF / newline injection ─────────────────────────────────────────────
   {
@@ -53726,7 +53720,7 @@ var LOG_PATTERNS = [
 ];
 var log_default = LOG_PATTERNS;
 
-// node_modules/is-unsafe/src/contexts/sql-strict.js
+// ../../guacsec/trustify-da-javascript-client/node_modules/is-unsafe/src/contexts/sql-strict.js
 var SQL_STRICT_EXTRA = [
   {
     id: "sql-line-comment",
@@ -53747,7 +53741,7 @@ var SQL_STRICT_EXTRA = [
 var SQL_STRICT_PATTERNS = [...sql_default, ...SQL_STRICT_EXTRA];
 var sql_strict_default = SQL_STRICT_PATTERNS;
 
-// node_modules/is-unsafe/src/index.js
+// ../../guacsec/trustify-da-javascript-client/node_modules/is-unsafe/src/index.js
 html_default.label = "HTML";
 xml_default.label = "XML";
 svg_default.label = "SVG";
@@ -53821,7 +53815,7 @@ function isUnsafe(value, context3) {
   return false;
 }
 
-// node_modules/fast-xml-parser/src/xmlparser/OrderedObjParser.js
+// ../../guacsec/trustify-da-javascript-client/node_modules/fast-xml-parser/src/xmlparser/OrderedObjParser.js
 function extractRawAttributes(prefixedAttrs, options) {
   if (!prefixedAttrs) return {};
   const attrs = options.attributesGroupName ? prefixedAttrs[options.attributesGroupName] : prefixedAttrs;
@@ -54048,10 +54042,7 @@ var parseXml = function(xmlData) {
         }
         this.matcher.pop();
         this.isCurrentNodeStopNode = false;
-        currentNode = this.tagsNodeStack.pop() || xmlObj;
-        if (options.captureMetaData && currentNode) {
-          currentNode.addEndIndex(closeIndex + 1);
-        }
+        currentNode = this.tagsNodeStack.pop();
         textData = "";
         i2 = closeIndex;
       } else if (c1 === 63) {
@@ -54072,9 +54063,6 @@ var parseXml = function(xmlData) {
             childNode[":@"] = attsMap;
           }
           this.addChild(currentNode, childNode, this.readonlyMatcher, i2);
-          if (options.captureMetaData) {
-            currentNode.addEndIndex(tagData.closeIndex + 2);
-          }
         }
         i2 = tagData.closeIndex + 1;
       } else if (c1 === 33 && xmlData.charCodeAt(i2 + 2) === 45 && xmlData.charCodeAt(i2 + 3) === 45) {
@@ -54176,9 +54164,6 @@ var parseXml = function(xmlData) {
           this.matcher.pop();
           this.isCurrentNodeStopNode = false;
           this.addChild(currentNode, childNode, this.readonlyMatcher, startIndex);
-          if (options.captureMetaData) {
-            currentNode.addEndIndex(i2 + 1);
-          }
         } else {
           if (isSelfClosing) {
             ({ tagName, tagExp } = transformTagName(options.transformTagName, tagName, tagExp, options));
@@ -54187,9 +54172,6 @@ var parseXml = function(xmlData) {
               childNode[":@"] = prefixedAttrs;
             }
             this.addChild(currentNode, childNode, this.readonlyMatcher, startIndex);
-            if (options.captureMetaData) {
-              currentNode.addEndIndex(closeIndex + 1);
-            }
             this.matcher.pop();
             this.isCurrentNodeStopNode = false;
           } else if (options.unpairedTagsSet.has(tagName)) {
@@ -54198,9 +54180,6 @@ var parseXml = function(xmlData) {
               childNode[":@"] = prefixedAttrs;
             }
             this.addChild(currentNode, childNode, this.readonlyMatcher, startIndex);
-            if (options.captureMetaData) {
-              currentNode.addEndIndex(result.closeIndex + 1);
-            }
             this.matcher.pop();
             this.isCurrentNodeStopNode = false;
             i2 = result.closeIndex;
@@ -54426,7 +54405,7 @@ function sanitizeName(name2, options) {
   return name2;
 }
 
-// node_modules/fast-xml-parser/src/xmlparser/node2json.js
+// ../../guacsec/trustify-da-javascript-client/node_modules/fast-xml-parser/src/xmlparser/node2json.js
 var METADATA_SYMBOL2 = XmlNode.getMetaDataSymbol();
 function stripAttributePrefix(attrs, prefix) {
   if (!attrs || typeof attrs !== "object") return {};
@@ -54538,7 +54517,7 @@ function isLeafTag(obj, options) {
   return false;
 }
 
-// node_modules/fast-xml-parser/src/xmlparser/XMLParser.js
+// ../../guacsec/trustify-da-javascript-client/node_modules/fast-xml-parser/src/xmlparser/XMLParser.js
 var XMLParser = class {
   constructor(options) {
     this.externalEntities = {};
@@ -54598,7 +54577,7 @@ var XMLParser = class {
   }
 };
 
-// node_modules/@trustify-da/trustify-da-javascript-client/dist/src/providers/java_maven.js
+// ../../guacsec/trustify-da-javascript-client/dist/src/providers/java_maven.js
 var IGNORE_MARKER_REGEX = /(exhortignore|trustify-da-ignore)(?![\w-])/;
 var Java_maven = class _Java_maven extends Base_Java {
   constructor() {
@@ -55053,11 +55032,11 @@ function parseMavenModuleList(raw) {
   return list.map((s) => String(s).trim()).filter(Boolean);
 }
 
-// node_modules/@trustify-da/trustify-da-javascript-client/dist/src/providers/javascript_bun.js
+// ../../guacsec/trustify-da-javascript-client/dist/src/providers/javascript_bun.js
 import fs12 from "node:fs";
 import path11 from "node:path";
 
-// node_modules/jsonc-parser/lib/esm/impl/scanner.js
+// ../../guacsec/trustify-da-javascript-client/node_modules/jsonc-parser/lib/esm/impl/scanner.js
 function createScanner(text, ignoreTrivia = false) {
   const len = text.length;
   let pos = 0, value = "", tokenOffset = 0, token = 16, lineNumber = 0, lineStartOffset = 0, tokenLineStartOffset = 0, prevTokenLineStartOffset = 0, scanError = 0;
@@ -55478,7 +55457,7 @@ var CharacterCodes;
   CharacterCodes2[CharacterCodes2["tab"] = 9] = "tab";
 })(CharacterCodes || (CharacterCodes = {}));
 
-// node_modules/jsonc-parser/lib/esm/impl/string-intern.js
+// ../../guacsec/trustify-da-javascript-client/node_modules/jsonc-parser/lib/esm/impl/string-intern.js
 var cachedSpaces = new Array(20).fill(0).map((_, index) => {
   return " ".repeat(index);
 });
@@ -55508,7 +55487,7 @@ var cachedBreakLinesWithSpaces = {
   }
 };
 
-// node_modules/jsonc-parser/lib/esm/impl/parser.js
+// ../../guacsec/trustify-da-javascript-client/node_modules/jsonc-parser/lib/esm/impl/parser.js
 var ParseOptions;
 (function(ParseOptions2) {
   ParseOptions2.DEFAULT = {
@@ -55864,7 +55843,7 @@ function visit(text, visitor, options = ParseOptions.DEFAULT) {
   return true;
 }
 
-// node_modules/jsonc-parser/lib/esm/main.js
+// ../../guacsec/trustify-da-javascript-client/node_modules/jsonc-parser/lib/esm/main.js
 var ScanError;
 (function(ScanError2) {
   ScanError2[ScanError2["None"] = 0] = "None";
@@ -55916,12 +55895,12 @@ var ParseErrorCode;
   ParseErrorCode2[ParseErrorCode2["InvalidCharacter"] = 16] = "InvalidCharacter";
 })(ParseErrorCode || (ParseErrorCode = {}));
 
-// node_modules/@trustify-da/trustify-da-javascript-client/dist/src/providers/base_javascript.js
+// ../../guacsec/trustify-da-javascript-client/dist/src/providers/base_javascript.js
 import fs11 from "node:fs";
 import os3 from "node:os";
 import path10 from "node:path";
 
-// node_modules/@trustify-da/trustify-da-javascript-client/dist/src/providers/manifest.js
+// ../../guacsec/trustify-da-javascript-client/dist/src/providers/manifest.js
 import fs10 from "fs";
 var DEFAULT_VERSION = "v0.0.0";
 var Manifest = class {
@@ -55936,6 +55915,8 @@ var Manifest = class {
     this.optionalDependencies = content.optionalDependencies || {};
     this.name = content.name;
     this.version = content.version || DEFAULT_VERSION;
+    this.packageManager = content.packageManager;
+    this.devEngines = content.devEngines;
     this.ignored = this.loadIgnored(content);
   }
   loadManifest() {
@@ -55987,7 +55968,7 @@ var Manifest = class {
   }
 };
 
-// node_modules/@trustify-da/trustify-da-javascript-client/dist/src/providers/base_javascript.js
+// ../../guacsec/trustify-da-javascript-client/dist/src/providers/base_javascript.js
 var purlType = "npm";
 var SRI_ALG_LABELS = {
   sha1: "SHA-1",
@@ -56034,11 +56015,12 @@ var Base_javascript = class {
   * Sets up the provider with the manifest path and options
   * @param {string} manifestPath - Path to the package.json manifest file
   * @param {Object} opts - Configuration options for the provider
+  * @param {Manifest} [manifest] - Manifest already loaded by the provider
   * @protected
   */
-  _setUp(manifestPath, opts) {
+  _setUp(manifestPath, opts, manifest) {
     this.#cmd = getCustomPath(this._cmdName(), opts);
-    this.#manifest = new Manifest(manifestPath);
+    this.#manifest = manifest ?? new Manifest(manifestPath);
     this.#ecosystem = purlType;
   }
   /**
@@ -56273,9 +56255,9 @@ var Base_javascript = class {
   * @protected
   */
   _buildDependencyTree(includeTransitive, opts = {}) {
-    this._version();
     const manifestDir = path10.dirname(this.#manifest.manifestPath);
     const cmdDir = this._findLockFileDir(manifestDir, opts) || manifestDir;
+    this._version({ cwd: cmdDir });
     this._createLockFile(cmdDir);
     this._loadHashes(cmdDir);
     let output = this.#executeListCmd(includeTransitive, cmdDir);
@@ -56408,11 +56390,12 @@ var Base_javascript = class {
   }
   /**
   * Gets the version of the package manager
+  * @param {Object} [opts={}] - Command options, including the workspace directory
   * @returns {string} The version string of the package manager
   * @protected
   */
-  _version() {
-    return this.#invokeCommand(["--version"]);
+  _version(opts = {}) {
+    return this.#invokeCommand(["--version"], opts);
   }
   /**
   * Creates or updates the lock file for the package manager
@@ -56500,7 +56483,7 @@ var Base_javascript = class {
   }
 };
 
-// node_modules/@trustify-da/trustify-da-javascript-client/dist/src/providers/javascript_bun.js
+// ../../guacsec/trustify-da-javascript-client/dist/src/providers/javascript_bun.js
 var Javascript_bun = class extends Base_javascript {
   _lockFileName() {
     return "bun.lock";
@@ -56638,7 +56621,7 @@ var Javascript_bun = class extends Base_javascript {
   }
 };
 
-// node_modules/@trustify-da/trustify-da-javascript-client/dist/src/providers/javascript_npm.js
+// ../../guacsec/trustify-da-javascript-client/dist/src/providers/javascript_npm.js
 import fs13 from "node:fs";
 import path12 from "node:path";
 var Javascript_npm = class extends Base_javascript {
@@ -56709,7 +56692,7 @@ var Javascript_npm = class extends Base_javascript {
   }
 };
 
-// node_modules/@trustify-da/trustify-da-javascript-client/dist/src/providers/javascript_pnpm.js
+// ../../guacsec/trustify-da-javascript-client/dist/src/providers/javascript_pnpm.js
 import fs14 from "node:fs";
 import path13 from "node:path";
 var Javascript_pnpm = class extends Base_javascript {
@@ -56776,15 +56759,15 @@ var Javascript_pnpm = class extends Base_javascript {
   }
 };
 
-// node_modules/@trustify-da/trustify-da-javascript-client/dist/src/providers/javascript_yarn.js
+// ../../guacsec/trustify-da-javascript-client/dist/src/providers/javascript_yarn.js
 var import_parsers = __toESM(require_lib2(), 1);
 import fs15 from "node:fs";
 import path14 from "node:path";
 
-// node_modules/@trustify-da/trustify-da-javascript-client/dist/src/providers/processors/yarn_berry_processor.js
+// ../../guacsec/trustify-da-javascript-client/dist/src/providers/processors/yarn_berry_processor.js
 import { EOL as EOL5 } from "os";
 
-// node_modules/@trustify-da/trustify-da-javascript-client/dist/src/providers/processors/yarn_processor.js
+// ../../guacsec/trustify-da-javascript-client/dist/src/providers/processors/yarn_processor.js
 var Yarn_processor = class {
   constructor(manifest) {
     this._manifest = manifest;
@@ -56806,7 +56789,7 @@ var Yarn_processor = class {
   }
 };
 
-// node_modules/@trustify-da/trustify-da-javascript-client/dist/src/providers/processors/yarn_berry_processor.js
+// ../../guacsec/trustify-da-javascript-client/dist/src/providers/processors/yarn_berry_processor.js
 var Yarn_berry_processor = class _Yarn_berry_processor extends Yarn_processor {
   static LOCATOR_PATTERN = /^(@?[^@]+(?:\/[^@]+)?)@npm:(.+)$/;
   static VIRTUAL_LOCATOR_PATTERN = /^(@?[^@]+(?:\/[^@]+)?)@virtual:[^#]+#npm:(.+)$/;
@@ -56999,7 +56982,7 @@ var Yarn_berry_processor = class _Yarn_berry_processor extends Yarn_processor {
   }
 };
 
-// node_modules/@trustify-da/trustify-da-javascript-client/dist/src/providers/processors/yarn_classic_processor.js
+// ../../guacsec/trustify-da-javascript-client/dist/src/providers/processors/yarn_classic_processor.js
 var Yarn_classic_processor = class extends Yarn_processor {
   /**
    * Returns the command arguments for listing dependencies
@@ -57102,7 +57085,7 @@ var NodeMetaData = class {
   }
 };
 
-// node_modules/@trustify-da/trustify-da-javascript-client/dist/src/providers/javascript_yarn.js
+// ../../guacsec/trustify-da-javascript-client/dist/src/providers/javascript_yarn.js
 function berryChecksumToHash(checksum) {
   if (typeof checksum !== "string") {
     return null;
@@ -57179,8 +57162,19 @@ var Javascript_yarn = class _Javascript_yarn extends Base_javascript {
     return this.#processor.updateLockFileCmdArgs(manifestDir);
   }
   _setUp(manifestPath, opts) {
-    super._setUp(manifestPath, opts);
-    const version = this._version() ?? "";
+    const manifest = new Manifest(manifestPath);
+    const yarnPathKey = "TRUSTIFY_DA_YARN_PATH";
+    const hasExplicitPath = typeof opts[yarnPathKey] === "string" && opts[yarnPathKey] !== "" || environmentVariableIsPopulated(yarnPathKey);
+    const resolvedOpts = { ...opts };
+    if (!hasExplicitPath) {
+      const autoPath = this._detectYarnPath(manifestPath, opts, manifest);
+      if (autoPath) {
+        resolvedOpts[yarnPathKey] = fs15.existsSync(autoPath) ? autoPath : this._cmdName();
+      }
+    }
+    super._setUp(manifestPath, resolvedOpts, manifest);
+    const versionDir = this._findLockFileDir(path14.dirname(manifestPath), opts) || path14.dirname(manifestPath);
+    const version = this._version({ cwd: versionDir }) ?? "";
     const matches = _Javascript_yarn.VERSION_PATTERN.exec(version);
     if (matches?.length !== 2) {
       throw new Error(`Invalid Yarn version format: ${version}`);
@@ -57188,6 +57182,43 @@ var Javascript_yarn = class _Javascript_yarn extends Base_javascript {
     const isClassic = matches[1] === "1";
     this._setEcosystem(isClassic ? "yarn-classic" : "yarn-berry");
     this.#processor = isClassic ? new Yarn_classic_processor(this._getManifest()) : new Yarn_berry_processor(this._getManifest());
+  }
+  /**
+   * Detects the correct Yarn binary path based on project manifest signals.
+   * Uses the same workspace lock file lookup as dependency analysis.
+   * Uses the container's Corepack shim for project declarations, falling back to PATH during setup.
+   * Otherwise checks .yarnrc.yml and the lockfile format before defaulting to Classic.
+   * @param {string} manifestPath - Path to package.json
+   * @param {Object} [opts={}] - Options, including TRUSTIFY_DA_WORKSPACE_DIR
+   * @param {Manifest} [manifest] - Manifest already loaded during setup
+   * @returns {string|null} Yarn command name or absolute binary path, or null if not a Yarn project
+   * @private
+   */
+  _detectYarnPath(manifestPath, opts = {}, manifest) {
+    const manifestName = path14.basename(manifestPath);
+    if (manifestName !== "package.json") {
+      return null;
+    }
+    const manifestDir = this._findLockFileDir(path14.dirname(manifestPath), opts);
+    if (!manifestDir) {
+      return null;
+    }
+    try {
+      const rootManifestPath = path14.join(manifestDir, "package.json");
+      const rootManifest = manifest && path14.resolve(manifest.manifestPath) === rootManifestPath ? manifest : JSON.parse(fs15.readFileSync(rootManifestPath, "utf-8"));
+      const packageManager = rootManifest.packageManager;
+      const devPackageManager = rootManifest.devEngines?.packageManager;
+      if (packageManager != null || devPackageManager != null) {
+        const isYarn = packageManager != null ? typeof packageManager === "string" && packageManager.startsWith("yarn@") : devPackageManager.name === "yarn";
+        return isYarn ? "/usr/local/corepack/bin/yarn" : null;
+      }
+    } catch (err2) {
+    }
+    const yarnrcPath = path14.join(manifestDir, ".yarnrc.yml");
+    if (fs15.existsSync(yarnrcPath) || (0, import_parsers.parseSyml)(fs15.readFileSync(path14.join(manifestDir, this._lockFileName()), "utf-8")).__metadata) {
+      return "/usr/local/bin/yarn-berry";
+    }
+    return "/usr/local/bin/yarn-classic";
   }
   _getRootDependencies(depTree) {
     return this.#processor.getRootDependencies(depTree);
@@ -57200,16 +57231,16 @@ var Javascript_yarn = class _Javascript_yarn extends Base_javascript {
   }
 };
 
-// node_modules/@trustify-da/trustify-da-javascript-client/dist/src/providers/oci_dockerfile.js
+// ../../guacsec/trustify-da-javascript-client/dist/src/providers/oci_dockerfile.js
 import fs16 from "node:fs";
 
-// node_modules/@trustify-da/trustify-da-javascript-client/dist/src/oci_image/utils.js
+// ../../guacsec/trustify-da-javascript-client/dist/src/oci_image/utils.js
 import { delimiter, sep as sep2 } from "path";
 
-// node_modules/@trustify-da/trustify-da-javascript-client/dist/src/oci_image/images.js
+// ../../guacsec/trustify-da-javascript-client/dist/src/oci_image/images.js
 var import_packageurl_js5 = __toESM(require_packageurl_js(), 1);
 
-// node_modules/@trustify-da/trustify-da-javascript-client/dist/src/oci_image/platform.js
+// ../../guacsec/trustify-da-javascript-client/dist/src/oci_image/platform.js
 var Platform = class _Platform {
   static EMPTY = new _Platform(null, null, null);
   // $GOOS and $GOARCH
@@ -57338,7 +57369,7 @@ var Platform = class _Platform {
   }
 };
 
-// node_modules/@trustify-da/trustify-da-javascript-client/dist/src/oci_image/images.js
+// ../../guacsec/trustify-da-javascript-client/dist/src/oci_image/images.js
 var Image = class _Image {
   static NAME_COMPONENT_REGEXP = "[a-z0-9]+(?:(?:(?:[._]|__|[-]*)[a-z0-9]+)+)?";
   static DOMAIN_COMPONENT_REGEXP = "(?:[a-zA-Z0-9]|[a-zA-Z0-9][a-zA-Z0-9-]*[a-zA-Z0-9])";
@@ -57583,7 +57614,7 @@ var ImageRef = class _ImageRef {
   }
 };
 
-// node_modules/@trustify-da/trustify-da-javascript-client/dist/src/oci_image/utils.js
+// ../../guacsec/trustify-da-javascript-client/dist/src/oci_image/utils.js
 var TRUSTIFY_DA_SYFT_CONFIG_PATH = "TRUSTIFY_DA_SYFT_CONFIG_PATH";
 var TRUSTIFY_DA_SYFT_IMAGE_SOURCE = "TRUSTIFY_DA_SYFT_IMAGE_SOURCE";
 var TRUSTIFY_DA_IMAGE_PLATFORM = "TRUSTIFY_DA_IMAGE_PLATFORM";
@@ -57929,7 +57960,7 @@ function getImageSource(name2) {
   return source;
 }
 
-// node_modules/@trustify-da/trustify-da-javascript-client/dist/src/providers/containerfile_parser.js
+// ../../guacsec/trustify-da-javascript-client/dist/src/providers/containerfile_parser.js
 import { readFile as readFile2 } from "node:fs/promises";
 var wasmUrl2 = new URL("./tree-sitter-containerfile.wasm", import.meta.url);
 async function init3() {
@@ -57950,7 +57981,7 @@ async function getArgQuery() {
   return new Query(language, "(arg_instruction (arg_pair name: (_) @name default: (_) @default))");
 }
 
-// node_modules/@trustify-da/trustify-da-javascript-client/dist/src/providers/oci_dockerfile.js
+// ../../guacsec/trustify-da-javascript-client/dist/src/providers/oci_dockerfile.js
 var oci_dockerfile_default = { isSupported: isSupported2, validateLockFile: validateLockFile2, provideComponent: provideComponent2, provideStack: provideStack2, readLicenseFromManifest: readLicenseFromManifest2, packageManagerName() {
   return "oci";
 } };
@@ -58055,16 +58086,16 @@ function readLicenseFromManifest2() {
   return null;
 }
 
-// node_modules/@trustify-da/trustify-da-javascript-client/dist/src/providers/python_pip.js
+// ../../guacsec/trustify-da-javascript-client/dist/src/providers/python_pip.js
 var import_packageurl_js6 = __toESM(require_packageurl_js(), 1);
 import fs18 from "node:fs";
 
-// node_modules/@trustify-da/trustify-da-javascript-client/dist/src/providers/python_controller.js
+// ../../guacsec/trustify-da-javascript-client/dist/src/providers/python_controller.js
 import fs17 from "node:fs";
 import path15 from "node:path";
 import os4, { EOL as EOL6 } from "os";
 
-// node_modules/@trustify-da/trustify-da-javascript-client/dist/src/providers/requirements_parser.js
+// ../../guacsec/trustify-da-javascript-client/dist/src/providers/requirements_parser.js
 import { readFile as readFile3 } from "node:fs/promises";
 var wasmUrl3 = new URL("./tree-sitter-requirements.wasm", import.meta.url);
 async function init4() {
@@ -58089,7 +58120,7 @@ async function getPinnedVersionQuery() {
   return new Query(language, '(version_spec (version_cmp) @cmp (version) @version (#eq? @cmp "=="))');
 }
 
-// node_modules/@trustify-da/trustify-da-javascript-client/dist/src/providers/python_controller.js
+// ../../guacsec/trustify-da-javascript-client/dist/src/providers/python_controller.js
 function getPipFreezeOutput() {
   try {
     return environmentVariableIsPopulated("TRUSTIFY_DA_PIP_FREEZE") ? new Buffer.from(process.env["TRUSTIFY_DA_PIP_FREEZE"], "base64").toString("ascii") : invokeCommand(this.pathToPipBin, ["freeze", "--all"]).toString();
@@ -58469,7 +58500,7 @@ function getDependencyTreeJsonFromPipDepTree(pipPath, pythonPath) {
   return JSON.parse(dependencyTree);
 }
 
-// node_modules/@trustify-da/trustify-da-javascript-client/dist/src/providers/python_pip.js
+// ../../guacsec/trustify-da-javascript-client/dist/src/providers/python_pip.js
 var python_pip_default = { isSupported: isSupported3, validateLockFile: validateLockFile3, provideComponent: provideComponent3, provideStack: provideStack3, readLicenseFromManifest: readLicenseFromManifest3, packageManagerName() {
   return "pip";
 } };
@@ -58601,11 +58632,11 @@ function toPurl3(name2, version) {
   return new import_packageurl_js6.PackageURL("pypi", void 0, name2, version, void 0, void 0);
 }
 
-// node_modules/@trustify-da/trustify-da-javascript-client/dist/src/providers/python_pip_pyproject.js
+// ../../guacsec/trustify-da-javascript-client/dist/src/providers/python_pip_pyproject.js
 import fs20 from "node:fs";
 import path17 from "node:path";
 
-// node_modules/@trustify-da/trustify-da-javascript-client/dist/src/providers/base_pyproject.js
+// ../../guacsec/trustify-da-javascript-client/dist/src/providers/base_pyproject.js
 var import_packageurl_js7 = __toESM(require_packageurl_js(), 1);
 import fs19 from "node:fs";
 import path16 from "node:path";
@@ -58914,7 +58945,7 @@ var Base_pyproject = class {
   }
 };
 
-// node_modules/@trustify-da/trustify-da-javascript-client/dist/src/providers/python_pip_pyproject.js
+// ../../guacsec/trustify-da-javascript-client/dist/src/providers/python_pip_pyproject.js
 var Python_pip_pyproject = class extends Base_pyproject {
   /** @returns {string} */
   _lockFileName() {
@@ -59057,11 +59088,11 @@ var Python_pip_pyproject = class extends Base_pyproject {
   }
 };
 
-// node_modules/@trustify-da/trustify-da-javascript-client/dist/src/providers/python_poetry.js
+// ../../guacsec/trustify-da-javascript-client/dist/src/providers/python_poetry.js
 import fs21 from "node:fs";
 import path18 from "node:path";
 
-// node_modules/@trustify-da/trustify-da-javascript-client/dist/src/providers/marker_evaluator.js
+// ../../guacsec/trustify-da-javascript-client/dist/src/providers/marker_evaluator.js
 import os5 from "node:os";
 var cachedPythonVersions = void 0;
 function getPythonVersions() {
@@ -59235,7 +59266,7 @@ function splitLogical(expr, sep3) {
   return parts2.filter((p) => p.trim());
 }
 
-// node_modules/@trustify-da/trustify-da-javascript-client/dist/src/providers/python_poetry.js
+// ../../guacsec/trustify-da-javascript-client/dist/src/providers/python_poetry.js
 var Python_poetry = class extends Base_pyproject {
   /**
    * Poetry has no native workspace/monorepo support (python-poetry/poetry#2270).
@@ -59509,7 +59540,7 @@ var Python_poetry = class extends Base_pyproject {
   }
 };
 
-// node_modules/@trustify-da/trustify-da-javascript-client/dist/src/providers/python_uv.js
+// ../../guacsec/trustify-da-javascript-client/dist/src/providers/python_uv.js
 var import_fast_glob2 = __toESM(require_out4(), 1);
 import fs22 from "node:fs";
 import path19 from "node:path";
@@ -59760,7 +59791,7 @@ function hasProjectMetadata(parsedPyProject) {
   }
 }
 
-// node_modules/@trustify-da/trustify-da-javascript-client/dist/src/providers/rust_cargo.js
+// ../../guacsec/trustify-da-javascript-client/dist/src/providers/rust_cargo.js
 var import_packageurl_js8 = __toESM(require_packageurl_js(), 1);
 import fs23 from "node:fs";
 import path20 from "node:path";
@@ -60147,7 +60178,7 @@ function toPathDepPurl(name2, version) {
   return new import_packageurl_js8.PackageURL(ecosystem5, void 0, name2, version, { repository_url: "local" }, void 0);
 }
 
-// node_modules/@trustify-da/trustify-da-javascript-client/dist/src/provider.js
+// ../../guacsec/trustify-da-javascript-client/dist/src/provider.js
 var availableProviders = [
   new Java_maven(),
   new Java_gradle_groovy(),
@@ -60185,7 +60216,7 @@ function match(manifest, providers, opts = {}) {
   return provider;
 }
 
-// node_modules/@trustify-da/trustify-da-javascript-client/dist/src/remediation.js
+// ../../guacsec/trustify-da-javascript-client/dist/src/remediation.js
 var import_packageurl_js9 = __toESM(require_packageurl_js(), 1);
 function getMajorVersion(version) {
   return version.split(".")[0] || "";
@@ -60489,7 +60520,7 @@ function maxSeverity(vulnerabilities) {
   return (vulnerabilities || []).reduce((acc, v) => higherSeverity(acc, v.severity), "UNKNOWN");
 }
 
-// node_modules/@trustify-da/trustify-da-javascript-client/dist/src/remediation_report.js
+// ../../guacsec/trustify-da-javascript-client/dist/src/remediation_report.js
 function generateReport(remediations, options = {}) {
   const { groupBy = "dependency", format: format2 = "markdown", dryRun = false } = options;
   if (!remediations || remediations.length === 0) {
@@ -60599,7 +60630,7 @@ function formatAdvisoryLinks(advisories) {
   return advisories.map((adv) => adv.url ? `[${adv.id}](${adv.url})` : adv.id).join(", ");
 }
 
-// node_modules/@trustify-da/trustify-da-javascript-client/dist/src/index.js
+// ../../guacsec/trustify-da-javascript-client/dist/src/index.js
 var src_default = { componentAnalysis, stackAnalysis, stackAnalysisBatch, imageAnalysis, validateToken, generateSbom };
 function logOptionsAndEnvironmentsVariables(alongsideText, valueToBePrinted) {
   if (process.env["TRUSTIFY_DA_DEBUG"] === "true") {
@@ -60828,7 +60859,7 @@ async function validateToken(opts = {}) {
   return await analysis_default.validateToken(theUrl, opts);
 }
 
-// node_modules/@trustify-da/trustify-da-javascript-client/dist/src/license/licenses_api.js
+// ../../guacsec/trustify-da-javascript-client/dist/src/license/licenses_api.js
 async function getLicenseDetails(spdxId, opts = {}) {
   if (!spdxId) {
     return null;
@@ -60892,7 +60923,7 @@ function licensesFromReport(analysisReport, purls = []) {
   return normalizeLicensesResponse(analysisReport.licenses, purls);
 }
 
-// node_modules/@trustify-da/trustify-da-javascript-client/dist/src/license/project_license.js
+// ../../guacsec/trustify-da-javascript-client/dist/src/license/project_license.js
 import fs25 from "node:fs";
 import path23 from "node:path";
 function getProjectLicense(manifestPath) {
@@ -60932,7 +60963,7 @@ async function identifyLicense(licenseFilePath, opts = {}) {
   }
 }
 
-// node_modules/@trustify-da/trustify-da-javascript-client/dist/src/license/index.js
+// ../../guacsec/trustify-da-javascript-client/dist/src/license/index.js
 async function runLicenseCheck(sbomContent, manifestPath, url2, opts = {}, analysisResult = null) {
   const projectLicense = getProjectLicense(manifestPath);
   const licenseFilePath = findLicenseFilePath(manifestPath);
@@ -61005,7 +61036,7 @@ async function runLicenseCheck(sbomContent, manifestPath, url2, opts = {}, analy
   };
 }
 
-// node_modules/@trustify-da/trustify-da-javascript-client/dist/src/analysis.js
+// ../../guacsec/trustify-da-javascript-client/dist/src/analysis.js
 var CYCLONEDX_JSON_MEDIA_TYPE = "application/vnd.cyclonedx+json";
 var analysis_default = { requestComponent, requestStack, requestStackBatch, requestImages, validateToken: validateToken2, appendAnalysisQueryParams };
 async function requestStack(provider, manifest, url2, html = false, opts = {}) {
@@ -61211,7 +61242,7 @@ async function validateToken2(url2, opts = {}) {
   return resp.status;
 }
 
-// node_modules/@trustify-da/trustify-da-javascript-client/dist/src/updaters/maven_updater.js
+// ../../guacsec/trustify-da-javascript-client/dist/src/updaters/maven_updater.js
 function extractTagContent(block, tagName) {
   const openTag = `<${tagName}>`;
   const closeTag = `</${tagName}>`;
@@ -61507,7 +61538,7 @@ function updateMavenVersions(pomContent, versionChanges) {
   return { content: result, applied, skipped };
 }
 
-// node_modules/@trustify-da/trustify-da-javascript-client/dist/src/updaters/toml_updater.js
+// ../../guacsec/trustify-da-javascript-client/dist/src/updaters/toml_updater.js
 function tomlChangeKey(manifestPath, applied) {
   return applied.type === "ref" ? `toml:ref:${manifestPath}:${applied.versionRef}` : `toml:inline:${manifestPath}:${applied.alias}`;
 }
@@ -61725,7 +61756,7 @@ function escapeRegExp(str2) {
   return str2.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 }
 
-// node_modules/@trustify-da/trustify-da-javascript-client/dist/src/remediate.js
+// ../../guacsec/trustify-da-javascript-client/dist/src/remediate.js
 var SKIP_DIRS = /* @__PURE__ */ new Set(["node_modules", ".git"]);
 var MANIFEST_TYPES = [
   {
