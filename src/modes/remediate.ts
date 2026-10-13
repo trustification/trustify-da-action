@@ -135,10 +135,11 @@ async function runBundleMode(
   core.setOutput('changed-files', changedFiles.join(','));
 
   const baseSha = await getHeadSha(workspacePath);
+  const manifestLabel = changedFiles.join(', ');
   const group: PRGroup = {
     key: 'bundle',
     branchName: `${config.branchPrefix}/remediate-vulnerabilities`,
-    title: 'fix: remediate dependency vulnerabilities',
+    title: `fix: remediate dependency vulnerabilities in ${manifestLabel}`,
     remediations,
   };
 
@@ -320,8 +321,7 @@ async function createPRForGroup(
     },
     {
       mode: 'remediate',
-      groupBy: config.groupBy || 'bundle',
-      dependency: group.key,
+      branch: group.branchName,
     }
   );
 
