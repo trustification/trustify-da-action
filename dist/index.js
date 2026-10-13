@@ -61913,8 +61913,7 @@ async function createPRForGroup(group, config, changedFilesList, workspacePath, 
     },
     {
       mode: "remediate",
-      groupBy: config.groupBy || "bundle",
-      dependency: group.key
+      branch: group.branchName
     }
   );
   core3.info(`PR created/updated: ${prUrl}`);

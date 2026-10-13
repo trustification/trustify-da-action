@@ -321,8 +321,7 @@ async function createPRForGroup(
     },
     {
       mode: 'remediate',
-      groupBy: config.groupBy || 'bundle',
-      dependency: group.key,
+      branch: group.branchName,
     }
   );
 
