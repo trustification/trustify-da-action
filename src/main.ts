@@ -2,7 +2,6 @@ import * as core from '@actions/core';
 import { loadConfig } from './config.js';
 import { runRemediateMode } from './modes/remediate.js';
 import { runCheckMode } from './modes/check.js';
-import { runSbomMode } from './modes/sbom.js';
 
 /**
  * Reads inputs, loads configuration, and dispatches to the appropriate mode
@@ -27,12 +26,9 @@ export async function run(): Promise<void> {
       case 'check':
         await runCheckMode(config);
         break;
-      case 'sbom':
-        await runSbomMode(config);
-        break;
       default:
         throw new Error(
-          `Invalid mode: ${mode}. Must be one of: remediate, check, sbom`
+          `Invalid mode: ${mode}. Must be one of: remediate, check`
         );
     }
   } catch (error) {

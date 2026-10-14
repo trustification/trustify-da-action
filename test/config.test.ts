@@ -7,14 +7,14 @@ vi.mock('@trustify-da/trustify-da-javascript-client/dist/src/config.js', () => (
   resolveConfig: vi.fn(),
 }));
 
-import { resolveConfig } from '@trustify-da/trustify-da-javascript-client/dist/src/config.js';
+import { resolveConfig, ResolvedConfig } from '@trustify-da/trustify-da-javascript-client/dist/src/config.js';
 
 function mockInputs(inputs: Record<string, string>) {
   vi.mocked(core.getInput).mockImplementation((name: string) => inputs[name] ?? '');
 }
 
 /** Returns a ResolvedConfig-shaped object with sensible defaults. */
-function resolvedDefaults(overrides: Record<string, unknown> = {}) {
+function resolvedDefaults(overrides: Partial<ResolvedConfig> = {}): ResolvedConfig {
   return {
     backendUrl: null,
     backendUrlSource: 'default' as const,
@@ -51,14 +51,12 @@ describe('loadConfig', () => {
       mode: 'remediate',
       'backend-url': 'https://from-input',
       providers: 'osv,snyk',
-      sources: 'pom.xml',
       'group-by': 'dependency',
     });
     vi.mocked(resolveConfig).mockReturnValue(
       resolvedDefaults({
         backendUrl: 'https://from-input',
         providers: ['osv', 'snyk'],
-        sources: ['pom.xml'],
         groupBy: 'dependency',
       }),
     );
@@ -70,14 +68,12 @@ describe('loadConfig', () => {
       {
         backendUrl: 'https://from-input',
         providers: 'osv,snyk',
-        sources: 'pom.xml',
         groupBy: 'dependency',
       },
       expect.any(Object),
     );
     expect(config.backendUrl).toBe('https://from-input');
     expect(config.providers).toEqual(['osv', 'snyk']);
-    expect(config.sources).toEqual(['pom.xml']);
     expect(config.groupBy).toBe('dependency');
   });
 
@@ -118,14 +114,6 @@ describe('loadConfig', () => {
       expect.any(Object),
     );
     delete process.env.GITHUB_WORKSPACE;
-  });
-
-  it('splits and trims sbom-targets', async () => {
-    mockInputs({ mode: 'sbom', 'sbom-targets': 'artifact, oci' });
-
-    const config = await loadConfig();
-
-    expect(config.sbomTargets).toEqual(['artifact', 'oci']);
   });
 
   describe('labels merging', () => {
