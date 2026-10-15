@@ -7,7 +7,7 @@ branding:
 
 inputs:
   mode:
-    description: 'Operation mode: remediate or check'
+    description: 'Operation mode: remediate, check, or sbom'
     required: true
   backend-url:
     description: 'Trustify backend URL (also settable via .trustify-da.yml or TRUSTIFY_DA_BACKEND_URL env var)'
@@ -52,6 +52,8 @@ outputs:
     description: 'Number of license policy conflicts detected (check mode)'
   pr-url:
     description: 'URL of created/updated PR (remediate mode)'
+  sbom-path:
+    description: 'Path to generated SBOM (sbom mode)'
   changed-files:
     description: 'Comma-separated list of files modified (remediate mode)'
 

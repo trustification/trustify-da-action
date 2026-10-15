@@ -17600,12 +17600,12 @@ var require_lib = __commonJS({
             throw new Error("Client has already been disposed.");
           }
           const parsedUrl = new URL(requestUrl);
-          let info4 = this._prepareRequest(verb, parsedUrl, headers);
+          let info5 = this._prepareRequest(verb, parsedUrl, headers);
           const maxTries = this._allowRetries && RetryableHttpVerbs.includes(verb) ? this._maxRetries + 1 : 1;
           let numTries = 0;
           let response;
           do {
-            response = yield this.requestRaw(info4, data);
+            response = yield this.requestRaw(info5, data);
             if (response && response.message && response.message.statusCode === HttpCodes.Unauthorized) {
               let authenticationHandler;
               for (const handler2 of this.handlers) {
@@ -17615,7 +17615,7 @@ var require_lib = __commonJS({
                 }
               }
               if (authenticationHandler) {
-                return authenticationHandler.handleAuthentication(this, info4, data);
+                return authenticationHandler.handleAuthentication(this, info5, data);
               } else {
                 return response;
               }
@@ -17638,8 +17638,8 @@ var require_lib = __commonJS({
                   }
                 }
               }
-              info4 = this._prepareRequest(verb, parsedRedirectUrl, headers);
-              response = yield this.requestRaw(info4, data);
+              info5 = this._prepareRequest(verb, parsedRedirectUrl, headers);
+              response = yield this.requestRaw(info5, data);
               redirectsRemaining--;
             }
             if (!response.message.statusCode || !HttpResponseRetryCodes.includes(response.message.statusCode)) {
@@ -17668,7 +17668,7 @@ var require_lib = __commonJS({
        * @param info
        * @param data
        */
-      requestRaw(info4, data) {
+      requestRaw(info5, data) {
         return __awaiter(this, void 0, void 0, function* () {
           return new Promise((resolve2, reject) => {
             function callbackForResult(err2, res) {
@@ -17680,7 +17680,7 @@ var require_lib = __commonJS({
                 resolve2(res);
               }
             }
-            this.requestRawWithCallback(info4, data, callbackForResult);
+            this.requestRawWithCallback(info5, data, callbackForResult);
           });
         });
       }
@@ -17690,12 +17690,12 @@ var require_lib = __commonJS({
        * @param data
        * @param onResult
        */
-      requestRawWithCallback(info4, data, onResult) {
+      requestRawWithCallback(info5, data, onResult) {
         if (typeof data === "string") {
-          if (!info4.options.headers) {
-            info4.options.headers = {};
+          if (!info5.options.headers) {
+            info5.options.headers = {};
           }
-          info4.options.headers["Content-Length"] = Buffer.byteLength(data, "utf8");
+          info5.options.headers["Content-Length"] = Buffer.byteLength(data, "utf8");
         }
         let callbackCalled = false;
         function handleResult(err2, res) {
@@ -17704,7 +17704,7 @@ var require_lib = __commonJS({
             onResult(err2, res);
           }
         }
-        const req = info4.httpModule.request(info4.options, (msg) => {
+        const req = info5.httpModule.request(info5.options, (msg) => {
           const res = new HttpClientResponse(msg);
           handleResult(void 0, res);
         });
@@ -17716,7 +17716,7 @@ var require_lib = __commonJS({
           if (socket) {
             socket.end();
           }
-          handleResult(new Error(`Request timeout: ${info4.options.path}`));
+          handleResult(new Error(`Request timeout: ${info5.options.path}`));
         });
         req.on("error", function(err2) {
           handleResult(err2);
@@ -17752,27 +17752,27 @@ var require_lib = __commonJS({
         return this._getProxyAgentDispatcher(parsedUrl, proxyUrl);
       }
       _prepareRequest(method, requestUrl, headers) {
-        const info4 = {};
-        info4.parsedUrl = requestUrl;
-        const usingSsl = info4.parsedUrl.protocol === "https:";
-        info4.httpModule = usingSsl ? https : http2;
+        const info5 = {};
+        info5.parsedUrl = requestUrl;
+        const usingSsl = info5.parsedUrl.protocol === "https:";
+        info5.httpModule = usingSsl ? https : http2;
         const defaultPort = usingSsl ? 443 : 80;
-        info4.options = {};
-        info4.options.host = info4.parsedUrl.hostname;
-        info4.options.port = info4.parsedUrl.port ? parseInt(info4.parsedUrl.port) : defaultPort;
-        info4.options.path = (info4.parsedUrl.pathname || "") + (info4.parsedUrl.search || "");
-        info4.options.method = method;
-        info4.options.headers = this._mergeHeaders(headers);
+        info5.options = {};
+        info5.options.host = info5.parsedUrl.hostname;
+        info5.options.port = info5.parsedUrl.port ? parseInt(info5.parsedUrl.port) : defaultPort;
+        info5.options.path = (info5.parsedUrl.pathname || "") + (info5.parsedUrl.search || "");
+        info5.options.method = method;
+        info5.options.headers = this._mergeHeaders(headers);
         if (this.userAgent != null) {
-          info4.options.headers["user-agent"] = this.userAgent;
+          info5.options.headers["user-agent"] = this.userAgent;
         }
-        info4.options.agent = this._getAgent(info4.parsedUrl);
+        info5.options.agent = this._getAgent(info5.parsedUrl);
         if (this.handlers) {
           for (const handler2 of this.handlers) {
-            handler2.prepareRequest(info4.options);
+            handler2.prepareRequest(info5.options);
           }
         }
-        return info4;
+        return info5;
       }
       _mergeHeaders(headers) {
         if (this.requestOptions && this.requestOptions.headers) {
@@ -19754,18 +19754,18 @@ Support boolean input list: \`true | True | TRUE | false | False | FALSE\``);
       (0, command_1.issueCommand)("error", (0, utils_1.toCommandProperties)(properties), message instanceof Error ? message.toString() : message);
     }
     exports2.error = error;
-    function warning4(message, properties = {}) {
+    function warning5(message, properties = {}) {
       (0, command_1.issueCommand)("warning", (0, utils_1.toCommandProperties)(properties), message instanceof Error ? message.toString() : message);
     }
-    exports2.warning = warning4;
+    exports2.warning = warning5;
     function notice(message, properties = {}) {
       (0, command_1.issueCommand)("notice", (0, utils_1.toCommandProperties)(properties), message instanceof Error ? message.toString() : message);
     }
     exports2.notice = notice;
-    function info4(message) {
+    function info5(message) {
       process.stdout.write(message + os6.EOL);
     }
-    exports2.info = info4;
+    exports2.info = info5;
     function startGroup(name2) {
       (0, command_1.issue)("group", name2);
     }
@@ -29971,7 +29971,7 @@ var require_partial = __commonJS({
       match(filepath) {
         const parts2 = filepath.split("/");
         const levels = parts2.length;
-        const patterns = this._storage.filter((info4) => !info4.complete || info4.segments.length > levels);
+        const patterns = this._storage.filter((info5) => !info5.complete || info5.segments.length > levels);
         for (const pattern of patterns) {
           const section = pattern.sections[0];
           if (!pattern.complete && levels > section.length) {
@@ -39842,7 +39842,7 @@ var require_lib2 = __commonJS({
 });
 
 // src/main.ts
-var core5 = __toESM(require_core(), 1);
+var core6 = __toESM(require_core(), 1);
 
 // src/config.ts
 var core = __toESM(require_core(), 1);
@@ -57426,7 +57426,7 @@ function getImagePlatform(opts = {}) {
   }
   return null;
 }
-function hostInfo(engine, info4, opts = {}) {
+function hostInfo(engine, info5, opts = {}) {
   const exec3 = getCustomPath(engine, opts);
   let output;
   try {
@@ -57440,8 +57440,8 @@ function hostInfo(engine, info4, opts = {}) {
   const lines = output.split("\n");
   for (const line of lines) {
     const trimmedLine = line.trimStart();
-    if (trimmedLine.startsWith(`${info4}:`)) {
-      return line.trim().substring(info4.length + 1).trim();
+    if (trimmedLine.startsWith(`${info5}:`)) {
+      return line.trim().substring(info5.length + 1).trim();
     }
   }
   return "";
@@ -62183,16 +62183,16 @@ function aggregateLicenses(result, report, manifestPath) {
   }
   result.hasLicenseData = true;
   const projectCategory = resolveProjectCategory(manifestPath);
-  for (const [purl, info4] of licenseMap) {
-    const category = info4.category || "UNKNOWN";
+  for (const [purl, info5] of licenseMap) {
+    const category = info5.category || "UNKNOWN";
     result.licenseCategoryCounts.set(
       category,
       (result.licenseCategoryCounts.get(category) ?? 0) + 1
     );
-    if (getCompatibility(projectCategory, info4.category) === "incompatible") {
+    if (getCompatibility(projectCategory, info5.category) === "incompatible") {
       result.licenseConflicts.push({
         purl,
-        licenses: info4.licenses,
+        licenses: info5.licenses,
         reason: `${category} license is incompatible with the project's ${projectCategory} license`
       });
     }
@@ -62328,10 +62328,18 @@ function evaluateFailOn(config, result) {
   }
 }
 
+// src/modes/sbom.ts
+var core5 = __toESM(require_core(), 1);
+async function runSbomMode(config) {
+  core5.info("Running in sbom mode");
+  core5.info(`Configuration: ${JSON.stringify(config, null, 2)}`);
+  core5.warning("SBOM mode is not yet implemented");
+}
+
 // src/main.ts
 async function run2() {
   try {
-    const mode = core5.getInput("mode", { required: true });
+    const mode = core6.getInput("mode", { required: true });
     const config = await loadConfig2();
     switch (mode.toLowerCase()) {
       case "remediate":
@@ -62340,16 +62348,19 @@ async function run2() {
       case "check":
         await runCheckMode(config);
         break;
+      case "sbom":
+        await runSbomMode(config);
+        break;
       default:
         throw new Error(
-          `Invalid mode: ${mode}. Must be one of: remediate, check`
+          `Invalid mode: ${mode}. Must be one of: remediate, check, sbom`
         );
     }
   } catch (error) {
     if (error instanceof Error) {
-      core5.setFailed(error.message);
+      core6.setFailed(error.message);
     } else {
-      core5.setFailed("An unexpected error occurred");
+      core6.setFailed("An unexpected error occurred");
     }
   }
 }

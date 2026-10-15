@@ -2,6 +2,7 @@ import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { run } from '../src/main.js';
 import { runRemediateMode } from '../src/modes/remediate.js';
 import { runCheckMode } from '../src/modes/check.js';
+import { runSbomMode } from '../src/modes/sbom.js';
 
 // @actions/core is deliberately NOT mocked: we drive the action through its real
 // surface — inputs via INPUT_* env vars, results via the workflow commands it
@@ -11,10 +12,12 @@ import { runCheckMode } from '../src/modes/check.js';
 // real, so this also covers the main -> config wiring.
 vi.mock('../src/modes/remediate.js', () => ({ runRemediateMode: vi.fn() }));
 vi.mock('../src/modes/check.js', () => ({ runCheckMode: vi.fn() }));
+vi.mock('../src/modes/sbom.js', () => ({ runSbomMode: vi.fn() }));
 
 const HANDLERS = {
   remediate: vi.mocked(runRemediateMode),
   check: vi.mocked(runCheckMode),
+  sbom: vi.mocked(runSbomMode),
 };
 type Mode = keyof typeof HANDLERS;
 

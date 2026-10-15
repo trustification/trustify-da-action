@@ -4,10 +4,11 @@ Analyze dependencies for vulnerabilities and license conflicts using Trustify.
 
 ## Features
 
-This action supports two operation modes:
+This action supports three operation modes:
 
 - **remediate**: Automatically creates PRs with dependency updates to fix vulnerabilities
 - **check**: Analyzes dependencies and reports findings as a step summary with structured outputs for policy gates
+- **sbom**: Generates a Software Bill of Materials (SBOM)
 
 ## Usage
 
@@ -48,7 +49,7 @@ Requires `contents: read` permission.
 
 | Input | Description | Required | Default |
 |-------|-------------|----------|---------|
-| `mode` | Operation mode: `remediate` or `check` | Yes | - |
+| `mode` | Operation mode: `remediate`, `check`, or `sbom` | Yes | - |
 | `backend-url` | Trustify backend URL (also settable via `.trustify-da.yml` or `TRUSTIFY_DA_BACKEND_URL` env var) | Yes | - |
 | `providers` | Comma-separated list of vulnerability providers | No | - |
 | `group-by` | Grouping strategy for remediation PRs: `dependency` or `bundle` | No | `dependency` |
@@ -70,6 +71,7 @@ Requires `contents: read` permission.
 | `low-count` | Number of low severity vulnerabilities found | check |
 | `license-conflicts` | Number of license policy conflicts detected | check |
 | `pr-url` | URL of created/updated PR(s) | remediate |
+| `sbom-path` | Path to generated SBOM | sbom |
 | `changed-files` | Comma-separated list of files modified | remediate |
 
 ## Permissions
@@ -78,6 +80,7 @@ Requires `contents: read` permission.
 |------|---------------------|
 | `check` | `contents: read` |
 | `remediate` | `contents: write`, `pull-requests: write` |
+| `sbom` | `contents: read` |
 
 Remediate mode also requires `GITHUB_TOKEN` to be available (via the `env` key or the repository's default token).
 
