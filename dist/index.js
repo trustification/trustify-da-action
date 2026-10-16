@@ -19754,10 +19754,10 @@ Support boolean input list: \`true | True | TRUE | false | False | FALSE\``);
       (0, command_1.issueCommand)("error", (0, utils_1.toCommandProperties)(properties), message instanceof Error ? message.toString() : message);
     }
     exports2.error = error;
-    function warning5(message, properties = {}) {
+    function warning4(message, properties = {}) {
       (0, command_1.issueCommand)("warning", (0, utils_1.toCommandProperties)(properties), message instanceof Error ? message.toString() : message);
     }
-    exports2.warning = warning5;
+    exports2.warning = warning4;
     function notice(message, properties = {}) {
       (0, command_1.issueCommand)("notice", (0, utils_1.toCommandProperties)(properties), message instanceof Error ? message.toString() : message);
     }
@@ -62341,7 +62341,7 @@ async function runSbomMode(_config) {
   );
   if (manifests.length === 0) {
     core5.setOutput("sbom-path", "");
-    writeSummary2([], []);
+    writeSummary2([]);
     return;
   }
   const outputDir = join(
@@ -62350,7 +62350,7 @@ async function runSbomMode(_config) {
   );
   await mkdir(outputDir, { recursive: true });
   const entries = [];
-  const errors = [];
+  const usedFileNames = /* @__PURE__ */ new Set();
   for (const manifest of manifests) {
     const relPath = relative2(workspacePath, manifest) || manifest;
     core5.info(`Generating SBOM for ${relPath}`);
@@ -62358,12 +62358,11 @@ async function runSbomMode(_config) {
     try {
       sbom = await src_default.generateSbom(manifest, {});
     } catch (error) {
-      const msg = `SBOM generation failed for ${relPath}: ${error instanceof Error ? error.message : String(error)}`;
-      core5.warning(msg);
-      errors.push(msg);
-      continue;
+      throw new Error(
+        `SBOM generation failed for ${relPath}: ${error instanceof Error ? error.message : String(error)}`
+      );
     }
-    const fileName = flattenPath(relPath);
+    const fileName = flattenPath(relPath, usedFileNames);
     const filePath = join(outputDir, fileName);
     await writeFile2(filePath, JSON.stringify(sbom, null, 2));
     const metadata2 = sbom.metadata ?? {};
@@ -62378,18 +62377,24 @@ async function runSbomMode(_config) {
     });
     core5.info(`Wrote ${fileName} (${components.length} components)`);
   }
-  if (entries.length === 0) {
-    throw new Error(
-      `SBOM generation failed for all ${manifests.length} manifest(s)`
-    );
-  }
   core5.setOutput("sbom-path", outputDir);
-  writeSummary2(entries, errors);
+  writeSummary2(entries);
 }
-function flattenPath(relPath) {
-  return relPath.replace(/[\\/]/g, "-") + ".cdx.json";
+function flattenPath(relPath, used) {
+  let base = relPath.replace(/[\\/]/g, "-") + ".cdx.json";
+  if (!used.has(base)) {
+    used.add(base);
+    return base;
+  }
+  let i2 = 2;
+  while (used.has(base)) {
+    base = relPath.replace(/[\\/]/g, "-") + `.${i2}.cdx.json`;
+    i2++;
+  }
+  used.add(base);
+  return base;
 }
-function writeSummary2(entries, errors) {
+function writeSummary2(entries) {
   const sections = [];
   sections.push("# Trustify Dependency Analytics \u2014 SBOM Report");
   if (entries.length === 0) {
@@ -62405,11 +62410,6 @@ function writeSummary2(entries, errors) {
           (e) => `| ${e.manifest} | ${e.componentName} | ${e.dependencyCount} | ${e.fileName} |`
         )
       ].join("\n")
-    );
-  }
-  if (errors.length > 0) {
-    sections.push(
-      ["## Warnings", "", ...errors.map((e) => `- ${e}`)].join("\n")
     );
   }
   const markdown = sections.join("\n\n") + "\n";

@@ -27,7 +27,7 @@ export async function runSbomMode(_config: ActionConfig): Promise<void> {
 
   if (manifests.length === 0) {
     core.setOutput('sbom-path', '');
-    writeSummary([], []);
+    writeSummary([]);
     return;
   }
 
@@ -38,7 +38,7 @@ export async function runSbomMode(_config: ActionConfig): Promise<void> {
   await mkdir(outputDir, { recursive: true });
 
   const entries: SbomEntry[] = [];
-  const errors: string[] = [];
+  const usedFileNames = new Set<string>();
 
   for (const manifest of manifests) {
     const relPath = relative(workspacePath, manifest) || manifest;
@@ -48,13 +48,12 @@ export async function runSbomMode(_config: ActionConfig): Promise<void> {
     try {
       sbom = await daClient.generateSbom(manifest, {}) as Record<string, unknown>;
     } catch (error) {
-      const msg = `SBOM generation failed for ${relPath}: ${error instanceof Error ? error.message : String(error)}`;
-      core.warning(msg);
-      errors.push(msg);
-      continue;
+      throw new Error(
+        `SBOM generation failed for ${relPath}: ${error instanceof Error ? error.message : String(error)}`
+      );
     }
 
-    const fileName = flattenPath(relPath);
+    const fileName = flattenPath(relPath, usedFileNames);
     const filePath = join(outputDir, fileName);
     await writeFile(filePath, JSON.stringify(sbom, null, 2));
 
@@ -73,21 +72,26 @@ export async function runSbomMode(_config: ActionConfig): Promise<void> {
     core.info(`Wrote ${fileName} (${components.length} components)`);
   }
 
-  if (entries.length === 0) {
-    throw new Error(
-      `SBOM generation failed for all ${manifests.length} manifest(s)`
-    );
-  }
-
   core.setOutput('sbom-path', outputDir);
-  writeSummary(entries, errors);
+  writeSummary(entries);
 }
 
-function flattenPath(relPath: string): string {
-  return relPath.replace(/[\\/]/g, '-') + '.cdx.json';
+function flattenPath(relPath: string, used: Set<string>): string {
+  let base = relPath.replace(/[\\/]/g, '-') + '.cdx.json';
+  if (!used.has(base)) {
+    used.add(base);
+    return base;
+  }
+  let i = 2;
+  while (used.has(base)) {
+    base = relPath.replace(/[\\/]/g, '-') + `.${i}.cdx.json`;
+    i++;
+  }
+  used.add(base);
+  return base;
 }
 
-function writeSummary(entries: SbomEntry[], errors: string[]): void {
+function writeSummary(entries: SbomEntry[]): void {
   const sections: string[] = [];
 
   sections.push('# Trustify Dependency Analytics — SBOM Report');
@@ -106,12 +110,6 @@ function writeSummary(entries: SbomEntry[], errors: string[]): void {
             `| ${e.manifest} | ${e.componentName} | ${e.dependencyCount} | ${e.fileName} |`
         ),
       ].join('\n')
-    );
-  }
-
-  if (errors.length > 0) {
-    sections.push(
-      ['## Warnings', '', ...errors.map((e) => `- ${e}`)].join('\n')
     );
   }
 

@@ -188,42 +188,14 @@ describe('sbom mode', () => {
     expect(md).toContain('No SBOMs generated.');
   });
 
-  it('continues when one manifest fails and warns', async () => {
-    vi.mocked(findManifests).mockReturnValue([
-      `${WORKSPACE}/pom.xml`,
-      `${WORKSPACE}/broken/pom.xml`,
-      `${WORKSPACE}/ok/pom.xml`,
-    ]);
-    vi.mocked(daClient.generateSbom)
-      .mockResolvedValueOnce(makeSbom({ name: 'first' }))
-      .mockRejectedValueOnce(new Error('unsupported ecosystem'))
-      .mockResolvedValueOnce(makeSbom({ name: 'third' }));
-
-    await runSbomMode(makeConfig());
-
-    expect(core.warning).toHaveBeenCalledWith(
-      expect.stringContaining('broken/pom.xml')
-    );
-    // Two SBOMs written, one skipped
-    expect(writeFile).toHaveBeenCalledTimes(2);
-    const md = capturedSummary();
-    expect(md).toContain('## Warnings');
-    expect(md).toContain('broken/pom.xml');
-    expect(md).toContain('| pom.xml | first |');
-    expect(md).toContain('| ok/pom.xml | third |');
-  });
-
-  it('throws when all manifests fail', async () => {
-    vi.mocked(findManifests).mockReturnValue([
-      `${WORKSPACE}/a.xml`,
-      `${WORKSPACE}/b.xml`,
-    ]);
+  it('throws when generateSbom fails', async () => {
+    vi.mocked(findManifests).mockReturnValue([`${WORKSPACE}/pom.xml`]);
     vi.mocked(daClient.generateSbom).mockRejectedValue(
-      new Error('unsupported')
+      new Error('unsupported ecosystem')
     );
 
     await expect(runSbomMode(makeConfig())).rejects.toThrow(
-      /SBOM generation failed for all 2 manifest/
+      /SBOM generation failed for pom\.xml: unsupported ecosystem/
     );
   });
 
@@ -239,5 +211,34 @@ describe('sbom mode', () => {
       { recursive: true }
     );
     expect(outputValue('sbom-path')).toBe(`${WORKSPACE}/trustify-da-sboms`);
+  });
+
+  it('deduplicates filenames when flattened paths collide', async () => {
+    vi.mocked(findManifests).mockReturnValue([
+      `${WORKSPACE}/a/pom.xml`,
+      `${WORKSPACE}/a-pom.xml`,
+    ]);
+    vi.mocked(daClient.generateSbom).mockResolvedValue(makeSbom({}));
+
+    await runSbomMode(makeConfig());
+
+    const writeCalls = vi.mocked(writeFile).mock.calls.map((c) => c[0]);
+    expect(writeCalls[0]).toBe(`${RUNNER_TEMP}/trustify-da-sboms/a-pom.xml.cdx.json`);
+    expect(writeCalls[1]).toBe(`${RUNNER_TEMP}/trustify-da-sboms/a-pom.xml.2.cdx.json`);
+  });
+
+  it('handles an SBOM with missing metadata gracefully', async () => {
+    vi.mocked(findManifests).mockReturnValue([`${WORKSPACE}/pom.xml`]);
+    vi.mocked(daClient.generateSbom).mockResolvedValue({
+      bomFormat: 'CycloneDX',
+      specVersion: '1.6',
+      components: [],
+    });
+
+    await runSbomMode(makeConfig());
+
+    const md = capturedSummary();
+    expect(md).toContain('| pom.xml | unknown | 0 |');
+    expect(outputValue('sbom-path')).toBe(`${RUNNER_TEMP}/trustify-da-sboms`);
   });
 });
