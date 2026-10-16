@@ -15,9 +15,6 @@ inputs:
   providers:
     description: 'Comma-separated list of vulnerability providers to query (also settable via .trustify-da.yml)'
     required: false
-  sources:
-    description: 'Comma-separated list of manifest paths to analyze (also settable via .trustify-da.yml)'
-    required: false
   group-by:
     description: 'Grouping strategy for vulnerabilities: bundle or dependency (also settable via .trustify-da.yml)'
     required: false
@@ -40,10 +37,6 @@ inputs:
   fail-on-license-conflicts:
     description: 'Fail the step when license conflicts meet or exceed this threshold (check mode). Use 0 or true to fail on any; false or omit to disable.'
     required: false
-  sbom-targets:
-    description: 'Comma-separated list of SBOM upload targets (artifact, oci)'
-    required: false
-
 outputs:
   remediation-count:
     description: 'Number of vulnerabilities remediated (remediate mode) or with an available fix (check mode)'

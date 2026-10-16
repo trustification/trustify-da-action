@@ -21,7 +21,6 @@ export interface ActionConfig {
   dryRun: boolean;
   labels: string[];
   branchPrefix: string;
-  sbomTargets?: string[];
   remediation: RemediationConfig;
   failOn: FailOnThresholds;
 }
@@ -41,19 +40,15 @@ export async function loadConfig(workspacePath?: string): Promise<ActionConfig> 
   const mode = core.getInput('mode', { required: true });
   const backendUrlInput = core.getInput('backend-url') || undefined;
   const providersInput = core.getInput('providers') || undefined;
-  const sourcesInput = core.getInput('sources') || undefined;
   const groupByInput = core.getInput('group-by') || undefined;
   const dryRun = (core.getInput('dry-run') || 'false').toLowerCase() === 'true';
   const labelsInput = core.getInput('labels');
   const branchPrefixInput = core.getInput('branch-prefix');
-  const sbomTargetsInput = core.getInput('sbom-targets');
-
   const resolved = resolveConfig(
     workspace,
     {
       backendUrl: backendUrlInput,
       providers: providersInput,
-      sources: sourcesInput,
       groupBy: groupByInput,
     },
     process.env as Record<string, string | undefined>,
@@ -97,9 +92,6 @@ export async function loadConfig(workspacePath?: string): Promise<ActionConfig> 
     dryRun,
     labels,
     branchPrefix,
-    sbomTargets: sbomTargetsInput
-      ? sbomTargetsInput.split(',').map((t) => t.trim())
-      : undefined,
     remediation,
     failOn,
   };

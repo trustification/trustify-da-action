@@ -7,8 +7,8 @@ Analyze dependencies for vulnerabilities and license conflicts using Trustify.
 This action supports three operation modes:
 
 - **remediate**: Automatically creates PRs with dependency updates to fix vulnerabilities
-- **check**: Analyzes dependencies and reports findings without creating PRs
-- **sbom**: Generates and uploads Software Bill of Materials (SBOM)
+- **check**: Analyzes dependencies and reports findings as a step summary with structured outputs for policy gates
+- **sbom**: Generates a Software Bill of Materials (SBOM)
 
 ## Usage
 
@@ -23,12 +23,15 @@ Automatically create PRs to fix vulnerable dependencies:
     mode: remediate
     backend-url: https://trustify.example.com
     providers: osv,snyk
-    sources: pom.xml,package.json
+  env:
+    GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 ```
+
+Requires `contents: write` and `pull-requests: write` permissions.
 
 ### Check Mode
 
-Analyze dependencies and fail the build on findings:
+Analyze dependencies, report findings, and optionally fail the build:
 
 ```yaml
 - name: Check Dependencies
@@ -36,47 +39,50 @@ Analyze dependencies and fail the build on findings:
   with:
     mode: check
     backend-url: https://trustify.example.com
+    fail-on-critical: true
+    fail-on-high: 5
 ```
 
-### SBOM Mode
-
-Generate and upload SBOM artifacts:
-
-```yaml
-- name: Generate SBOM
-  uses: trustification/trustify-da-action@v1
-  with:
-    mode: sbom
-    sbom-targets: artifact,oci
-```
+Requires `contents: read` permission.
 
 ## Inputs
 
 | Input | Description | Required | Default |
 |-------|-------------|----------|---------|
 | `mode` | Operation mode: `remediate`, `check`, or `sbom` | Yes | - |
-| `backend-url` | Trustify backend URL | No | - |
+| `backend-url` | Trustify backend URL (also settable via `.trustify-da.yml` or `TRUSTIFY_DA_BACKEND_URL` env var) | Yes | - |
 | `providers` | Comma-separated list of vulnerability providers | No | - |
-| `sources` | Comma-separated list of manifest paths to analyze | No | Auto-detect |
 | `group-by` | Grouping strategy for remediation PRs: `dependency` or `bundle` | No | `dependency` |
 | `dry-run` | Preview changes without creating PRs (remediate mode) | No | `false` |
 | `labels` | Comma-separated labels to apply to remediation PRs | No | `trustify-da` |
 | `branch-prefix` | Branch name prefix for remediation PRs | No | `trustify-da` |
-| `sbom-targets` | Upload targets: `artifact`, `oci` (sbom mode) | No | `artifact` |
+| `fail-on-critical` | Fail when critical vulnerabilities meet or exceed this threshold (check mode). `true` or `0` to fail on any; `false` or omit to disable. | No | - |
+| `fail-on-high` | Fail when high vulnerabilities meet or exceed this threshold (check mode). `true` or `0` to fail on any; `false` or omit to disable. | No | - |
+| `fail-on-license-conflicts` | Fail when license conflicts meet or exceed this threshold (check mode). `true` or `0` to fail on any; `false` or omit to disable. | No | - |
 
 ## Outputs
 
 | Output | Description | Modes |
 |--------|-------------|-------|
-| `remediation-count` | Number of vulnerabilities remediated | remediate |
-| `critical-count` | Number of critical vulnerabilities found | all |
-| `high-count` | Number of high severity vulnerabilities found | all |
-| `medium-count` | Number of medium severity vulnerabilities found | all |
-| `low-count` | Number of low severity vulnerabilities found | all |
-| `license-conflicts` | Number of license policy conflicts detected | check, remediate |
-| `pr-url` | URL of created/updated PR | remediate |
+| `remediation-count` | Number of vulnerabilities remediated or with an available fix | remediate, check |
+| `critical-count` | Number of critical vulnerabilities found | check |
+| `high-count` | Number of high severity vulnerabilities found | check |
+| `medium-count` | Number of medium severity vulnerabilities found | check |
+| `low-count` | Number of low severity vulnerabilities found | check |
+| `license-conflicts` | Number of license policy conflicts detected | check |
+| `pr-url` | URL of created/updated PR(s) | remediate |
 | `sbom-path` | Path to generated SBOM | sbom |
 | `changed-files` | Comma-separated list of files modified | remediate |
+
+## Permissions
+
+| Mode | Required Permissions |
+|------|---------------------|
+| `check` | `contents: read` |
+| `remediate` | `contents: write`, `pull-requests: write` |
+| `sbom` | `contents: read` |
+
+Remediate mode also requires `GITHUB_TOKEN` to be available (via the `env` key or the repository's default token).
 
 ## Configuration File
 
@@ -88,9 +94,6 @@ backend-url: https://trustify.example.com
 providers:
   - osv
   - snyk
-sources:
-  - pom.xml
-  - package.json
 remediation:
   group-by: dependency
   labels:
@@ -99,11 +102,20 @@ remediation:
   branch-prefix: trustify-da
   exclude:
     - "@internal/private-pkg"
+check:
+  fail-on:
+    critical: 0
+    high: 5
 ```
 
-Action inputs override config file values. Environment variables (`TRUSTIFY_DA_BACKEND_URL`,
-`TRUSTIFY_DA_PROVIDERS`, `TRUSTIFY_DA_SOURCES`) sit between the two: action input > env var >
-config file > default.
+Action inputs override config file values. Environment variables sit between the two:
+action input > env var > config file > default.
+
+| Environment Variable | Overrides |
+|---------------------|-----------|
+| `TRUSTIFY_DA_BACKEND_URL` | `backend-url` |
+| `TRUSTIFY_DA_PROVIDERS` | `providers` |
+| `TRUSTIFY_DA_GROUP_BY` | `group-by` / `remediation.group-by` |
 
 ## License
 
