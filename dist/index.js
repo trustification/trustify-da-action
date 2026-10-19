@@ -18159,7 +18159,7 @@ var require_summary = __commonJS({
     exports2.summary = exports2.markdownSummary = exports2.SUMMARY_DOCS_URL = exports2.SUMMARY_ENV_VAR = void 0;
     var os_1 = __require("os");
     var fs_1 = __require("fs");
-    var { access, appendFile, writeFile: writeFile2 } = fs_1.promises;
+    var { access, appendFile, writeFile: writeFile3 } = fs_1.promises;
     exports2.SUMMARY_ENV_VAR = "GITHUB_STEP_SUMMARY";
     exports2.SUMMARY_DOCS_URL = "https://docs.github.com/actions/using-workflows/workflow-commands-for-github-actions#adding-a-job-summary";
     var Summary = class {
@@ -18217,7 +18217,7 @@ var require_summary = __commonJS({
         return __awaiter(this, void 0, void 0, function* () {
           const overwrite = !!(options === null || options === void 0 ? void 0 : options.overwrite);
           const filePath = yield this.filePath();
-          const writeFunc = overwrite ? writeFile2 : appendFile;
+          const writeFunc = overwrite ? writeFile3 : appendFile;
           yield writeFunc(filePath, this._buffer, { encoding: "utf8" });
           return this.emptyBuffer();
         });
@@ -19724,7 +19724,7 @@ var require_core = __commonJS({
 Support boolean input list: \`true | True | TRUE | false | False | FALSE\``);
     }
     exports2.getBooleanInput = getBooleanInput;
-    function setOutput3(name2, value) {
+    function setOutput4(name2, value) {
       const filePath = process.env["GITHUB_OUTPUT"] || "";
       if (filePath) {
         return (0, file_command_1.issueFileCommand)("OUTPUT", (0, file_command_1.prepareKeyValueMessage)(name2, value));
@@ -19732,7 +19732,7 @@ Support boolean input list: \`true | True | TRUE | false | False | FALSE\``);
       process.stdout.write(os6.EOL);
       (0, command_1.issueCommand)("set-output", { name: name2 }, (0, utils_1.toCommandValue)(value));
     }
-    exports2.setOutput = setOutput3;
+    exports2.setOutput = setOutput4;
     function setCommandEcho(enabled) {
       (0, command_1.issue)("echo", enabled ? "on" : "off");
     }
@@ -19754,10 +19754,10 @@ Support boolean input list: \`true | True | TRUE | false | False | FALSE\``);
       (0, command_1.issueCommand)("error", (0, utils_1.toCommandProperties)(properties), message instanceof Error ? message.toString() : message);
     }
     exports2.error = error;
-    function warning5(message, properties = {}) {
+    function warning4(message, properties = {}) {
       (0, command_1.issueCommand)("warning", (0, utils_1.toCommandProperties)(properties), message instanceof Error ? message.toString() : message);
     }
-    exports2.warning = warning5;
+    exports2.warning = warning4;
     function notice(message, properties = {}) {
       (0, command_1.issueCommand)("notice", (0, utils_1.toCommandProperties)(properties), message instanceof Error ? message.toString() : message);
     }
@@ -28241,15 +28241,15 @@ var require_pattern = __commonJS({
     exports2.removeDuplicateSlashes = removeDuplicateSlashes;
     function partitionAbsoluteAndRelative(patterns) {
       const absolute = [];
-      const relative2 = [];
+      const relative3 = [];
       for (const pattern of patterns) {
         if (isAbsolute(pattern)) {
           absolute.push(pattern);
         } else {
-          relative2.push(pattern);
+          relative3.push(pattern);
         }
       }
-      return [absolute, relative2];
+      return [absolute, relative3];
     }
     exports2.partitionAbsoluteAndRelative = partitionAbsoluteAndRelative;
     function isAbsolute(pattern) {
@@ -62330,10 +62330,90 @@ function evaluateFailOn(config, result) {
 
 // src/modes/sbom.ts
 var core5 = __toESM(require_core(), 1);
-async function runSbomMode(config) {
+import { mkdir, writeFile as writeFile2 } from "node:fs/promises";
+import { join, relative as relative2 } from "node:path";
+async function runSbomMode(_config) {
   core5.info("Running in sbom mode");
-  core5.info(`Configuration: ${JSON.stringify(config, null, 2)}`);
-  core5.warning("SBOM mode is not yet implemented");
+  const workspacePath = process.env.GITHUB_WORKSPACE || process.cwd();
+  const manifests = findManifests(workspacePath);
+  core5.info(
+    manifests.length === 0 ? "No supported manifests found." : `Generating SBOMs for ${manifests.length} manifest(s)...`
+  );
+  if (manifests.length === 0) {
+    core5.setOutput("sbom-path", "");
+    writeSummary2([]);
+    return;
+  }
+  const outputDir = join(
+    process.env.RUNNER_TEMP || workspacePath,
+    "trustify-da-sboms"
+  );
+  await mkdir(outputDir, { recursive: true });
+  const entries = [];
+  const usedFileNames = /* @__PURE__ */ new Set();
+  for (const manifest of manifests) {
+    const relPath = relative2(workspacePath, manifest) || manifest;
+    core5.info(`Generating SBOM for ${relPath}`);
+    let sbom;
+    try {
+      sbom = await src_default.generateSbom(manifest, {});
+    } catch (error) {
+      throw new Error(
+        `SBOM generation failed for ${relPath}: ${error instanceof Error ? error.message : String(error)}`
+      );
+    }
+    const fileName = flattenPath(relPath, usedFileNames);
+    const filePath = join(outputDir, fileName);
+    await writeFile2(filePath, JSON.stringify(sbom, null, 2));
+    const metadata2 = sbom.metadata ?? {};
+    const component = metadata2.component ?? {};
+    const components = sbom.components ?? [];
+    entries.push({
+      manifest: relPath,
+      fileName,
+      filePath,
+      componentName: String(component.name ?? "unknown"),
+      dependencyCount: components.length
+    });
+    core5.info(`Wrote ${fileName} (${components.length} components)`);
+  }
+  core5.setOutput("sbom-path", outputDir);
+  writeSummary2(entries);
+}
+function flattenPath(relPath, used) {
+  let base = relPath.replace(/[\\/]/g, "-") + ".cdx.json";
+  if (!used.has(base)) {
+    used.add(base);
+    return base;
+  }
+  let i2 = 2;
+  while (used.has(base)) {
+    base = relPath.replace(/[\\/]/g, "-") + `.${i2}.cdx.json`;
+    i2++;
+  }
+  used.add(base);
+  return base;
+}
+function writeSummary2(entries) {
+  const sections = [];
+  sections.push("# Trustify Dependency Analytics \u2014 SBOM Report");
+  if (entries.length === 0) {
+    sections.push("No SBOMs generated.");
+  } else {
+    sections.push(
+      [
+        "## Generated SBOMs",
+        "",
+        "| Manifest | Component | Dependencies | File |",
+        "| --- | --- | --- | --- |",
+        ...entries.map(
+          (e) => `| ${e.manifest} | ${e.componentName} | ${e.dependencyCount} | ${e.fileName} |`
+        )
+      ].join("\n")
+    );
+  }
+  const markdown = sections.join("\n\n") + "\n";
+  void core5.summary.addRaw(markdown).write();
 }
 
 // src/main.ts

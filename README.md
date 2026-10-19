@@ -45,6 +45,27 @@ Analyze dependencies, report findings, and optionally fail the build:
 
 Requires `contents: read` permission.
 
+### SBOM Mode
+
+Generate a CycloneDX SBOM from discovered manifests:
+
+```yaml
+- name: Generate SBOM
+  id: sbom
+  uses: trustification/trustify-da-action@v1
+  with:
+    mode: sbom
+
+- name: Upload SBOM artifact
+  if: steps.sbom.outputs.sbom-path != ''
+  uses: actions/upload-artifact@v4
+  with:
+    name: sbom
+    path: ${{ steps.sbom.outputs.sbom-path }}
+```
+
+Requires `contents: read` permission. No backend URL is needed, SBOM generation does not call the Trustify backend, though underlying package managers may make outbound network calls to resolve dependency metadata. The `sbom-path` output points to a directory containing one `.cdx.json` file per manifest, which downstream steps can upload, sign, or push to a registry.
+
 ## Inputs
 
 | Input | Description | Required | Default |
@@ -87,7 +108,7 @@ Remediate mode also requires `GITHUB_TOKEN` to be available (via the `env` key o
 ## Configuration File
 
 You can provide a `.trustify-da.yml` file in your repository root (or any parent
-directory — the action walks up from the workspace to find it):
+directory, the action walks up from the workspace to find it):
 
 ```yaml
 backend-url: https://trustify.example.com
