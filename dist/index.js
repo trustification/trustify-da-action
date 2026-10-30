@@ -42487,6 +42487,7 @@ async function loadConfig2(workspacePath) {
   const mode = core.getInput("mode", { required: true });
   const backendUrlInput = core.getInput("backend-url") || void 0;
   const providersInput = core.getInput("providers") || void 0;
+  const sourcesInput = core.getInput("sources") || void 0;
   const groupByInput = core.getInput("group-by") || void 0;
   const dryRun = (core.getInput("dry-run") || "false").toLowerCase() === "true";
   const labelsInput = core.getInput("labels");
@@ -42496,6 +42497,7 @@ async function loadConfig2(workspacePath) {
     {
       backendUrl: backendUrlInput,
       providers: providersInput,
+      sources: sourcesInput,
       groupBy: groupByInput
     },
     process.env

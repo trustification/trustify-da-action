@@ -15,6 +15,9 @@ inputs:
   providers:
     description: 'Comma-separated list of vulnerability providers to query (also settable via .trustify-da.yml)'
     required: false
+  sources:
+    description: 'Comma-separated list of vulnerability sources to include in the report (also settable via .trustify-da.yml or TRUSTIFY_DA_SOURCES env var)'
+    required: false
   group-by:
     description: 'Grouping strategy for vulnerabilities: bundle or dependency (also settable via .trustify-da.yml)'
     required: false
@@ -53,7 +56,7 @@ outputs:
   pr-url:
     description: 'URL of created/updated PR (remediate mode)'
   sbom-path:
-    description: 'Path to generated SBOM (sbom mode)'
+    description: 'Directory containing generated CycloneDX SBOM files — one .cdx.json per discovered manifest (sbom mode)'
   changed-files:
     description: 'Comma-separated list of files modified (remediate mode)'
 
