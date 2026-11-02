@@ -73,6 +73,7 @@ Requires `contents: read` permission. No backend URL is needed, SBOM generation 
 | `mode` | Operation mode: `remediate`, `check`, or `sbom` | Yes | - |
 | `backend-url` | Trustify backend URL (also settable via `.trustify-da.yml` or `TRUSTIFY_DA_BACKEND_URL` env var) | Yes | - |
 | `providers` | Comma-separated list of vulnerability providers | No | - |
+| `sources` | Comma-separated list of vulnerability sources to include in the report | No | - |
 | `group-by` | Grouping strategy for remediation PRs: `dependency` or `bundle` | No | `dependency` |
 | `dry-run` | Preview changes without creating PRs (remediate mode) | No | `false` |
 | `labels` | Comma-separated labels to apply to remediation PRs | No | `trustify-da` |
@@ -115,6 +116,8 @@ backend-url: https://trustify.example.com
 providers:
   - osv
   - snyk
+sources:
+  - osv
 remediation:
   group-by: dependency
   labels:
@@ -136,6 +139,7 @@ action input > env var > config file > default.
 |---------------------|-----------|
 | `TRUSTIFY_DA_BACKEND_URL` | `backend-url` |
 | `TRUSTIFY_DA_PROVIDERS` | `providers` |
+| `TRUSTIFY_DA_SOURCES` | `sources` |
 | `TRUSTIFY_DA_GROUP_BY` | `group-by` / `remediation.group-by` |
 
 ## License

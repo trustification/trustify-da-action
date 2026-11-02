@@ -40,6 +40,7 @@ export async function loadConfig(workspacePath?: string): Promise<ActionConfig> 
   const mode = core.getInput('mode', { required: true });
   const backendUrlInput = core.getInput('backend-url') || undefined;
   const providersInput = core.getInput('providers') || undefined;
+  const sourcesInput = core.getInput('sources') || undefined;
   const groupByInput = core.getInput('group-by') || undefined;
   const dryRun = (core.getInput('dry-run') || 'false').toLowerCase() === 'true';
   const labelsInput = core.getInput('labels');
@@ -49,6 +50,7 @@ export async function loadConfig(workspacePath?: string): Promise<ActionConfig> 
     {
       backendUrl: backendUrlInput,
       providers: providersInput,
+      sources: sourcesInput,
       groupBy: groupByInput,
     },
     process.env as Record<string, string | undefined>,

@@ -51,12 +51,14 @@ describe('loadConfig', () => {
       mode: 'remediate',
       'backend-url': 'https://from-input',
       providers: 'osv,snyk',
+      sources: 'osv',
       'group-by': 'dependency',
     });
     vi.mocked(resolveConfig).mockReturnValue(
       resolvedDefaults({
         backendUrl: 'https://from-input',
         providers: ['osv', 'snyk'],
+        sources: ['osv'],
         groupBy: 'dependency',
       }),
     );
@@ -68,12 +70,14 @@ describe('loadConfig', () => {
       {
         backendUrl: 'https://from-input',
         providers: 'osv,snyk',
+        sources: 'osv',
         groupBy: 'dependency',
       },
       expect.any(Object),
     );
     expect(config.backendUrl).toBe('https://from-input');
     expect(config.providers).toEqual(['osv', 'snyk']);
+    expect(config.sources).toEqual(['osv']);
     expect(config.groupBy).toBe('dependency');
   });
 
