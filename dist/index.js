@@ -196,7 +196,7 @@ var require_file_command = __commonJS({
     Object.defineProperty(exports2, "__esModule", { value: true });
     exports2.prepareKeyValueMessage = exports2.issueFileCommand = void 0;
     var crypto4 = __importStar(__require("crypto"));
-    var fs28 = __importStar(__require("fs"));
+    var fs29 = __importStar(__require("fs"));
     var os6 = __importStar(__require("os"));
     var utils_1 = require_utils();
     function issueFileCommand(command, message) {
@@ -204,10 +204,10 @@ var require_file_command = __commonJS({
       if (!filePath) {
         throw new Error(`Unable to find environment variable for file command ${command}`);
       }
-      if (!fs28.existsSync(filePath)) {
+      if (!fs29.existsSync(filePath)) {
         throw new Error(`Missing file at path: ${filePath}`);
       }
-      fs28.appendFileSync(filePath, `${(0, utils_1.toCommandValue)(message)}${os6.EOL}`, {
+      fs29.appendFileSync(filePath, `${(0, utils_1.toCommandValue)(message)}${os6.EOL}`, {
         encoding: "utf8"
       });
     }
@@ -965,8 +965,8 @@ var require_util = __commonJS({
     function isStream(obj) {
       return obj && typeof obj === "object" && typeof obj.pipe === "function" && typeof obj.on === "function";
     }
-    function isBlobLike(object) {
-      return Blob2 && object instanceof Blob2 || object && typeof object === "object" && (typeof object.stream === "function" || typeof object.arrayBuffer === "function") && /^(Blob|File)$/.test(object[Symbol.toStringTag]);
+    function isBlobLike(object2) {
+      return Blob2 && object2 instanceof Blob2 || object2 && typeof object2 === "object" && (typeof object2.stream === "function" || typeof object2.arrayBuffer === "function") && /^(Blob|File)$/.test(object2[Symbol.toStringTag]);
     }
     function buildURL(url2, queryParams) {
       if (url2.includes("?") || url2.includes("#")) {
@@ -1010,14 +1010,14 @@ var require_util = __commonJS({
         }
         const port = url2.port != null ? url2.port : url2.protocol === "https:" ? 443 : 80;
         let origin = url2.origin != null ? url2.origin : `${url2.protocol}//${url2.hostname}:${port}`;
-        let path26 = url2.path != null ? url2.path : `${url2.pathname || ""}${url2.search || ""}`;
+        let path28 = url2.path != null ? url2.path : `${url2.pathname || ""}${url2.search || ""}`;
         if (origin.endsWith("/")) {
           origin = origin.substring(0, origin.length - 1);
         }
-        if (path26 && !path26.startsWith("/")) {
-          path26 = `/${path26}`;
+        if (path28 && !path28.startsWith("/")) {
+          path28 = `/${path28}`;
         }
-        url2 = new URL(origin + path26);
+        url2 = new URL(origin + path28);
       }
       return url2;
     }
@@ -1244,8 +1244,8 @@ var require_util = __commonJS({
         0
       );
     }
-    function isFormDataLike(object) {
-      return object && typeof object === "object" && typeof object.append === "function" && typeof object.delete === "function" && typeof object.get === "function" && typeof object.getAll === "function" && typeof object.has === "function" && typeof object.set === "function" && object[Symbol.toStringTag] === "FormData";
+    function isFormDataLike(object2) {
+      return object2 && typeof object2 === "object" && typeof object2.append === "function" && typeof object2.delete === "function" && typeof object2.get === "function" && typeof object2.getAll === "function" && typeof object2.has === "function" && typeof object2.set === "function" && object2[Symbol.toStringTag] === "FormData";
     }
     function throwIfAborted(signal) {
       if (!signal) {
@@ -2631,20 +2631,20 @@ var require_parseParams = __commonJS({
 var require_basename = __commonJS({
   "node_modules/@fastify/busboy/lib/utils/basename.js"(exports2, module2) {
     "use strict";
-    module2.exports = function basename(path26) {
-      if (typeof path26 !== "string") {
+    module2.exports = function basename(path28) {
+      if (typeof path28 !== "string") {
         return "";
       }
-      for (var i2 = path26.length - 1; i2 >= 0; --i2) {
-        switch (path26.charCodeAt(i2)) {
+      for (var i2 = path28.length - 1; i2 >= 0; --i2) {
+        switch (path28.charCodeAt(i2)) {
           case 47:
           // '/'
           case 92:
-            path26 = path26.slice(i2 + 1);
-            return path26 === ".." || path26 === "." ? "" : path26;
+            path28 = path28.slice(i2 + 1);
+            return path28 === ".." || path28 === "." ? "" : path28;
         }
       }
-      return path26 === ".." || path26 === "." ? "" : path26;
+      return path28 === ".." || path28 === "." ? "" : path28;
     };
   }
 });
@@ -3683,8 +3683,8 @@ var require_util2 = __commonJS({
       }
       return "allowed";
     }
-    function isErrorLike(object) {
-      return object instanceof Error || (object?.constructor?.name === "Error" || object?.constructor?.name === "DOMException");
+    function isErrorLike(object2) {
+      return object2 instanceof Error || (object2?.constructor?.name === "Error" || object2?.constructor?.name === "DOMException");
     }
     function isValidReasonPhrase(statusText) {
       for (let i2 = 0; i2 < statusText.length; ++i2) {
@@ -4077,7 +4077,7 @@ var require_util2 = __commonJS({
     }
     var esIteratorPrototype = Object.getPrototypeOf(Object.getPrototypeOf([][Symbol.iterator]()));
     function makeIterator(iterator2, name2, kind) {
-      const object = {
+      const object2 = {
         index: 0,
         kind,
         target: iterator2
@@ -4089,14 +4089,14 @@ var require_util2 = __commonJS({
               `'next' called on an object that does not implement interface ${name2} Iterator.`
             );
           }
-          const { index, kind: kind2, target } = object;
+          const { index, kind: kind2, target } = object2;
           const values = target();
           const len = values.length;
           if (index >= len) {
             return { value: void 0, done: true };
           }
           const pair = values[index];
-          object.index = index + 1;
+          object2.index = index + 1;
           return iteratorResult(pair, kind2);
         },
         // The class string of an iterator prototype object for a given interface is the
@@ -5100,8 +5100,8 @@ var require_file = __commonJS({
       }
       return s.replace(/\r?\n/g, nativeLineEnding);
     }
-    function isFileLike(object) {
-      return NativeFile && object instanceof NativeFile || object instanceof File || object && (typeof object.stream === "function" || typeof object.arrayBuffer === "function") && object[Symbol.toStringTag] === "File";
+    function isFileLike(object2) {
+      return NativeFile && object2 instanceof NativeFile || object2 instanceof File || object2 && (typeof object2.stream === "function" || typeof object2.arrayBuffer === "function") && object2[Symbol.toStringTag] === "File";
     }
     module2.exports = { File, FileLike, isFileLike };
   }
@@ -5299,15 +5299,15 @@ var require_body = __commonJS({
     var File = NativeFile ?? UndiciFile;
     var textEncoder = new TextEncoder();
     var textDecoder = new TextDecoder();
-    function extractBody(object, keepalive = false) {
+    function extractBody(object2, keepalive = false) {
       if (!ReadableStream) {
         ReadableStream = __require("stream/web").ReadableStream;
       }
       let stream = null;
-      if (object instanceof ReadableStream) {
-        stream = object;
-      } else if (isBlobLike(object)) {
-        stream = object.stream();
+      if (object2 instanceof ReadableStream) {
+        stream = object2;
+      } else if (isBlobLike(object2)) {
+        stream = object2.stream();
       } else {
         stream = new ReadableStream({
           async pull(controller) {
@@ -5326,17 +5326,17 @@ var require_body = __commonJS({
       let source = null;
       let length = null;
       let type = null;
-      if (typeof object === "string") {
-        source = object;
+      if (typeof object2 === "string") {
+        source = object2;
         type = "text/plain;charset=UTF-8";
-      } else if (object instanceof URLSearchParams) {
-        source = object.toString();
+      } else if (object2 instanceof URLSearchParams) {
+        source = object2.toString();
         type = "application/x-www-form-urlencoded;charset=UTF-8";
-      } else if (isArrayBuffer(object)) {
-        source = new Uint8Array(object.slice());
-      } else if (ArrayBuffer.isView(object)) {
-        source = new Uint8Array(object.buffer.slice(object.byteOffset, object.byteOffset + object.byteLength));
-      } else if (util.isFormDataLike(object)) {
+      } else if (isArrayBuffer(object2)) {
+        source = new Uint8Array(object2.slice());
+      } else if (ArrayBuffer.isView(object2)) {
+        source = new Uint8Array(object2.buffer.slice(object2.byteOffset, object2.byteOffset + object2.byteLength));
+      } else if (util.isFormDataLike(object2)) {
         const boundary = `----formdata-undici-0${`${random(1e11)}`.padStart(11, "0")}`;
         const prefix = `--${boundary}\r
 Content-Disposition: form-data`;
@@ -5346,7 +5346,7 @@ Content-Disposition: form-data`;
         const rn = new Uint8Array([13, 10]);
         length = 0;
         let hasUnknownSizeValue = false;
-        for (const [name2, value] of object) {
+        for (const [name2, value] of object2) {
           if (typeof value === "string") {
             const chunk2 = textEncoder.encode(prefix + `; name="${escape(normalizeLinefeeds(name2))}"\r
 \r
@@ -5373,7 +5373,7 @@ Content-Type: ${value.type || "application/octet-stream"}\r
         if (hasUnknownSizeValue) {
           length = null;
         }
-        source = object;
+        source = object2;
         action = async function* () {
           for (const part of blobParts) {
             if (part.stream) {
@@ -5384,22 +5384,22 @@ Content-Type: ${value.type || "application/octet-stream"}\r
           }
         };
         type = "multipart/form-data; boundary=" + boundary;
-      } else if (isBlobLike(object)) {
-        source = object;
-        length = object.size;
-        if (object.type) {
-          type = object.type;
+      } else if (isBlobLike(object2)) {
+        source = object2;
+        length = object2.size;
+        if (object2.type) {
+          type = object2.type;
         }
-      } else if (typeof object[Symbol.asyncIterator] === "function") {
+      } else if (typeof object2[Symbol.asyncIterator] === "function") {
         if (keepalive) {
           throw new TypeError("keepalive");
         }
-        if (util.isDisturbed(object) || object.locked) {
+        if (util.isDisturbed(object2) || object2.locked) {
           throw new TypeError(
             "Response body object should not be disturbed or locked"
           );
         }
-        stream = object instanceof ReadableStream ? object : ReadableStreamFrom(object);
+        stream = object2 instanceof ReadableStream ? object2 : ReadableStreamFrom(object2);
       }
       if (typeof source === "string" || util.isBuffer(source)) {
         length = Buffer.byteLength(source);
@@ -5408,7 +5408,7 @@ Content-Type: ${value.type || "application/octet-stream"}\r
         let iterator2;
         stream = new ReadableStream({
           async start() {
-            iterator2 = action(object)[Symbol.asyncIterator]();
+            iterator2 = action(object2)[Symbol.asyncIterator]();
           },
           async pull(controller) {
             const { value, done } = await iterator2.next();
@@ -5432,15 +5432,15 @@ Content-Type: ${value.type || "application/octet-stream"}\r
       const body2 = { stream, source, length };
       return [body2, type];
     }
-    function safelyExtractBody(object, keepalive = false) {
+    function safelyExtractBody(object2, keepalive = false) {
       if (!ReadableStream) {
         ReadableStream = __require("stream/web").ReadableStream;
       }
-      if (object instanceof ReadableStream) {
-        assert2(!util.isDisturbed(object), "The body has already been consumed.");
-        assert2(!object.locked, "The stream is locked.");
+      if (object2 instanceof ReadableStream) {
+        assert2(!util.isDisturbed(object2), "The body has already been consumed.");
+        assert2(!object2.locked, "The stream is locked.");
       }
-      return extractBody(object, keepalive);
+      return extractBody(object2, keepalive);
     }
     function cloneBody(body2) {
       const [out1, out2] = body2.stream.tee();
@@ -5586,10 +5586,10 @@ Content-Type: ${value.type || "application/octet-stream"}\r
     function mixinBody(prototype) {
       Object.assign(prototype.prototype, bodyMixinMethods(prototype));
     }
-    async function specConsumeBody(object, convertBytesToJSValue, instance2) {
-      webidl.brandCheck(object, instance2);
-      throwIfAborted(object[kState]);
-      if (bodyUnusable(object[kState].body)) {
+    async function specConsumeBody(object2, convertBytesToJSValue, instance2) {
+      webidl.brandCheck(object2, instance2);
+      throwIfAborted(object2[kState]);
+      if (bodyUnusable(object2[kState].body)) {
         throw new TypeError("Body is unusable");
       }
       const promise = createDeferredPromise();
@@ -5601,11 +5601,11 @@ Content-Type: ${value.type || "application/octet-stream"}\r
           errorSteps(e);
         }
       };
-      if (object[kState].body == null) {
+      if (object2[kState].body == null) {
         successSteps(new Uint8Array());
         return promise.promise;
       }
-      await fullyReadBody(object[kState].body, successSteps, errorSteps);
+      await fullyReadBody(object2[kState].body, successSteps, errorSteps);
       return promise.promise;
     }
     function bodyUnusable(body2) {
@@ -5624,8 +5624,8 @@ Content-Type: ${value.type || "application/octet-stream"}\r
     function parseJSONFromBytes(bytes) {
       return JSON.parse(utf8DecodeBytes(bytes));
     }
-    function bodyMimeType(object) {
-      const { headersList } = object[kState];
+    function bodyMimeType(object2) {
+      const { headersList } = object2[kState];
       const contentType = headersList.get("content-type");
       if (contentType === null) {
         return "failure";
@@ -5674,7 +5674,7 @@ var require_request = __commonJS({
     }
     var Request = class _Request {
       constructor(origin, {
-        path: path26,
+        path: path28,
         method,
         body: body2,
         headers,
@@ -5688,11 +5688,11 @@ var require_request = __commonJS({
         throwOnError,
         expectContinue
       }, handler2) {
-        if (typeof path26 !== "string") {
+        if (typeof path28 !== "string") {
           throw new InvalidArgumentError("path must be a string");
-        } else if (path26[0] !== "/" && !(path26.startsWith("http://") || path26.startsWith("https://")) && method !== "CONNECT") {
+        } else if (path28[0] !== "/" && !(path28.startsWith("http://") || path28.startsWith("https://")) && method !== "CONNECT") {
           throw new InvalidArgumentError("path must be an absolute URL or start with a slash");
-        } else if (invalidPathRegex.exec(path26) !== null) {
+        } else if (invalidPathRegex.exec(path28) !== null) {
           throw new InvalidArgumentError("invalid request path");
         }
         if (typeof method !== "string") {
@@ -5755,7 +5755,7 @@ var require_request = __commonJS({
         this.completed = false;
         this.aborted = false;
         this.upgrade = upgrade || null;
-        this.path = query ? util.buildURL(path26, query) : path26;
+        this.path = query ? util.buildURL(path28, query) : path28;
         this.origin = origin;
         this.idempotent = idempotent == null ? method === "HEAD" || method === "GET" : idempotent;
         this.blocking = blocking == null ? false : blocking;
@@ -6763,9 +6763,9 @@ var require_RedirectHandler = __commonJS({
           return this.handler.onHeaders(statusCode, headers, resume2, statusText);
         }
         const { origin, pathname, search } = util.parseURL(new URL(this.location, this.opts.origin && new URL(this.opts.path, this.opts.origin)));
-        const path26 = search ? `${pathname}${search}` : pathname;
+        const path28 = search ? `${pathname}${search}` : pathname;
         this.opts.headers = cleanRequestHeaders(this.opts.headers, statusCode === 303, this.opts.origin !== origin);
-        this.opts.path = path26;
+        this.opts.path = path28;
         this.opts.origin = origin;
         this.opts.maxRedirections = 0;
         this.opts.query = null;
@@ -8005,7 +8005,7 @@ var require_client = __commonJS({
         writeH2(client, client[kHTTP2Session], request2);
         return;
       }
-      const { body: body2, method, path: path26, host, upgrade, headers, blocking, reset } = request2;
+      const { body: body2, method, path: path28, host, upgrade, headers, blocking, reset } = request2;
       const expectsPayload = method === "PUT" || method === "POST" || method === "PATCH";
       if (body2 && typeof body2.read === "function") {
         body2.read(0);
@@ -8055,7 +8055,7 @@ var require_client = __commonJS({
       if (blocking) {
         socket[kBlocking] = true;
       }
-      let header = `${method} ${path26} HTTP/1.1\r
+      let header = `${method} ${path28} HTTP/1.1\r
 `;
       if (typeof host === "string") {
         header += `host: ${host}\r
@@ -8118,7 +8118,7 @@ upgrade: ${upgrade}\r
       return true;
     }
     function writeH2(client, session, request2) {
-      const { body: body2, method, path: path26, host, upgrade, expectContinue, signal, headers: reqHeaders } = request2;
+      const { body: body2, method, path: path28, host, upgrade, expectContinue, signal, headers: reqHeaders } = request2;
       let headers;
       if (typeof reqHeaders === "string") headers = Request[kHTTP2CopyHeaders](reqHeaders.trim());
       else headers = reqHeaders;
@@ -8161,7 +8161,7 @@ upgrade: ${upgrade}\r
         });
         return true;
       }
-      headers[HTTP2_HEADER_PATH] = path26;
+      headers[HTTP2_HEADER_PATH] = path28;
       headers[HTTP2_HEADER_SCHEME] = "https";
       const expectsPayload = method === "PUT" || method === "POST" || method === "PATCH";
       if (body2 && typeof body2.read === "function") {
@@ -10401,20 +10401,20 @@ var require_mock_utils = __commonJS({
       }
       return true;
     }
-    function safeUrl(path26) {
-      if (typeof path26 !== "string") {
-        return path26;
+    function safeUrl(path28) {
+      if (typeof path28 !== "string") {
+        return path28;
       }
-      const pathSegments = path26.split("?");
+      const pathSegments = path28.split("?");
       if (pathSegments.length !== 2) {
-        return path26;
+        return path28;
       }
       const qp = new URLSearchParams(pathSegments.pop());
       qp.sort();
       return [...pathSegments, qp.toString()].join("?");
     }
-    function matchKey(mockDispatch2, { path: path26, method, body: body2, headers }) {
-      const pathMatch = matchValue(mockDispatch2.path, path26);
+    function matchKey(mockDispatch2, { path: path28, method, body: body2, headers }) {
+      const pathMatch = matchValue(mockDispatch2.path, path28);
       const methodMatch = matchValue(mockDispatch2.method, method);
       const bodyMatch = typeof mockDispatch2.body !== "undefined" ? matchValue(mockDispatch2.body, body2) : true;
       const headersMatch = matchHeaders(mockDispatch2, headers);
@@ -10432,7 +10432,7 @@ var require_mock_utils = __commonJS({
     function getMockDispatch(mockDispatches, key) {
       const basePath = key.query ? buildURL(key.path, key.query) : key.path;
       const resolvedPath = typeof basePath === "string" ? safeUrl(basePath) : basePath;
-      let matchedMockDispatches = mockDispatches.filter(({ consumed }) => !consumed).filter(({ path: path26 }) => matchValue(safeUrl(path26), resolvedPath));
+      let matchedMockDispatches = mockDispatches.filter(({ consumed }) => !consumed).filter(({ path: path28 }) => matchValue(safeUrl(path28), resolvedPath));
       if (matchedMockDispatches.length === 0) {
         throw new MockNotMatchedError(`Mock dispatch not matched for path '${resolvedPath}'`);
       }
@@ -10469,9 +10469,9 @@ var require_mock_utils = __commonJS({
       }
     }
     function buildKey(opts) {
-      const { path: path26, method, body: body2, headers, query } = opts;
+      const { path: path28, method, body: body2, headers, query } = opts;
       return {
-        path: path26,
+        path: path28,
         method,
         body: body2,
         headers,
@@ -10920,10 +10920,10 @@ var require_pending_interceptors_formatter = __commonJS({
       }
       format(pendingInterceptors) {
         const withPrettyHeaders = pendingInterceptors.map(
-          ({ method, path: path26, data: { statusCode }, persist, times, timesInvoked, origin }) => ({
+          ({ method, path: path28, data: { statusCode }, persist, times, timesInvoked, origin }) => ({
             Method: method,
             Origin: origin,
-            Path: path26,
+            Path: path28,
             "Status code": statusCode,
             Persistent: persist ? "\u2705" : "\u274C",
             Invocations: timesInvoked,
@@ -11586,10 +11586,10 @@ var require_headers = __commonJS({
       while (j > i2 && isHTTPWhiteSpaceCharCode(potentialValue.charCodeAt(i2))) ++i2;
       return i2 === 0 && j === potentialValue.length ? potentialValue : potentialValue.substring(i2, j);
     }
-    function fill(headers, object) {
-      if (Array.isArray(object)) {
-        for (let i2 = 0; i2 < object.length; ++i2) {
-          const header = object[i2];
+    function fill(headers, object2) {
+      if (Array.isArray(object2)) {
+        for (let i2 = 0; i2 < object2.length; ++i2) {
+          const header = object2[i2];
           if (header.length !== 2) {
             throw webidl.errors.exception({
               header: "Headers constructor",
@@ -11598,10 +11598,10 @@ var require_headers = __commonJS({
           }
           appendHeader(headers, header[0], header[1]);
         }
-      } else if (typeof object === "object" && object !== null) {
-        const keys = Object.keys(object);
+      } else if (typeof object2 === "object" && object2 !== null) {
+        const keys = Object.keys(object2);
         for (let i2 = 0; i2 < keys.length; ++i2) {
-          appendHeader(headers, keys[i2], object[keys[i2]]);
+          appendHeader(headers, keys[i2], object2[keys[i2]]);
         }
       } else {
         throw webidl.errors.conversionFailed({
@@ -15543,8 +15543,8 @@ var require_util6 = __commonJS({
         }
       }
     }
-    function validateCookiePath(path26) {
-      for (const char of path26) {
+    function validateCookiePath(path28) {
+      for (const char of path28) {
         const code = char.charCodeAt(0);
         if (code < 33 || char === ";") {
           throw new Error("Invalid cookie path");
@@ -17224,11 +17224,11 @@ var require_undici = __commonJS({
           if (typeof opts.path !== "string") {
             throw new InvalidArgumentError("invalid opts.path");
           }
-          let path26 = opts.path;
+          let path28 = opts.path;
           if (!opts.path.startsWith("/")) {
-            path26 = `/${path26}`;
+            path28 = `/${path28}`;
           }
-          url2 = new URL(util.parseOrigin(url2).origin + path26);
+          url2 = new URL(util.parseOrigin(url2).origin + path28);
         } else {
           if (!opts) {
             opts = typeof url2 === "object" ? url2 : {};
@@ -18451,7 +18451,7 @@ var require_path_utils = __commonJS({
     };
     Object.defineProperty(exports2, "__esModule", { value: true });
     exports2.toPlatformPath = exports2.toWin32Path = exports2.toPosixPath = void 0;
-    var path26 = __importStar(__require("path"));
+    var path28 = __importStar(__require("path"));
     function toPosixPath(pth) {
       return pth.replace(/[\\]/g, "/");
     }
@@ -18461,7 +18461,7 @@ var require_path_utils = __commonJS({
     }
     exports2.toWin32Path = toWin32Path;
     function toPlatformPath(pth) {
-      return pth.replace(/[/\\]/g, path26.sep);
+      return pth.replace(/[/\\]/g, path28.sep);
     }
     exports2.toPlatformPath = toPlatformPath;
   }
@@ -18524,12 +18524,12 @@ var require_io_util = __commonJS({
     var _a;
     Object.defineProperty(exports2, "__esModule", { value: true });
     exports2.getCmdPath = exports2.tryGetExecutablePath = exports2.isRooted = exports2.isDirectory = exports2.exists = exports2.READONLY = exports2.UV_FS_O_EXLOCK = exports2.IS_WINDOWS = exports2.unlink = exports2.symlink = exports2.stat = exports2.rmdir = exports2.rm = exports2.rename = exports2.readlink = exports2.readdir = exports2.open = exports2.mkdir = exports2.lstat = exports2.copyFile = exports2.chmod = void 0;
-    var fs28 = __importStar(__require("fs"));
-    var path26 = __importStar(__require("path"));
-    _a = fs28.promises, exports2.chmod = _a.chmod, exports2.copyFile = _a.copyFile, exports2.lstat = _a.lstat, exports2.mkdir = _a.mkdir, exports2.open = _a.open, exports2.readdir = _a.readdir, exports2.readlink = _a.readlink, exports2.rename = _a.rename, exports2.rm = _a.rm, exports2.rmdir = _a.rmdir, exports2.stat = _a.stat, exports2.symlink = _a.symlink, exports2.unlink = _a.unlink;
+    var fs29 = __importStar(__require("fs"));
+    var path28 = __importStar(__require("path"));
+    _a = fs29.promises, exports2.chmod = _a.chmod, exports2.copyFile = _a.copyFile, exports2.lstat = _a.lstat, exports2.mkdir = _a.mkdir, exports2.open = _a.open, exports2.readdir = _a.readdir, exports2.readlink = _a.readlink, exports2.rename = _a.rename, exports2.rm = _a.rm, exports2.rmdir = _a.rmdir, exports2.stat = _a.stat, exports2.symlink = _a.symlink, exports2.unlink = _a.unlink;
     exports2.IS_WINDOWS = process.platform === "win32";
     exports2.UV_FS_O_EXLOCK = 268435456;
-    exports2.READONLY = fs28.constants.O_RDONLY;
+    exports2.READONLY = fs29.constants.O_RDONLY;
     function exists(fsPath) {
       return __awaiter(this, void 0, void 0, function* () {
         try {
@@ -18574,7 +18574,7 @@ var require_io_util = __commonJS({
         }
         if (stats && stats.isFile()) {
           if (exports2.IS_WINDOWS) {
-            const upperExt = path26.extname(filePath).toUpperCase();
+            const upperExt = path28.extname(filePath).toUpperCase();
             if (extensions.some((validExt) => validExt.toUpperCase() === upperExt)) {
               return filePath;
             }
@@ -18598,11 +18598,11 @@ var require_io_util = __commonJS({
           if (stats && stats.isFile()) {
             if (exports2.IS_WINDOWS) {
               try {
-                const directory = path26.dirname(filePath);
-                const upperName = path26.basename(filePath).toUpperCase();
+                const directory = path28.dirname(filePath);
+                const upperName = path28.basename(filePath).toUpperCase();
                 for (const actualName of yield exports2.readdir(directory)) {
                   if (upperName === actualName.toUpperCase()) {
-                    filePath = path26.join(directory, actualName);
+                    filePath = path28.join(directory, actualName);
                     break;
                   }
                 }
@@ -18697,7 +18697,7 @@ var require_io = __commonJS({
     Object.defineProperty(exports2, "__esModule", { value: true });
     exports2.findInPath = exports2.which = exports2.mkdirP = exports2.rmRF = exports2.mv = exports2.cp = void 0;
     var assert_1 = __require("assert");
-    var path26 = __importStar(__require("path"));
+    var path28 = __importStar(__require("path"));
     var ioUtil = __importStar(require_io_util());
     function cp(source, dest, options = {}) {
       return __awaiter(this, void 0, void 0, function* () {
@@ -18706,7 +18706,7 @@ var require_io = __commonJS({
         if (destStat && destStat.isFile() && !force) {
           return;
         }
-        const newDest = destStat && destStat.isDirectory() && copySourceDirectory ? path26.join(dest, path26.basename(source)) : dest;
+        const newDest = destStat && destStat.isDirectory() && copySourceDirectory ? path28.join(dest, path28.basename(source)) : dest;
         if (!(yield ioUtil.exists(source))) {
           throw new Error(`no such file or directory: ${source}`);
         }
@@ -18718,7 +18718,7 @@ var require_io = __commonJS({
             yield cpDirRecursive(source, newDest, 0, force);
           }
         } else {
-          if (path26.relative(source, newDest) === "") {
+          if (path28.relative(source, newDest) === "") {
             throw new Error(`'${newDest}' and '${source}' are the same file`);
           }
           yield copyFile(source, newDest, force);
@@ -18731,7 +18731,7 @@ var require_io = __commonJS({
         if (yield ioUtil.exists(dest)) {
           let destExists = true;
           if (yield ioUtil.isDirectory(dest)) {
-            dest = path26.join(dest, path26.basename(source));
+            dest = path28.join(dest, path28.basename(source));
             destExists = yield ioUtil.exists(dest);
           }
           if (destExists) {
@@ -18742,7 +18742,7 @@ var require_io = __commonJS({
             }
           }
         }
-        yield mkdirP(path26.dirname(dest));
+        yield mkdirP(path28.dirname(dest));
         yield ioUtil.rename(source, dest);
       });
     }
@@ -18805,7 +18805,7 @@ var require_io = __commonJS({
         }
         const extensions = [];
         if (ioUtil.IS_WINDOWS && process.env["PATHEXT"]) {
-          for (const extension of process.env["PATHEXT"].split(path26.delimiter)) {
+          for (const extension of process.env["PATHEXT"].split(path28.delimiter)) {
             if (extension) {
               extensions.push(extension);
             }
@@ -18818,12 +18818,12 @@ var require_io = __commonJS({
           }
           return [];
         }
-        if (tool.includes(path26.sep)) {
+        if (tool.includes(path28.sep)) {
           return [];
         }
         const directories = [];
         if (process.env.PATH) {
-          for (const p of process.env.PATH.split(path26.delimiter)) {
+          for (const p of process.env.PATH.split(path28.delimiter)) {
             if (p) {
               directories.push(p);
             }
@@ -18831,7 +18831,7 @@ var require_io = __commonJS({
         }
         const matches = [];
         for (const directory of directories) {
-          const filePath = yield ioUtil.tryGetExecutablePath(path26.join(directory, tool), extensions);
+          const filePath = yield ioUtil.tryGetExecutablePath(path28.join(directory, tool), extensions);
           if (filePath) {
             matches.push(filePath);
           }
@@ -18947,7 +18947,7 @@ var require_toolrunner = __commonJS({
     var os6 = __importStar(__require("os"));
     var events = __importStar(__require("events"));
     var child = __importStar(__require("child_process"));
-    var path26 = __importStar(__require("path"));
+    var path28 = __importStar(__require("path"));
     var io = __importStar(require_io());
     var ioUtil = __importStar(require_io_util());
     var timers_1 = __require("timers");
@@ -19162,7 +19162,7 @@ var require_toolrunner = __commonJS({
       exec() {
         return __awaiter(this, void 0, void 0, function* () {
           if (!ioUtil.isRooted(this.toolPath) && (this.toolPath.includes("/") || IS_WINDOWS && this.toolPath.includes("\\"))) {
-            this.toolPath = path26.resolve(process.cwd(), this.options.cwd || process.cwd(), this.toolPath);
+            this.toolPath = path28.resolve(process.cwd(), this.options.cwd || process.cwd(), this.toolPath);
           }
           this.toolPath = yield io.which(this.toolPath, true);
           return new Promise((resolve2, reject) => __awaiter(this, void 0, void 0, function* () {
@@ -19662,7 +19662,7 @@ var require_core = __commonJS({
     var file_command_1 = require_file_command();
     var utils_1 = require_utils();
     var os6 = __importStar(__require("os"));
-    var path26 = __importStar(__require("path"));
+    var path28 = __importStar(__require("path"));
     var oidc_utils_1 = require_oidc_utils();
     var ExitCode;
     (function(ExitCode2) {
@@ -19690,7 +19690,7 @@ var require_core = __commonJS({
       } else {
         (0, command_1.issueCommand)("add-path", {}, inputPath);
       }
-      process.env["PATH"] = `${inputPath}${path26.delimiter}${process.env["PATH"]}`;
+      process.env["PATH"] = `${inputPath}${path28.delimiter}${process.env["PATH"]}`;
     }
     exports2.addPath = addPath;
     function getInput5(name2, options) {
@@ -19733,8 +19733,8 @@ Support boolean input list: \`true | True | TRUE | false | False | FALSE\``);
       (0, command_1.issueCommand)("set-output", { name: name2 }, (0, utils_1.toCommandValue)(value));
     }
     exports2.setOutput = setOutput4;
-    function setCommandEcho(enabled) {
-      (0, command_1.issue)("echo", enabled ? "on" : "off");
+    function setCommandEcho(enabled2) {
+      (0, command_1.issue)("echo", enabled2 ? "on" : "off");
     }
     exports2.setCommandEcho = setCommandEcho;
     function setFailed3(message) {
@@ -19846,8 +19846,8 @@ var require_context = __commonJS({
           if ((0, fs_1.existsSync)(process.env.GITHUB_EVENT_PATH)) {
             this.payload = JSON.parse((0, fs_1.readFileSync)(process.env.GITHUB_EVENT_PATH, { encoding: "utf8" }));
           } else {
-            const path26 = process.env.GITHUB_EVENT_PATH;
-            process.stdout.write(`GITHUB_EVENT_PATH ${path26} does not exist${os_1.EOL}`);
+            const path28 = process.env.GITHUB_EVENT_PATH;
+            process.stdout.write(`GITHUB_EVENT_PATH ${path28} does not exist${os_1.EOL}`);
           }
         }
         this.eventName = process.env.GITHUB_EVENT_NAME;
@@ -20170,12 +20170,12 @@ var init_defaults = __esm({
 });
 
 // node_modules/@octokit/endpoint/dist-src/util/lowercase-keys.js
-function lowercaseKeys(object) {
-  if (!object) {
+function lowercaseKeys(object2) {
+  if (!object2) {
     return {};
   }
-  return Object.keys(object).reduce((newObj, key) => {
-    newObj[key.toLowerCase()] = object[key];
+  return Object.keys(object2).reduce((newObj, key) => {
+    newObj[key.toLowerCase()] = object2[key];
     return newObj;
   }, {});
 }
@@ -20304,11 +20304,11 @@ var init_extract_url_variable_names = __esm({
 });
 
 // node_modules/@octokit/endpoint/dist-src/util/omit.js
-function omit(object, keysToOmit) {
+function omit(object2, keysToOmit) {
   const result = { __proto__: null };
-  for (const key of Object.keys(object)) {
+  for (const key of Object.keys(object2)) {
     if (keysToOmit.indexOf(key) === -1) {
-      result[key] = object[key];
+      result[key] = object2[key];
     }
   }
   return result;
@@ -23363,8 +23363,8 @@ var init_endpoints_to_methods = __esm({
           enumerable: true
         };
       },
-      defineProperty(target, methodName, descriptor) {
-        Object.defineProperty(target.cache, methodName, descriptor);
+      defineProperty(target, methodName, descriptor2) {
+        Object.defineProperty(target.cache, methodName, descriptor2);
         return true;
       },
       deleteProperty(target, methodName) {
@@ -24982,7 +24982,7 @@ var require_braces = __commonJS({
 var require_constants7 = __commonJS({
   "node_modules/picomatch/lib/constants.js"(exports2, module2) {
     "use strict";
-    var path26 = __require("path");
+    var path28 = __require("path");
     var WIN_SLASH = "\\\\/";
     var WIN_NO_SLASH = `[^${WIN_SLASH}]`;
     var DEFAULT_MAX_EXTGLOB_RECURSION = 0;
@@ -25156,7 +25156,7 @@ var require_constants7 = __commonJS({
       /* | */
       CHAR_ZERO_WIDTH_NOBREAK_SPACE: 65279,
       /* \uFEFF */
-      SEP: path26.sep,
+      SEP: path28.sep,
       /**
        * Create EXTGLOB_CHARS
        */
@@ -25183,7 +25183,7 @@ var require_constants7 = __commonJS({
 var require_utils6 = __commonJS({
   "node_modules/picomatch/lib/utils.js"(exports2) {
     "use strict";
-    var path26 = __require("path");
+    var path28 = __require("path");
     var win32 = process.platform === "win32";
     var {
       REGEX_BACKSLASH,
@@ -25212,7 +25212,7 @@ var require_utils6 = __commonJS({
       if (options && typeof options.windows === "boolean") {
         return options.windows;
       }
-      return win32 === true || path26.sep === "\\";
+      return win32 === true || path28.sep === "\\";
     };
     exports2.escapeLast = (input, char, lastIdx) => {
       const idx = input.lastIndexOf(char, lastIdx);
@@ -25484,7 +25484,7 @@ var require_scan = __commonJS({
       }
       let base = str;
       let prefix = "";
-      let glob = "";
+      let glob2 = "";
       if (start2 > 0) {
         prefix = str.slice(0, start2);
         str = str.slice(start2);
@@ -25492,10 +25492,10 @@ var require_scan = __commonJS({
       }
       if (base && isGlob === true && lastIndex > 0) {
         base = str.slice(0, lastIndex);
-        glob = str.slice(lastIndex);
+        glob2 = str.slice(lastIndex);
       } else if (isGlob === true) {
         base = "";
-        glob = str;
+        glob2 = str;
       } else {
         base = str;
       }
@@ -25505,7 +25505,7 @@ var require_scan = __commonJS({
         }
       }
       if (opts.unescape === true) {
-        if (glob) glob = utils.removeBackslashes(glob);
+        if (glob2) glob2 = utils.removeBackslashes(glob2);
         if (base && backslashes === true) {
           base = utils.removeBackslashes(base);
         }
@@ -25515,7 +25515,7 @@ var require_scan = __commonJS({
         input,
         start: start2,
         base,
-        glob,
+        glob: glob2,
         isBrace,
         isBracket,
         isGlob,
@@ -26576,15 +26576,15 @@ var require_parse3 = __commonJS({
 var require_picomatch = __commonJS({
   "node_modules/picomatch/lib/picomatch.js"(exports2, module2) {
     "use strict";
-    var path26 = __require("path");
+    var path28 = __require("path");
     var scan = require_scan();
     var parse5 = require_parse3();
     var utils = require_utils6();
     var constants = require_constants7();
     var isObject = (val) => val && typeof val === "object" && !Array.isArray(val);
-    var picomatch = (glob, options, returnState = false) => {
-      if (Array.isArray(glob)) {
-        const fns = glob.map((input) => picomatch(input, options, returnState));
+    var picomatch = (glob2, options, returnState = false) => {
+      if (Array.isArray(glob2)) {
+        const fns = glob2.map((input) => picomatch(input, options, returnState));
         const arrayMatcher = (str) => {
           for (const isMatch of fns) {
             const state2 = isMatch(str);
@@ -26594,13 +26594,13 @@ var require_picomatch = __commonJS({
         };
         return arrayMatcher;
       }
-      const isState = isObject(glob) && glob.tokens && glob.input;
-      if (glob === "" || typeof glob !== "string" && !isState) {
+      const isState = isObject(glob2) && glob2.tokens && glob2.input;
+      if (glob2 === "" || typeof glob2 !== "string" && !isState) {
         throw new TypeError("Expected pattern to be a non-empty string");
       }
       const opts = options || {};
       const posix = utils.isWindows(options);
-      const regex = isState ? picomatch.compileRe(glob, options) : picomatch.makeRe(glob, options, false, true);
+      const regex = isState ? picomatch.compileRe(glob2, options) : picomatch.makeRe(glob2, options, false, true);
       const state = regex.state;
       delete regex.state;
       let isIgnored = () => false;
@@ -26609,8 +26609,8 @@ var require_picomatch = __commonJS({
         isIgnored = picomatch(opts.ignore, ignoreOpts, returnState);
       }
       const matcher = (input, returnObject = false) => {
-        const { isMatch, match: match2, output } = picomatch.test(input, regex, options, { glob, posix });
-        const result = { glob, state, regex, posix, input, output, match: match2, isMatch };
+        const { isMatch, match: match2, output } = picomatch.test(input, regex, options, { glob: glob2, posix });
+        const result = { glob: glob2, state, regex, posix, input, output, match: match2, isMatch };
         if (typeof opts.onResult === "function") {
           opts.onResult(result);
         }
@@ -26635,7 +26635,7 @@ var require_picomatch = __commonJS({
       }
       return matcher;
     };
-    picomatch.test = (input, regex, options, { glob, posix } = {}) => {
+    picomatch.test = (input, regex, options, { glob: glob2, posix } = {}) => {
       if (typeof input !== "string") {
         throw new TypeError("Expected input to be a string");
       }
@@ -26644,11 +26644,11 @@ var require_picomatch = __commonJS({
       }
       const opts = options || {};
       const format2 = opts.format || (posix ? utils.toPosixSlashes : null);
-      let match2 = input === glob;
+      let match2 = input === glob2;
       let output = match2 && format2 ? format2(input) : input;
       if (match2 === false) {
         output = format2 ? format2(input) : input;
-        match2 = output === glob;
+        match2 = output === glob2;
       }
       if (match2 === false || opts.capture === true) {
         if (opts.matchBase === true || opts.basename === true) {
@@ -26659,9 +26659,9 @@ var require_picomatch = __commonJS({
       }
       return { isMatch: Boolean(match2), match: match2, output };
     };
-    picomatch.matchBase = (input, glob, options, posix = utils.isWindows(options)) => {
-      const regex = glob instanceof RegExp ? glob : picomatch.makeRe(glob, options);
-      return regex.test(path26.basename(input));
+    picomatch.matchBase = (input, glob2, options, posix = utils.isWindows(options)) => {
+      const regex = glob2 instanceof RegExp ? glob2 : picomatch.makeRe(glob2, options);
+      return regex.test(path28.basename(input));
     };
     picomatch.isMatch = (str, patterns, options) => picomatch(patterns, options)(str);
     picomatch.parse = (pattern, options) => {
@@ -26734,7 +26734,7 @@ var require_micromatch = __commonJS({
       const index = v.indexOf("{");
       return index > -1 && v.indexOf("}", index) > -1;
     };
-    var micromatch3 = (list, patterns, options) => {
+    var micromatch4 = (list, patterns, options) => {
       patterns = [].concat(patterns);
       list = [].concat(list);
       let omit3 = /* @__PURE__ */ new Set();
@@ -26775,11 +26775,11 @@ var require_micromatch = __commonJS({
       }
       return matches;
     };
-    micromatch3.match = micromatch3;
-    micromatch3.matcher = (pattern, options) => picomatch(pattern, options);
-    micromatch3.isMatch = (str, patterns, options) => picomatch(patterns, options)(str);
-    micromatch3.any = micromatch3.isMatch;
-    micromatch3.not = (list, patterns, options = {}) => {
+    micromatch4.match = micromatch4;
+    micromatch4.matcher = (pattern, options) => picomatch(pattern, options);
+    micromatch4.isMatch = (str, patterns, options) => picomatch(patterns, options)(str);
+    micromatch4.any = micromatch4.isMatch;
+    micromatch4.not = (list, patterns, options = {}) => {
       patterns = [].concat(patterns).map(String);
       let result = /* @__PURE__ */ new Set();
       let items = [];
@@ -26787,7 +26787,7 @@ var require_micromatch = __commonJS({
         if (options.onResult) options.onResult(state);
         items.push(state.output);
       };
-      let matches = new Set(micromatch3(list, patterns, { ...options, onResult }));
+      let matches = new Set(micromatch4(list, patterns, { ...options, onResult }));
       for (let item of items) {
         if (!matches.has(item)) {
           result.add(item);
@@ -26795,12 +26795,12 @@ var require_micromatch = __commonJS({
       }
       return [...result];
     };
-    micromatch3.contains = (str, pattern, options) => {
+    micromatch4.contains = (str, pattern, options) => {
       if (typeof str !== "string") {
         throw new TypeError(`Expected a string: "${util.inspect(str)}"`);
       }
       if (Array.isArray(pattern)) {
-        return pattern.some((p) => micromatch3.contains(str, p, options));
+        return pattern.some((p) => micromatch4.contains(str, p, options));
       }
       if (typeof pattern === "string") {
         if (isEmptyString(str) || isEmptyString(pattern)) {
@@ -26810,18 +26810,18 @@ var require_micromatch = __commonJS({
           return true;
         }
       }
-      return micromatch3.isMatch(str, pattern, { ...options, contains: true });
+      return micromatch4.isMatch(str, pattern, { ...options, contains: true });
     };
-    micromatch3.matchKeys = (obj, patterns, options) => {
+    micromatch4.matchKeys = (obj, patterns, options) => {
       if (!utils.isObject(obj)) {
         throw new TypeError("Expected the first argument to be an object");
       }
-      let keys = micromatch3(Object.keys(obj), patterns, options);
+      let keys = micromatch4(Object.keys(obj), patterns, options);
       let res = {};
       for (let key of keys) res[key] = obj[key];
       return res;
     };
-    micromatch3.some = (list, patterns, options) => {
+    micromatch4.some = (list, patterns, options) => {
       let items = [].concat(list);
       for (let pattern of [].concat(patterns)) {
         let isMatch = picomatch(String(pattern), options);
@@ -26831,7 +26831,7 @@ var require_micromatch = __commonJS({
       }
       return false;
     };
-    micromatch3.every = (list, patterns, options) => {
+    micromatch4.every = (list, patterns, options) => {
       let items = [].concat(list);
       for (let pattern of [].concat(patterns)) {
         let isMatch = picomatch(String(pattern), options);
@@ -26841,23 +26841,23 @@ var require_micromatch = __commonJS({
       }
       return true;
     };
-    micromatch3.all = (str, patterns, options) => {
+    micromatch4.all = (str, patterns, options) => {
       if (typeof str !== "string") {
         throw new TypeError(`Expected a string: "${util.inspect(str)}"`);
       }
       return [].concat(patterns).every((p) => picomatch(p, options)(str));
     };
-    micromatch3.capture = (glob, input, options) => {
+    micromatch4.capture = (glob2, input, options) => {
       let posix = utils.isWindows(options);
-      let regex = picomatch.makeRe(String(glob), { ...options, capture: true });
+      let regex = picomatch.makeRe(String(glob2), { ...options, capture: true });
       let match2 = regex.exec(posix ? utils.toPosixSlashes(input) : input);
       if (match2) {
         return match2.slice(1).map((v) => v === void 0 ? "" : v);
       }
     };
-    micromatch3.makeRe = (...args2) => picomatch.makeRe(...args2);
-    micromatch3.scan = (...args2) => picomatch.scan(...args2);
-    micromatch3.parse = (patterns, options) => {
+    micromatch4.makeRe = (...args2) => picomatch.makeRe(...args2);
+    micromatch4.scan = (...args2) => picomatch.scan(...args2);
+    micromatch4.parse = (patterns, options) => {
       let res = [];
       for (let pattern of [].concat(patterns || [])) {
         for (let str of braces(String(pattern), options)) {
@@ -26866,19 +26866,19 @@ var require_micromatch = __commonJS({
       }
       return res;
     };
-    micromatch3.braces = (pattern, options) => {
+    micromatch4.braces = (pattern, options) => {
       if (typeof pattern !== "string") throw new TypeError("Expected a string");
       if (options && options.nobrace === true || !hasBraces(pattern)) {
         return [pattern];
       }
       return braces(pattern, options);
     };
-    micromatch3.braceExpand = (pattern, options) => {
+    micromatch4.braceExpand = (pattern, options) => {
       if (typeof pattern !== "string") throw new TypeError("Expected a string");
-      return micromatch3.braces(pattern, { ...options, expand: true });
+      return micromatch4.braces(pattern, { ...options, expand: true });
     };
-    micromatch3.hasBraces = hasBraces;
-    module2.exports = micromatch3;
+    micromatch4.hasBraces = hasBraces;
+    module2.exports = micromatch4;
   }
 });
 
@@ -26996,14 +26996,14 @@ var require_package_url = __commonJS({
         if (url2.username !== "" || url2.password !== "") {
           throw new Error('Invalid purl: cannot contain a "user:pass@host:port"');
         }
-        let path26 = url2.pathname.trim().replace(/^\/+/g, "");
+        let path28 = url2.pathname.trim().replace(/^\/+/g, "");
         let version = null;
-        if (path26.includes("@")) {
-          let index = path26.indexOf("@");
-          version = decodeURIComponent(path26.substring(index + 1));
-          remainder = path26.substring(0, index);
+        if (path28.includes("@")) {
+          let index = path28.indexOf("@");
+          version = decodeURIComponent(path28.substring(index + 1));
+          remainder = path28.substring(0, index);
         } else {
-          remainder = path26;
+          remainder = path28;
         }
         let remaining = remainder.split("/").slice(1);
         let name2 = null;
@@ -27161,7 +27161,7 @@ var require_common = __commonJS({
       createDebug3.coerce = coerce;
       createDebug3.disable = disable;
       createDebug3.enable = enable;
-      createDebug3.enabled = enabled;
+      createDebug3.enabled = enabled2;
       createDebug3.humanize = require_ms();
       createDebug3.destroy = destroy;
       Object.keys(env).forEach((key) => {
@@ -27300,7 +27300,7 @@ var require_common = __commonJS({
         createDebug3.enable("");
         return namespaces;
       }
-      function enabled(name2) {
+      function enabled2(name2) {
         for (const skip of createDebug3.skips) {
           if (matchesTemplate(name2, skip)) {
             return false;
@@ -27871,7 +27871,7 @@ var require_path = __commonJS({
     Object.defineProperty(exports2, "__esModule", { value: true });
     exports2.convertPosixPathToPattern = exports2.convertWindowsPathToPattern = exports2.convertPathToPattern = exports2.escapePosixPath = exports2.escapeWindowsPath = exports2.escape = exports2.removeLeadingDotSegment = exports2.makeAbsolute = exports2.unixify = void 0;
     var os6 = __require("os");
-    var path26 = __require("path");
+    var path28 = __require("path");
     var IS_WINDOWS_PLATFORM = os6.platform() === "win32";
     var LEADING_DOT_SEGMENT_CHARACTERS_COUNT = 2;
     var POSIX_UNESCAPED_GLOB_SYMBOLS_RE = /(\\?)([()*?[\]{|}]|^!|[!+@](?=\()|\\(?![!()*+?@[\]{|}]))/g;
@@ -27883,7 +27883,7 @@ var require_path = __commonJS({
     }
     exports2.unixify = unixify;
     function makeAbsolute(cwd, filepath) {
-      return path26.resolve(cwd, filepath);
+      return path28.resolve(cwd, filepath);
     }
     exports2.makeAbsolute = makeAbsolute;
     function removeLeadingDotSegment(entry) {
@@ -28100,9 +28100,9 @@ var require_pattern = __commonJS({
     "use strict";
     Object.defineProperty(exports2, "__esModule", { value: true });
     exports2.isAbsolute = exports2.partitionAbsoluteAndRelative = exports2.removeDuplicateSlashes = exports2.matchAny = exports2.convertPatternsToRe = exports2.makeRe = exports2.getPatternParts = exports2.expandBraceExpansion = exports2.expandPatternsWithBraceExpansion = exports2.isAffectDepthOfReadingPattern = exports2.endsWithSlashGlobStar = exports2.hasGlobStar = exports2.getBaseDirectory = exports2.isPatternRelatedToParentDirectory = exports2.getPatternsOutsideCurrentDirectory = exports2.getPatternsInsideCurrentDirectory = exports2.getPositivePatterns = exports2.getNegativePatterns = exports2.isPositivePattern = exports2.isNegativePattern = exports2.convertToNegativePattern = exports2.convertToPositivePattern = exports2.isDynamicPattern = exports2.isStaticPattern = void 0;
-    var path26 = __require("path");
+    var path28 = __require("path");
     var globParent = require_glob_parent();
-    var micromatch3 = require_micromatch();
+    var micromatch4 = require_micromatch();
     var GLOBSTAR = "**";
     var ESCAPE_SYMBOL = "\\";
     var COMMON_GLOB_SYMBOLS_RE = /[*?]|^!/;
@@ -28195,7 +28195,7 @@ var require_pattern = __commonJS({
     }
     exports2.endsWithSlashGlobStar = endsWithSlashGlobStar;
     function isAffectDepthOfReadingPattern(pattern) {
-      const basename = path26.basename(pattern);
+      const basename = path28.basename(pattern);
       return endsWithSlashGlobStar(pattern) || isStaticPattern(basename);
     }
     exports2.isAffectDepthOfReadingPattern = isAffectDepthOfReadingPattern;
@@ -28206,13 +28206,13 @@ var require_pattern = __commonJS({
     }
     exports2.expandPatternsWithBraceExpansion = expandPatternsWithBraceExpansion;
     function expandBraceExpansion(pattern) {
-      const patterns = micromatch3.braces(pattern, { expand: true, nodupes: true, keepEscaping: true });
+      const patterns = micromatch4.braces(pattern, { expand: true, nodupes: true, keepEscaping: true });
       patterns.sort((a, b) => a.length - b.length);
       return patterns.filter((pattern2) => pattern2 !== "");
     }
     exports2.expandBraceExpansion = expandBraceExpansion;
     function getPatternParts(pattern, options) {
-      let { parts: parts2 } = micromatch3.scan(pattern, Object.assign(Object.assign({}, options), { parts: true }));
+      let { parts: parts2 } = micromatch4.scan(pattern, Object.assign(Object.assign({}, options), { parts: true }));
       if (parts2.length === 0) {
         parts2 = [pattern];
       }
@@ -28224,7 +28224,7 @@ var require_pattern = __commonJS({
     }
     exports2.getPatternParts = getPatternParts;
     function makeRe(pattern, options) {
-      return micromatch3.makeRe(pattern, options);
+      return micromatch4.makeRe(pattern, options);
     }
     exports2.makeRe = makeRe;
     function convertPatternsToRe(patterns, options) {
@@ -28253,7 +28253,7 @@ var require_pattern = __commonJS({
     }
     exports2.partitionAbsoluteAndRelative = partitionAbsoluteAndRelative;
     function isAbsolute(pattern) {
-      return path26.isAbsolute(pattern);
+      return path28.isAbsolute(pattern);
     }
     exports2.isAbsolute = isAbsolute;
   }
@@ -28428,10 +28428,10 @@ var require_utils7 = __commonJS({
     exports2.array = array;
     var errno = require_errno();
     exports2.errno = errno;
-    var fs28 = require_fs();
-    exports2.fs = fs28;
-    var path26 = require_path();
-    exports2.path = path26;
+    var fs29 = require_fs();
+    exports2.fs = fs29;
+    var path28 = require_path();
+    exports2.path = path28;
     var pattern = require_pattern();
     exports2.pattern = pattern;
     var stream = require_stream();
@@ -28543,8 +28543,8 @@ var require_async = __commonJS({
     "use strict";
     Object.defineProperty(exports2, "__esModule", { value: true });
     exports2.read = void 0;
-    function read(path26, settings, callback) {
-      settings.fs.lstat(path26, (lstatError, lstat) => {
+    function read(path28, settings, callback) {
+      settings.fs.lstat(path28, (lstatError, lstat) => {
         if (lstatError !== null) {
           callFailureCallback(callback, lstatError);
           return;
@@ -28553,7 +28553,7 @@ var require_async = __commonJS({
           callSuccessCallback(callback, lstat);
           return;
         }
-        settings.fs.stat(path26, (statError, stat) => {
+        settings.fs.stat(path28, (statError, stat) => {
           if (statError !== null) {
             if (settings.throwErrorOnBrokenSymbolicLink) {
               callFailureCallback(callback, statError);
@@ -28585,13 +28585,13 @@ var require_sync = __commonJS({
     "use strict";
     Object.defineProperty(exports2, "__esModule", { value: true });
     exports2.read = void 0;
-    function read(path26, settings) {
-      const lstat = settings.fs.lstatSync(path26);
+    function read(path28, settings) {
+      const lstat = settings.fs.lstatSync(path28);
       if (!lstat.isSymbolicLink() || !settings.followSymbolicLink) {
         return lstat;
       }
       try {
-        const stat = settings.fs.statSync(path26);
+        const stat = settings.fs.statSync(path28);
         if (settings.markSymbolicLink) {
           stat.isSymbolicLink = () => true;
         }
@@ -28613,12 +28613,12 @@ var require_fs2 = __commonJS({
     "use strict";
     Object.defineProperty(exports2, "__esModule", { value: true });
     exports2.createFileSystemAdapter = exports2.FILE_SYSTEM_ADAPTER = void 0;
-    var fs28 = __require("fs");
+    var fs29 = __require("fs");
     exports2.FILE_SYSTEM_ADAPTER = {
-      lstat: fs28.lstat,
-      stat: fs28.stat,
-      lstatSync: fs28.lstatSync,
-      statSync: fs28.statSync
+      lstat: fs29.lstat,
+      stat: fs29.stat,
+      lstatSync: fs29.lstatSync,
+      statSync: fs29.statSync
     };
     function createFileSystemAdapter(fsMethods) {
       if (fsMethods === void 0) {
@@ -28635,12 +28635,12 @@ var require_settings = __commonJS({
   "node_modules/@nodelib/fs.stat/out/settings.js"(exports2) {
     "use strict";
     Object.defineProperty(exports2, "__esModule", { value: true });
-    var fs28 = require_fs2();
+    var fs29 = require_fs2();
     var Settings = class {
       constructor(_options = {}) {
         this._options = _options;
         this.followSymbolicLink = this._getValue(this._options.followSymbolicLink, true);
-        this.fs = fs28.createFileSystemAdapter(this._options.fs);
+        this.fs = fs29.createFileSystemAdapter(this._options.fs);
         this.markSymbolicLink = this._getValue(this._options.markSymbolicLink, false);
         this.throwErrorOnBrokenSymbolicLink = this._getValue(this._options.throwErrorOnBrokenSymbolicLink, true);
       }
@@ -28662,17 +28662,17 @@ var require_out = __commonJS({
     var sync = require_sync();
     var settings_1 = require_settings();
     exports2.Settings = settings_1.default;
-    function stat(path26, optionsOrSettingsOrCallback, callback) {
+    function stat(path28, optionsOrSettingsOrCallback, callback) {
       if (typeof optionsOrSettingsOrCallback === "function") {
-        async.read(path26, getSettings(), optionsOrSettingsOrCallback);
+        async.read(path28, getSettings(), optionsOrSettingsOrCallback);
         return;
       }
-      async.read(path26, getSettings(optionsOrSettingsOrCallback), callback);
+      async.read(path28, getSettings(optionsOrSettingsOrCallback), callback);
     }
     exports2.stat = stat;
-    function statSync(path26, optionsOrSettings) {
+    function statSync(path28, optionsOrSettings) {
       const settings = getSettings(optionsOrSettings);
-      return sync.read(path26, settings);
+      return sync.read(path28, settings);
     }
     exports2.statSync = statSync;
     function getSettings(settingsOrOptions = {}) {
@@ -28795,8 +28795,8 @@ var require_utils8 = __commonJS({
     "use strict";
     Object.defineProperty(exports2, "__esModule", { value: true });
     exports2.fs = void 0;
-    var fs28 = require_fs3();
-    exports2.fs = fs28;
+    var fs29 = require_fs3();
+    exports2.fs = fs29;
   }
 });
 
@@ -28888,16 +28888,16 @@ var require_async2 = __commonJS({
           return;
         }
         const tasks = names.map((name2) => {
-          const path26 = common.joinPathSegments(directory, name2, settings.pathSegmentSeparator);
+          const path28 = common.joinPathSegments(directory, name2, settings.pathSegmentSeparator);
           return (done) => {
-            fsStat.stat(path26, settings.fsStatSettings, (error, stats) => {
+            fsStat.stat(path28, settings.fsStatSettings, (error, stats) => {
               if (error !== null) {
                 done(error);
                 return;
               }
               const entry = {
                 name: name2,
-                path: path26,
+                path: path28,
                 dirent: utils.fs.createDirentFromStats(name2, stats)
               };
               if (settings.stats) {
@@ -28991,14 +28991,14 @@ var require_fs4 = __commonJS({
     "use strict";
     Object.defineProperty(exports2, "__esModule", { value: true });
     exports2.createFileSystemAdapter = exports2.FILE_SYSTEM_ADAPTER = void 0;
-    var fs28 = __require("fs");
+    var fs29 = __require("fs");
     exports2.FILE_SYSTEM_ADAPTER = {
-      lstat: fs28.lstat,
-      stat: fs28.stat,
-      lstatSync: fs28.lstatSync,
-      statSync: fs28.statSync,
-      readdir: fs28.readdir,
-      readdirSync: fs28.readdirSync
+      lstat: fs29.lstat,
+      stat: fs29.stat,
+      lstatSync: fs29.lstatSync,
+      statSync: fs29.statSync,
+      readdir: fs29.readdir,
+      readdirSync: fs29.readdirSync
     };
     function createFileSystemAdapter(fsMethods) {
       if (fsMethods === void 0) {
@@ -29015,15 +29015,15 @@ var require_settings2 = __commonJS({
   "node_modules/@nodelib/fs.scandir/out/settings.js"(exports2) {
     "use strict";
     Object.defineProperty(exports2, "__esModule", { value: true });
-    var path26 = __require("path");
+    var path28 = __require("path");
     var fsStat = require_out();
-    var fs28 = require_fs4();
+    var fs29 = require_fs4();
     var Settings = class {
       constructor(_options = {}) {
         this._options = _options;
         this.followSymbolicLinks = this._getValue(this._options.followSymbolicLinks, false);
-        this.fs = fs28.createFileSystemAdapter(this._options.fs);
-        this.pathSegmentSeparator = this._getValue(this._options.pathSegmentSeparator, path26.sep);
+        this.fs = fs29.createFileSystemAdapter(this._options.fs);
+        this.pathSegmentSeparator = this._getValue(this._options.pathSegmentSeparator, path28.sep);
         this.stats = this._getValue(this._options.stats, false);
         this.throwErrorOnBrokenSymbolicLink = this._getValue(this._options.throwErrorOnBrokenSymbolicLink, true);
         this.fsStatSettings = new fsStat.Settings({
@@ -29050,17 +29050,17 @@ var require_out2 = __commonJS({
     var sync = require_sync2();
     var settings_1 = require_settings2();
     exports2.Settings = settings_1.default;
-    function scandir(path26, optionsOrSettingsOrCallback, callback) {
+    function scandir(path28, optionsOrSettingsOrCallback, callback) {
       if (typeof optionsOrSettingsOrCallback === "function") {
-        async.read(path26, getSettings(), optionsOrSettingsOrCallback);
+        async.read(path28, getSettings(), optionsOrSettingsOrCallback);
         return;
       }
-      async.read(path26, getSettings(optionsOrSettingsOrCallback), callback);
+      async.read(path28, getSettings(optionsOrSettingsOrCallback), callback);
     }
     exports2.scandir = scandir;
-    function scandirSync(path26, optionsOrSettings) {
+    function scandirSync(path28, optionsOrSettings) {
       const settings = getSettings(optionsOrSettings);
-      return sync.read(path26, settings);
+      return sync.read(path28, settings);
     }
     exports2.scandirSync = scandirSync;
     function getSettings(settingsOrOptions = {}) {
@@ -29708,7 +29708,7 @@ var require_settings3 = __commonJS({
   "node_modules/@nodelib/fs.walk/out/settings.js"(exports2) {
     "use strict";
     Object.defineProperty(exports2, "__esModule", { value: true });
-    var path26 = __require("path");
+    var path28 = __require("path");
     var fsScandir = require_out2();
     var Settings = class {
       constructor(_options = {}) {
@@ -29718,7 +29718,7 @@ var require_settings3 = __commonJS({
         this.deepFilter = this._getValue(this._options.deepFilter, null);
         this.entryFilter = this._getValue(this._options.entryFilter, null);
         this.errorFilter = this._getValue(this._options.errorFilter, null);
-        this.pathSegmentSeparator = this._getValue(this._options.pathSegmentSeparator, path26.sep);
+        this.pathSegmentSeparator = this._getValue(this._options.pathSegmentSeparator, path28.sep);
         this.fsScandirSettings = new fsScandir.Settings({
           followSymbolicLinks: this._options.followSymbolicLinks,
           fs: this._options.fs,
@@ -29780,7 +29780,7 @@ var require_reader2 = __commonJS({
   "node_modules/fast-glob/out/readers/reader.js"(exports2) {
     "use strict";
     Object.defineProperty(exports2, "__esModule", { value: true });
-    var path26 = __require("path");
+    var path28 = __require("path");
     var fsStat = require_out();
     var utils = require_utils7();
     var Reader = class {
@@ -29793,7 +29793,7 @@ var require_reader2 = __commonJS({
         });
       }
       _getFullEntryPath(filepath) {
-        return path26.resolve(this._settings.cwd, filepath);
+        return path28.resolve(this._settings.cwd, filepath);
       }
       _makeEntry(stats, pattern) {
         const entry = {
@@ -30209,7 +30209,7 @@ var require_provider = __commonJS({
   "node_modules/fast-glob/out/providers/provider.js"(exports2) {
     "use strict";
     Object.defineProperty(exports2, "__esModule", { value: true });
-    var path26 = __require("path");
+    var path28 = __require("path");
     var deep_1 = require_deep();
     var entry_1 = require_entry();
     var error_1 = require_error();
@@ -30223,7 +30223,7 @@ var require_provider = __commonJS({
         this.entryTransformer = new entry_2.default(this._settings);
       }
       _getRootDirectory(task) {
-        return path26.resolve(this._settings.cwd, task.base);
+        return path28.resolve(this._settings.cwd, task.base);
       }
       _getReaderOptions(task) {
         const basePath = task.base === "." ? "" : task.base;
@@ -30404,16 +30404,16 @@ var require_settings4 = __commonJS({
     "use strict";
     Object.defineProperty(exports2, "__esModule", { value: true });
     exports2.DEFAULT_FILE_SYSTEM_ADAPTER = void 0;
-    var fs28 = __require("fs");
+    var fs29 = __require("fs");
     var os6 = __require("os");
     var CPU_COUNT = Math.max(os6.cpus().length, 1);
     exports2.DEFAULT_FILE_SYSTEM_ADAPTER = {
-      lstat: fs28.lstat,
-      lstatSync: fs28.lstatSync,
-      stat: fs28.stat,
-      statSync: fs28.statSync,
-      readdir: fs28.readdir,
-      readdirSync: fs28.readdirSync
+      lstat: fs29.lstat,
+      lstatSync: fs29.lstatSync,
+      stat: fs29.stat,
+      statSync: fs29.statSync,
+      readdir: fs29.readdir,
+      readdirSync: fs29.readdirSync
     };
     var Settings = class {
       constructor(_options = {}) {
@@ -34400,10 +34400,10 @@ var require_resolution = __commonJS({
     };
     function peg$parse(input, options) {
       options = options !== void 0 ? options : {};
-      var peg$FAILED = {}, peg$startRuleFunctions = { resolution: peg$parseresolution }, peg$startRuleFunction = peg$parseresolution, peg$c0 = "/", peg$c1 = peg$literalExpectation("/", false), peg$c2 = function(from, descriptor) {
-        return { from, descriptor };
-      }, peg$c3 = function(descriptor) {
-        return { descriptor };
+      var peg$FAILED = {}, peg$startRuleFunctions = { resolution: peg$parseresolution }, peg$startRuleFunction = peg$parseresolution, peg$c0 = "/", peg$c1 = peg$literalExpectation("/", false), peg$c2 = function(from, descriptor2) {
+        return { from, descriptor: descriptor2 };
+      }, peg$c3 = function(descriptor2) {
+        return { descriptor: descriptor2 };
       }, peg$c4 = "@", peg$c5 = peg$literalExpectation("@", false), peg$c6 = function(fullName, description) {
         return { fullName, description };
       }, peg$c7 = function(fullName) {
@@ -34754,10 +34754,10 @@ var require_resolution2 = __commonJS({
   "node_modules/@yarnpkg/parsers/lib/resolution.js"(exports2) {
     "use strict";
     Object.defineProperty(exports2, "__esModule", { value: true });
-    exports2.parseResolution = parseResolution;
+    exports2.parseResolution = parseResolution2;
     exports2.stringifyResolution = stringifyResolution;
     var resolution_1 = require_resolution();
-    function parseResolution(source) {
+    function parseResolution2(source) {
       const legacyResolution = source.match(/^\*{1,2}\/(.*)/);
       if (legacyResolution)
         throw new Error(`The override for '${source}' includes a glob pattern. Glob patterns have been removed since their behaviours don't match what you'd expect. Set the override to '${legacyResolution[1]}' instead.`);
@@ -35170,8 +35170,8 @@ var require_null = __commonJS({
     function constructYamlNull() {
       return null;
     }
-    function isNull(object) {
-      return object === null;
+    function isNull(object2) {
+      return object2 === null;
     }
     module2.exports = new Type("tag:yaml.org,2002:null", {
       kind: "scalar",
@@ -35213,8 +35213,8 @@ var require_bool = __commonJS({
     function constructYamlBoolean(data) {
       return data === "true" || data === "True" || data === "TRUE";
     }
-    function isBoolean(object) {
-      return Object.prototype.toString.call(object) === "[object Boolean]";
+    function isBoolean(object2) {
+      return Object.prototype.toString.call(object2) === "[object Boolean]";
     }
     module2.exports = new Type("tag:yaml.org,2002:bool", {
       kind: "scalar",
@@ -35222,14 +35222,14 @@ var require_bool = __commonJS({
       construct: constructYamlBoolean,
       predicate: isBoolean,
       represent: {
-        lowercase: function(object) {
-          return object ? "true" : "false";
+        lowercase: function(object2) {
+          return object2 ? "true" : "false";
         },
-        uppercase: function(object) {
-          return object ? "TRUE" : "FALSE";
+        uppercase: function(object2) {
+          return object2 ? "TRUE" : "FALSE";
         },
-        camelcase: function(object) {
-          return object ? "True" : "False";
+        camelcase: function(object2) {
+          return object2 ? "True" : "False";
         }
       },
       defaultStyle: "lowercase"
@@ -35320,8 +35320,8 @@ var require_int = __commonJS({
     function constructYamlInteger(data) {
       return parseYamlInteger2(data);
     }
-    function isInteger(object) {
-      return Object.prototype.toString.call(object) === "[object Number]" && (object % 1 === 0 && !common.isNegativeZero(object));
+    function isInteger(object2) {
+      return Object.prototype.toString.call(object2) === "[object Number]" && (object2 % 1 === 0 && !common.isNegativeZero(object2));
     }
     module2.exports = new Type("tag:yaml.org,2002:int", {
       kind: "scalar",
@@ -35390,8 +35390,8 @@ var require_float = __commonJS({
       return sign * parseFloat(value, 10);
     }
     var SCIENTIFIC_WITHOUT_DOT = /^[-+]?[0-9]+e/;
-    function representYamlFloat2(object, style) {
-      if (isNaN(object)) {
+    function representYamlFloat2(object2, style) {
+      if (isNaN(object2)) {
         switch (style) {
           case "lowercase":
             return ".nan";
@@ -35400,7 +35400,7 @@ var require_float = __commonJS({
           case "camelcase":
             return ".NaN";
         }
-      } else if (Number.POSITIVE_INFINITY === object) {
+      } else if (Number.POSITIVE_INFINITY === object2) {
         switch (style) {
           case "lowercase":
             return ".inf";
@@ -35409,7 +35409,7 @@ var require_float = __commonJS({
           case "camelcase":
             return ".Inf";
         }
-      } else if (Number.NEGATIVE_INFINITY === object) {
+      } else if (Number.NEGATIVE_INFINITY === object2) {
         switch (style) {
           case "lowercase":
             return "-.inf";
@@ -35418,14 +35418,14 @@ var require_float = __commonJS({
           case "camelcase":
             return "-.Inf";
         }
-      } else if (common.isNegativeZero(object)) {
+      } else if (common.isNegativeZero(object2)) {
         return "-0.0";
       }
-      const res = object.toString(10);
+      const res = object2.toString(10);
       return SCIENTIFIC_WITHOUT_DOT.test(res) ? res.replace("e", ".e") : res;
     }
-    function isFloat(object) {
-      return Object.prototype.toString.call(object) === "[object Number]" && (object % 1 !== 0 || common.isNegativeZero(object));
+    function isFloat(object2) {
+      return Object.prototype.toString.call(object2) === "[object Number]" && (object2 % 1 !== 0 || common.isNegativeZero(object2));
     }
     module2.exports = new Type("tag:yaml.org,2002:float", {
       kind: "scalar",
@@ -35510,8 +35510,8 @@ var require_timestamp = __commonJS({
       if (delta) date.setTime(date.getTime() - delta);
       return date;
     }
-    function representYamlTimestamp(object) {
-      return object.toISOString();
+    function representYamlTimestamp(object2) {
+      return object2.toISOString();
     }
     module2.exports = new Type("tag:yaml.org,2002:timestamp", {
       kind: "scalar",
@@ -35584,10 +35584,10 @@ var require_binary = __commonJS({
       }
       return new Uint8Array(result);
     }
-    function representYamlBinary2(object) {
+    function representYamlBinary2(object2) {
       let result = "";
       let bits = 0;
-      const max = object.length;
+      const max = object2.length;
       const map = BASE64_MAP;
       for (let idx = 0; idx < max; idx++) {
         if (idx % 3 === 0 && idx) {
@@ -35596,7 +35596,7 @@ var require_binary = __commonJS({
           result += map[bits >> 6 & 63];
           result += map[bits & 63];
         }
-        bits = (bits << 8) + object[idx];
+        bits = (bits << 8) + object2[idx];
       }
       const tail = max % 3;
       if (tail === 0) {
@@ -35640,9 +35640,9 @@ var require_omap = __commonJS({
     function resolveYamlOmap(data) {
       if (data === null) return true;
       const objectKeys = {};
-      const object = data;
-      for (let index = 0, length = object.length; index < length; index += 1) {
-        const pair = object[index];
+      const object2 = data;
+      for (let index = 0, length = object2.length; index < length; index += 1) {
+        const pair = object2[index];
         let pairHasKey = false;
         if (_toString.call(pair) !== "[object Object]") return false;
         let pairKey;
@@ -35677,10 +35677,10 @@ var require_pairs = __commonJS({
     var _toString = Object.prototype.toString;
     function resolveYamlPairs(data) {
       if (data === null) return true;
-      const object = data;
-      const result = new Array(object.length);
-      for (let index = 0, length = object.length; index < length; index += 1) {
-        const pair = object[index];
+      const object2 = data;
+      const result = new Array(object2.length);
+      for (let index = 0, length = object2.length; index < length; index += 1) {
+        const pair = object2[index];
         if (_toString.call(pair) !== "[object Object]") return false;
         const keys = Object.keys(pair);
         if (keys.length !== 1) return false;
@@ -35690,10 +35690,10 @@ var require_pairs = __commonJS({
     }
     function constructYamlPairs(data) {
       if (data === null) return [];
-      const object = data;
-      const result = new Array(object.length);
-      for (let index = 0, length = object.length; index < length; index += 1) {
-        const pair = object[index];
+      const object2 = data;
+      const result = new Array(object2.length);
+      for (let index = 0, length = object2.length; index < length; index += 1) {
+        const pair = object2[index];
         const keys = Object.keys(pair);
         result[index] = [keys[0], pair[keys[0]]];
       }
@@ -35715,10 +35715,10 @@ var require_set = __commonJS({
     var _hasOwnProperty = Object.prototype.hasOwnProperty;
     function resolveYamlSet(data) {
       if (data === null) return true;
-      const object = data;
-      for (const key in object) {
-        if (_hasOwnProperty.call(object, key)) {
-          if (object[key] !== null) return false;
+      const object2 = data;
+      for (const key in object2) {
+        if (_hasOwnProperty.call(object2, key)) {
+          if (object2[key] !== null) return false;
         }
       }
       return true;
@@ -35868,16 +35868,16 @@ var require_loader = __commonJS({
         (c - 65536 & 1023) + 56320
       );
     }
-    function setProperty2(object, key, value) {
+    function setProperty2(object2, key, value) {
       if (key === "__proto__") {
-        Object.defineProperty(object, key, {
+        Object.defineProperty(object2, key, {
           configurable: true,
           enumerable: true,
           writable: true,
           value
         });
       } else {
-        object[key] = value;
+        object2[key] = value;
       }
     }
     var simpleEscapeCheck2 = new Array(256);
@@ -37106,7 +37106,7 @@ var require_loader = __commonJS({
       }
       return state.documents;
     }
-    function loadAll(input, iterator2, options) {
+    function loadAll2(input, iterator2, options) {
       if (iterator2 !== null && typeof iterator2 === "object" && typeof options === "undefined") {
         options = iterator2;
         iterator2 = null;
@@ -37128,7 +37128,7 @@ var require_loader = __commonJS({
       }
       throw new YAMLException3("expected a single document in the stream, but found more");
     }
-    module2.exports.loadAll = loadAll;
+    module2.exports.loadAll = loadAll2;
     module2.exports.load = load2;
   }
 });
@@ -37511,13 +37511,13 @@ var require_dumper = __commonJS({
       }
       return result;
     }
-    function writeFlowSequence(state, level, object) {
+    function writeFlowSequence(state, level, object2) {
       let _result = "";
       const _tag = state.tag;
-      for (let index = 0, length = object.length; index < length; index += 1) {
-        let value = object[index];
+      for (let index = 0, length = object2.length; index < length; index += 1) {
+        let value = object2[index];
         if (state.replacer) {
-          value = state.replacer.call(object, String(index), value);
+          value = state.replacer.call(object2, String(index), value);
         }
         if (writeNode(state, level, value, false, false) || typeof value === "undefined" && writeNode(state, level, null, false, false)) {
           if (_result !== "") _result += "," + (!state.condenseFlow ? " " : "");
@@ -37527,13 +37527,13 @@ var require_dumper = __commonJS({
       state.tag = _tag;
       state.dump = "[" + _result + "]";
     }
-    function writeBlockSequence(state, level, object, compact) {
+    function writeBlockSequence(state, level, object2, compact) {
       let _result = "";
       const _tag = state.tag;
-      for (let index = 0, length = object.length; index < length; index += 1) {
-        let value = object[index];
+      for (let index = 0, length = object2.length; index < length; index += 1) {
+        let value = object2[index];
         if (state.replacer) {
-          value = state.replacer.call(object, String(index), value);
+          value = state.replacer.call(object2, String(index), value);
         }
         if (writeNode(state, level + 1, value, true, true, false, true) || typeof value === "undefined" && writeNode(state, level + 1, null, true, true, false, true)) {
           if (!compact || _result !== "") {
@@ -37550,18 +37550,18 @@ var require_dumper = __commonJS({
       state.tag = _tag;
       state.dump = _result || "[]";
     }
-    function writeFlowMapping(state, level, object) {
+    function writeFlowMapping(state, level, object2) {
       let _result = "";
       const _tag = state.tag;
-      const objectKeyList = Object.keys(object);
+      const objectKeyList = Object.keys(object2);
       for (let index = 0, length = objectKeyList.length; index < length; index += 1) {
         let pairBuffer = "";
         if (_result !== "") pairBuffer += ", ";
         if (state.condenseFlow) pairBuffer += '"';
         const objectKey = objectKeyList[index];
-        let objectValue = object[objectKey];
+        let objectValue = object2[objectKey];
         if (state.replacer) {
-          objectValue = state.replacer.call(object, objectKey, objectValue);
+          objectValue = state.replacer.call(object2, objectKey, objectValue);
         }
         if (!writeNode(state, level, objectKey, false, false)) {
           continue;
@@ -37577,10 +37577,10 @@ var require_dumper = __commonJS({
       state.tag = _tag;
       state.dump = "{" + _result + "}";
     }
-    function writeBlockMapping(state, level, object, compact) {
+    function writeBlockMapping(state, level, object2, compact) {
       let _result = "";
       const _tag = state.tag;
-      const objectKeyList = Object.keys(object);
+      const objectKeyList = Object.keys(object2);
       if (state.sortKeys === true) {
         objectKeyList.sort();
       } else if (typeof state.sortKeys === "function") {
@@ -37594,9 +37594,9 @@ var require_dumper = __commonJS({
           pairBuffer += generateNextLine(state, level);
         }
         const objectKey = objectKeyList[index];
-        let objectValue = object[objectKey];
+        let objectValue = object2[objectKey];
         if (state.replacer) {
-          objectValue = state.replacer.call(object, objectKey, objectValue);
+          objectValue = state.replacer.call(object2, objectKey, objectValue);
         }
         if (!writeNode(state, level + 1, objectKey, true, true, true)) {
           continue;
@@ -37627,14 +37627,14 @@ var require_dumper = __commonJS({
       state.tag = _tag;
       state.dump = _result || "{}";
     }
-    function detectType(state, object, explicit) {
+    function detectType(state, object2, explicit) {
       const typeList = explicit ? state.explicitTypes : state.implicitTypes;
       for (let index = 0, length = typeList.length; index < length; index += 1) {
         const type = typeList[index];
-        if ((type.instanceOf || type.predicate) && (!type.instanceOf || typeof object === "object" && object instanceof type.instanceOf) && (!type.predicate || type.predicate(object))) {
+        if ((type.instanceOf || type.predicate) && (!type.instanceOf || typeof object2 === "object" && object2 instanceof type.instanceOf) && (!type.predicate || type.predicate(object2))) {
           if (explicit) {
             if (type.multi && type.representName) {
-              state.tag = type.representName(object);
+              state.tag = type.representName(object2);
             } else {
               state.tag = type.tag;
             }
@@ -37645,9 +37645,9 @@ var require_dumper = __commonJS({
             const style = state.styleMap[type.tag] || type.defaultStyle;
             let _result;
             if (_toString.call(type.represent) === "[object Function]") {
-              _result = type.represent(object, style);
+              _result = type.represent(object2, style);
             } else if (_hasOwnProperty.call(type.represent, style)) {
-              _result = type.represent[style](object, style);
+              _result = type.represent[style](object2, style);
             } else {
               throw new YAMLException3("!<" + type.tag + '> tag resolver accepts not "' + style + '" style');
             }
@@ -37658,11 +37658,11 @@ var require_dumper = __commonJS({
       }
       return false;
     }
-    function writeNode(state, level, object, block, compact, iskey, isblockseq) {
+    function writeNode(state, level, object2, block, compact, iskey, isblockseq) {
       state.tag = null;
-      state.dump = object;
-      if (!detectType(state, object, false)) {
-        detectType(state, object, true);
+      state.dump = object2;
+      if (!detectType(state, object2, false)) {
+        detectType(state, object2, true);
       }
       const type = _toString.call(state.dump);
       const inblock = block;
@@ -37673,7 +37673,7 @@ var require_dumper = __commonJS({
       let duplicateIndex;
       let duplicate;
       if (objectOrArray) {
-        duplicateIndex = state.duplicates.indexOf(object);
+        duplicateIndex = state.duplicates.indexOf(object2);
         duplicate = duplicateIndex !== -1;
       }
       if (state.tag !== null && state.tag !== "?" || duplicate || state.indent !== 2 && level > 0) {
@@ -37739,33 +37739,33 @@ var require_dumper = __commonJS({
       }
       return true;
     }
-    function getDuplicateReferences(object, state) {
+    function getDuplicateReferences(object2, state) {
       const objects = [];
       const duplicatesIndexes = [];
-      inspectNode(object, objects, duplicatesIndexes);
+      inspectNode(object2, objects, duplicatesIndexes);
       const length = duplicatesIndexes.length;
       for (let index = 0; index < length; index += 1) {
         state.duplicates.push(objects[duplicatesIndexes[index]]);
       }
       state.usedDuplicates = new Array(length);
     }
-    function inspectNode(object, objects, duplicatesIndexes) {
-      if (object !== null && typeof object === "object") {
-        const index = objects.indexOf(object);
+    function inspectNode(object2, objects, duplicatesIndexes) {
+      if (object2 !== null && typeof object2 === "object") {
+        const index = objects.indexOf(object2);
         if (index !== -1) {
           if (duplicatesIndexes.indexOf(index) === -1) {
             duplicatesIndexes.push(index);
           }
         } else {
-          objects.push(object);
-          if (Array.isArray(object)) {
-            for (let i2 = 0, length = object.length; i2 < length; i2 += 1) {
-              inspectNode(object[i2], objects, duplicatesIndexes);
+          objects.push(object2);
+          if (Array.isArray(object2)) {
+            for (let i2 = 0, length = object2.length; i2 < length; i2 += 1) {
+              inspectNode(object2[i2], objects, duplicatesIndexes);
             }
           } else {
-            const objectKeyList = Object.keys(object);
+            const objectKeyList = Object.keys(object2);
             for (let i2 = 0, length = objectKeyList.length; i2 < length; i2 += 1) {
-              inspectNode(object[objectKeyList[i2]], objects, duplicatesIndexes);
+              inspectNode(object2[objectKeyList[i2]], objects, duplicatesIndexes);
             }
           }
         }
@@ -39841,6 +39841,2000 @@ var require_lib2 = __commonJS({
   }
 });
 
+// node_modules/semver/internal/constants.js
+var require_constants9 = __commonJS({
+  "node_modules/semver/internal/constants.js"(exports2, module2) {
+    "use strict";
+    var SEMVER_SPEC_VERSION = "2.0.0";
+    var MAX_LENGTH = 256;
+    var MAX_SAFE_INTEGER = Number.MAX_SAFE_INTEGER || /* istanbul ignore next */
+    9007199254740991;
+    var MAX_SAFE_COMPONENT_LENGTH = 16;
+    var MAX_SAFE_BUILD_LENGTH = MAX_LENGTH - 6;
+    var RELEASE_TYPES = [
+      "major",
+      "premajor",
+      "minor",
+      "preminor",
+      "patch",
+      "prepatch",
+      "prerelease"
+    ];
+    module2.exports = {
+      MAX_LENGTH,
+      MAX_SAFE_COMPONENT_LENGTH,
+      MAX_SAFE_BUILD_LENGTH,
+      MAX_SAFE_INTEGER,
+      RELEASE_TYPES,
+      SEMVER_SPEC_VERSION,
+      FLAG_INCLUDE_PRERELEASE: 1,
+      FLAG_LOOSE: 2
+    };
+  }
+});
+
+// node_modules/semver/internal/debug.js
+var require_debug = __commonJS({
+  "node_modules/semver/internal/debug.js"(exports2, module2) {
+    "use strict";
+    var debug3 = typeof process === "object" && process.env && process.env.NODE_DEBUG && /\bsemver\b/i.test(process.env.NODE_DEBUG) ? (...args2) => console.error("SEMVER", ...args2) : () => {
+    };
+    module2.exports = debug3;
+  }
+});
+
+// node_modules/semver/internal/re.js
+var require_re = __commonJS({
+  "node_modules/semver/internal/re.js"(exports2, module2) {
+    "use strict";
+    var {
+      MAX_SAFE_COMPONENT_LENGTH,
+      MAX_SAFE_BUILD_LENGTH,
+      MAX_LENGTH
+    } = require_constants9();
+    var debug3 = require_debug();
+    exports2 = module2.exports = {};
+    var re = exports2.re = [];
+    var safeRe = exports2.safeRe = [];
+    var src = exports2.src = [];
+    var safeSrc = exports2.safeSrc = [];
+    var t = exports2.t = {};
+    var R = 0;
+    var LETTERDASHNUMBER = "[a-zA-Z0-9-]";
+    var safeRegexReplacements = [
+      ["\\s", 1],
+      ["\\d", MAX_LENGTH],
+      [LETTERDASHNUMBER, MAX_SAFE_BUILD_LENGTH]
+    ];
+    var makeSafeRegex = (value) => {
+      for (const [token, max] of safeRegexReplacements) {
+        value = value.split(`${token}*`).join(`${token}{0,${max}}`).split(`${token}+`).join(`${token}{1,${max}}`);
+      }
+      return value;
+    };
+    var createToken = (name2, value, isGlobal) => {
+      const safe = makeSafeRegex(value);
+      const index = R++;
+      debug3(name2, index, value);
+      t[name2] = index;
+      src[index] = value;
+      safeSrc[index] = safe;
+      re[index] = new RegExp(value, isGlobal ? "g" : void 0);
+      safeRe[index] = new RegExp(safe, isGlobal ? "g" : void 0);
+    };
+    createToken("NUMERICIDENTIFIER", "0|[1-9]\\d*");
+    createToken("NUMERICIDENTIFIERLOOSE", "\\d+");
+    createToken("NONNUMERICIDENTIFIER", `\\d*[a-zA-Z-]${LETTERDASHNUMBER}*`);
+    createToken("MAINVERSION", `(${src[t.NUMERICIDENTIFIER]})\\.(${src[t.NUMERICIDENTIFIER]})\\.(${src[t.NUMERICIDENTIFIER]})`);
+    createToken("MAINVERSIONLOOSE", `(${src[t.NUMERICIDENTIFIERLOOSE]})\\.(${src[t.NUMERICIDENTIFIERLOOSE]})\\.(${src[t.NUMERICIDENTIFIERLOOSE]})`);
+    createToken("PRERELEASEIDENTIFIER", `(?:${src[t.NONNUMERICIDENTIFIER]}|${src[t.NUMERICIDENTIFIER]})`);
+    createToken("PRERELEASEIDENTIFIERLOOSE", `(?:${src[t.NONNUMERICIDENTIFIER]}|${src[t.NUMERICIDENTIFIERLOOSE]})`);
+    createToken("PRERELEASE", `(?:-(${src[t.PRERELEASEIDENTIFIER]}(?:\\.${src[t.PRERELEASEIDENTIFIER]})*))`);
+    createToken("PRERELEASELOOSE", `(?:-?(${src[t.PRERELEASEIDENTIFIERLOOSE]}(?:\\.${src[t.PRERELEASEIDENTIFIERLOOSE]})*))`);
+    createToken("BUILDIDENTIFIER", `${LETTERDASHNUMBER}+`);
+    createToken("BUILD", `(?:\\+(${src[t.BUILDIDENTIFIER]}(?:\\.${src[t.BUILDIDENTIFIER]})*))`);
+    createToken("FULLPLAIN", `v?${src[t.MAINVERSION]}${src[t.PRERELEASE]}?${src[t.BUILD]}?`);
+    createToken("FULL", `^${src[t.FULLPLAIN]}$`);
+    createToken("LOOSEPLAIN", `[v=\\s]*${src[t.MAINVERSIONLOOSE]}${src[t.PRERELEASELOOSE]}?${src[t.BUILD]}?`);
+    createToken("LOOSE", `^${src[t.LOOSEPLAIN]}$`);
+    createToken("GTLT", "((?:<|>)?=?)");
+    createToken("XRANGEIDENTIFIERLOOSE", `${src[t.NUMERICIDENTIFIERLOOSE]}|x|X|\\*`);
+    createToken("XRANGEIDENTIFIER", `${src[t.NUMERICIDENTIFIER]}|x|X|\\*`);
+    createToken("XRANGEPLAIN", `[v=\\s]*(${src[t.XRANGEIDENTIFIER]})(?:\\.(${src[t.XRANGEIDENTIFIER]})(?:\\.(${src[t.XRANGEIDENTIFIER]})(?:${src[t.PRERELEASE]})?${src[t.BUILD]}?)?)?`);
+    createToken("XRANGEPLAINLOOSE", `[v=\\s]*(${src[t.XRANGEIDENTIFIERLOOSE]})(?:\\.(${src[t.XRANGEIDENTIFIERLOOSE]})(?:\\.(${src[t.XRANGEIDENTIFIERLOOSE]})(?:${src[t.PRERELEASELOOSE]})?${src[t.BUILD]}?)?)?`);
+    createToken("XRANGE", `^${src[t.GTLT]}\\s*${src[t.XRANGEPLAIN]}$`);
+    createToken("XRANGELOOSE", `^${src[t.GTLT]}\\s*${src[t.XRANGEPLAINLOOSE]}$`);
+    createToken("COERCEPLAIN", `${"(^|[^\\d])(\\d{1,"}${MAX_SAFE_COMPONENT_LENGTH}})(?:\\.(\\d{1,${MAX_SAFE_COMPONENT_LENGTH}}))?(?:\\.(\\d{1,${MAX_SAFE_COMPONENT_LENGTH}}))?`);
+    createToken("COERCE", `${src[t.COERCEPLAIN]}(?:$|[^\\d])`);
+    createToken("COERCEFULL", src[t.COERCEPLAIN] + `(?:${src[t.PRERELEASE]})?(?:${src[t.BUILD]})?(?:$|[^\\d])`);
+    createToken("COERCERTL", src[t.COERCE], true);
+    createToken("COERCERTLFULL", src[t.COERCEFULL], true);
+    createToken("LONETILDE", "(?:~>?)");
+    createToken("TILDETRIM", `(\\s*)${src[t.LONETILDE]}\\s+`, true);
+    exports2.tildeTrimReplace = "$1~";
+    createToken("TILDE", `^${src[t.LONETILDE]}${src[t.XRANGEPLAIN]}$`);
+    createToken("TILDELOOSE", `^${src[t.LONETILDE]}${src[t.XRANGEPLAINLOOSE]}$`);
+    createToken("LONECARET", "(?:\\^)");
+    createToken("CARETTRIM", `(\\s*)${src[t.LONECARET]}\\s+`, true);
+    exports2.caretTrimReplace = "$1^";
+    createToken("CARET", `^${src[t.LONECARET]}${src[t.XRANGEPLAIN]}$`);
+    createToken("CARETLOOSE", `^${src[t.LONECARET]}${src[t.XRANGEPLAINLOOSE]}$`);
+    createToken("COMPARATORLOOSE", `^${src[t.GTLT]}\\s*(${src[t.LOOSEPLAIN]})$|^$`);
+    createToken("COMPARATOR", `^${src[t.GTLT]}\\s*(${src[t.FULLPLAIN]})$|^$`);
+    createToken("COMPARATORTRIM", `(\\s*)${src[t.GTLT]}\\s*(${src[t.LOOSEPLAIN]}|${src[t.XRANGEPLAIN]})`, true);
+    exports2.comparatorTrimReplace = "$1$2$3";
+    createToken("HYPHENRANGE", `^\\s*(${src[t.XRANGEPLAIN]})\\s+-\\s+(${src[t.XRANGEPLAIN]})\\s*$`);
+    createToken("HYPHENRANGELOOSE", `^\\s*(${src[t.XRANGEPLAINLOOSE]})\\s+-\\s+(${src[t.XRANGEPLAINLOOSE]})\\s*$`);
+    createToken("STAR", "(<|>)?=?\\s*\\*");
+    createToken("GTE0", "^\\s*>=\\s*0\\.0\\.0\\s*$");
+    createToken("GTE0PRE", "^\\s*>=\\s*0\\.0\\.0-0\\s*$");
+  }
+});
+
+// node_modules/semver/internal/parse-options.js
+var require_parse_options = __commonJS({
+  "node_modules/semver/internal/parse-options.js"(exports2, module2) {
+    "use strict";
+    var looseOption = Object.freeze({ loose: true });
+    var emptyOpts = Object.freeze({});
+    var parseOptions = (options) => {
+      if (!options) {
+        return emptyOpts;
+      }
+      if (typeof options !== "object") {
+        return looseOption;
+      }
+      return options;
+    };
+    module2.exports = parseOptions;
+  }
+});
+
+// node_modules/semver/internal/identifiers.js
+var require_identifiers = __commonJS({
+  "node_modules/semver/internal/identifiers.js"(exports2, module2) {
+    "use strict";
+    var numeric = /^[0-9]+$/;
+    var compareIdentifiers = (a, b) => {
+      if (typeof a === "number" && typeof b === "number") {
+        return a === b ? 0 : a < b ? -1 : 1;
+      }
+      const anum = numeric.test(a);
+      const bnum = numeric.test(b);
+      if (anum && bnum) {
+        a = +a;
+        b = +b;
+      }
+      return a === b ? 0 : anum && !bnum ? -1 : bnum && !anum ? 1 : a < b ? -1 : 1;
+    };
+    var rcompareIdentifiers = (a, b) => compareIdentifiers(b, a);
+    module2.exports = {
+      compareIdentifiers,
+      rcompareIdentifiers
+    };
+  }
+});
+
+// node_modules/semver/classes/semver.js
+var require_semver = __commonJS({
+  "node_modules/semver/classes/semver.js"(exports2, module2) {
+    "use strict";
+    var debug3 = require_debug();
+    var { MAX_LENGTH, MAX_SAFE_INTEGER } = require_constants9();
+    var { safeRe: re, t } = require_re();
+    var parseOptions = require_parse_options();
+    var { compareIdentifiers } = require_identifiers();
+    var isPrereleaseIdentifier = (prerelease, identifier) => {
+      const identifiers = identifier.split(".");
+      if (identifiers.length > prerelease.length) {
+        return false;
+      }
+      for (let i2 = 0; i2 < identifiers.length; i2++) {
+        if (compareIdentifiers(prerelease[i2], identifiers[i2]) !== 0) {
+          return false;
+        }
+      }
+      return true;
+    };
+    var SemVer = class _SemVer {
+      constructor(version, options) {
+        options = parseOptions(options);
+        if (version instanceof _SemVer) {
+          if (version.loose === !!options.loose && version.includePrerelease === !!options.includePrerelease) {
+            return version;
+          } else {
+            version = version.version;
+          }
+        } else if (typeof version !== "string") {
+          throw new TypeError(`Invalid version. Must be a string. Got type "${typeof version}".`);
+        }
+        if (version.length > MAX_LENGTH) {
+          throw new TypeError(
+            `version is longer than ${MAX_LENGTH} characters`
+          );
+        }
+        debug3("SemVer", version, options);
+        this.options = options;
+        this.loose = !!options.loose;
+        this.includePrerelease = !!options.includePrerelease;
+        const m = version.trim().match(options.loose ? re[t.LOOSE] : re[t.FULL]);
+        if (!m) {
+          throw new TypeError(`Invalid Version: ${version}`);
+        }
+        this.raw = version;
+        this.major = +m[1];
+        this.minor = +m[2];
+        this.patch = +m[3];
+        if (this.major > MAX_SAFE_INTEGER || this.major < 0) {
+          throw new TypeError("Invalid major version");
+        }
+        if (this.minor > MAX_SAFE_INTEGER || this.minor < 0) {
+          throw new TypeError("Invalid minor version");
+        }
+        if (this.patch > MAX_SAFE_INTEGER || this.patch < 0) {
+          throw new TypeError("Invalid patch version");
+        }
+        if (!m[4]) {
+          this.prerelease = [];
+        } else {
+          this.prerelease = m[4].split(".").map((id) => {
+            if (/^[0-9]+$/.test(id)) {
+              const num = +id;
+              if (num >= 0 && num < MAX_SAFE_INTEGER) {
+                return num;
+              }
+            }
+            return id;
+          });
+        }
+        this.build = m[5] ? m[5].split(".") : [];
+        this.format();
+      }
+      format() {
+        this.version = `${this.major}.${this.minor}.${this.patch}`;
+        if (this.prerelease.length) {
+          this.version += `-${this.prerelease.join(".")}`;
+        }
+        return this.version;
+      }
+      toString() {
+        return this.version;
+      }
+      compare(other) {
+        debug3("SemVer.compare", this.version, this.options, other);
+        if (!(other instanceof _SemVer)) {
+          if (typeof other === "string" && other === this.version) {
+            return 0;
+          }
+          other = new _SemVer(other, this.options);
+        }
+        if (other.version === this.version) {
+          return 0;
+        }
+        return this.compareMain(other) || this.comparePre(other);
+      }
+      compareMain(other) {
+        if (!(other instanceof _SemVer)) {
+          other = new _SemVer(other, this.options);
+        }
+        if (this.major < other.major) {
+          return -1;
+        }
+        if (this.major > other.major) {
+          return 1;
+        }
+        if (this.minor < other.minor) {
+          return -1;
+        }
+        if (this.minor > other.minor) {
+          return 1;
+        }
+        if (this.patch < other.patch) {
+          return -1;
+        }
+        if (this.patch > other.patch) {
+          return 1;
+        }
+        return 0;
+      }
+      comparePre(other) {
+        if (!(other instanceof _SemVer)) {
+          other = new _SemVer(other, this.options);
+        }
+        if (this.prerelease.length && !other.prerelease.length) {
+          return -1;
+        } else if (!this.prerelease.length && other.prerelease.length) {
+          return 1;
+        } else if (!this.prerelease.length && !other.prerelease.length) {
+          return 0;
+        }
+        let i2 = 0;
+        do {
+          const a = this.prerelease[i2];
+          const b = other.prerelease[i2];
+          debug3("prerelease compare", i2, a, b);
+          if (a === void 0 && b === void 0) {
+            return 0;
+          } else if (b === void 0) {
+            return 1;
+          } else if (a === void 0) {
+            return -1;
+          } else if (a === b) {
+            continue;
+          } else {
+            return compareIdentifiers(a, b);
+          }
+        } while (++i2);
+      }
+      compareBuild(other) {
+        if (!(other instanceof _SemVer)) {
+          other = new _SemVer(other, this.options);
+        }
+        let i2 = 0;
+        do {
+          const a = this.build[i2];
+          const b = other.build[i2];
+          debug3("build compare", i2, a, b);
+          if (a === void 0 && b === void 0) {
+            return 0;
+          } else if (b === void 0) {
+            return 1;
+          } else if (a === void 0) {
+            return -1;
+          } else if (a === b) {
+            continue;
+          } else {
+            return compareIdentifiers(a, b);
+          }
+        } while (++i2);
+      }
+      // preminor will bump the version up to the next minor release, and immediately
+      // down to pre-release. premajor and prepatch work the same way.
+      inc(release, identifier, identifierBase) {
+        if (release.startsWith("pre")) {
+          if (!identifier && identifierBase === false) {
+            throw new Error("invalid increment argument: identifier is empty");
+          }
+          if (identifier) {
+            const match2 = `-${identifier}`.match(this.options.loose ? re[t.PRERELEASELOOSE] : re[t.PRERELEASE]);
+            if (!match2 || match2[1] !== identifier) {
+              throw new Error(`invalid identifier: ${identifier}`);
+            }
+          }
+        }
+        switch (release) {
+          case "premajor":
+            this.prerelease.length = 0;
+            this.patch = 0;
+            this.minor = 0;
+            this.major++;
+            this.inc("pre", identifier, identifierBase);
+            break;
+          case "preminor":
+            this.prerelease.length = 0;
+            this.patch = 0;
+            this.minor++;
+            this.inc("pre", identifier, identifierBase);
+            break;
+          case "prepatch":
+            this.prerelease.length = 0;
+            this.inc("patch", identifier, identifierBase);
+            this.inc("pre", identifier, identifierBase);
+            break;
+          // If the input is a non-prerelease version, this acts the same as
+          // prepatch.
+          case "prerelease":
+            if (this.prerelease.length === 0) {
+              this.inc("patch", identifier, identifierBase);
+            }
+            this.inc("pre", identifier, identifierBase);
+            break;
+          case "release":
+            if (this.prerelease.length === 0) {
+              throw new Error(`version ${this.raw} is not a prerelease`);
+            }
+            this.prerelease.length = 0;
+            break;
+          case "major":
+            if (this.minor !== 0 || this.patch !== 0 || this.prerelease.length === 0) {
+              this.major++;
+            }
+            this.minor = 0;
+            this.patch = 0;
+            this.prerelease = [];
+            break;
+          case "minor":
+            if (this.patch !== 0 || this.prerelease.length === 0) {
+              this.minor++;
+            }
+            this.patch = 0;
+            this.prerelease = [];
+            break;
+          case "patch":
+            if (this.prerelease.length === 0) {
+              this.patch++;
+            }
+            this.prerelease = [];
+            break;
+          // This probably shouldn't be used publicly.
+          // 1.0.0 'pre' would become 1.0.0-0 which is the wrong direction.
+          case "pre": {
+            const base = Number(identifierBase) ? 1 : 0;
+            if (this.prerelease.length === 0) {
+              this.prerelease = [base];
+            } else {
+              let i2 = this.prerelease.length;
+              while (--i2 >= 0) {
+                if (typeof this.prerelease[i2] === "number") {
+                  this.prerelease[i2]++;
+                  i2 = -2;
+                }
+              }
+              if (i2 === -1) {
+                if (identifier === this.prerelease.join(".") && identifierBase === false) {
+                  throw new Error("invalid increment argument: identifier already exists");
+                }
+                this.prerelease.push(base);
+              }
+            }
+            if (identifier) {
+              let prerelease = [identifier, base];
+              if (identifierBase === false) {
+                prerelease = [identifier];
+              }
+              if (isPrereleaseIdentifier(this.prerelease, identifier)) {
+                const prereleaseBase = this.prerelease[identifier.split(".").length];
+                if (isNaN(prereleaseBase)) {
+                  this.prerelease = prerelease;
+                }
+              } else {
+                this.prerelease = prerelease;
+              }
+            }
+            break;
+          }
+          default:
+            throw new Error(`invalid increment argument: ${release}`);
+        }
+        this.raw = this.format();
+        if (this.build.length) {
+          this.raw += `+${this.build.join(".")}`;
+        }
+        return this;
+      }
+    };
+    module2.exports = SemVer;
+  }
+});
+
+// node_modules/semver/functions/parse.js
+var require_parse4 = __commonJS({
+  "node_modules/semver/functions/parse.js"(exports2, module2) {
+    "use strict";
+    var SemVer = require_semver();
+    var parse5 = (version, options, throwErrors = false) => {
+      if (version instanceof SemVer) {
+        return version;
+      }
+      try {
+        return new SemVer(version, options);
+      } catch (er) {
+        if (!throwErrors) {
+          return null;
+        }
+        throw er;
+      }
+    };
+    module2.exports = parse5;
+  }
+});
+
+// node_modules/semver/functions/valid.js
+var require_valid = __commonJS({
+  "node_modules/semver/functions/valid.js"(exports2, module2) {
+    "use strict";
+    var parse5 = require_parse4();
+    var valid = (version, options) => {
+      const v = parse5(version, options);
+      return v ? v.version : null;
+    };
+    module2.exports = valid;
+  }
+});
+
+// node_modules/semver/functions/clean.js
+var require_clean = __commonJS({
+  "node_modules/semver/functions/clean.js"(exports2, module2) {
+    "use strict";
+    var parse5 = require_parse4();
+    var clean = (version, options) => {
+      const s = parse5(version.trim().replace(/^[=v]+/, ""), options);
+      return s ? s.version : null;
+    };
+    module2.exports = clean;
+  }
+});
+
+// node_modules/semver/functions/inc.js
+var require_inc = __commonJS({
+  "node_modules/semver/functions/inc.js"(exports2, module2) {
+    "use strict";
+    var SemVer = require_semver();
+    var inc = (version, release, options, identifier, identifierBase) => {
+      if (typeof options === "string") {
+        identifierBase = identifier;
+        identifier = options;
+        options = void 0;
+      }
+      try {
+        return new SemVer(
+          version instanceof SemVer ? version.version : version,
+          options
+        ).inc(release, identifier, identifierBase).version;
+      } catch (er) {
+        return null;
+      }
+    };
+    module2.exports = inc;
+  }
+});
+
+// node_modules/semver/functions/diff.js
+var require_diff = __commonJS({
+  "node_modules/semver/functions/diff.js"(exports2, module2) {
+    "use strict";
+    var parse5 = require_parse4();
+    var diff = (version1, version2) => {
+      const v1 = parse5(version1, null, true);
+      const v2 = parse5(version2, null, true);
+      const comparison = v1.compare(v2);
+      if (comparison === 0) {
+        return null;
+      }
+      const v1Higher = comparison > 0;
+      const highVersion = v1Higher ? v1 : v2;
+      const lowVersion = v1Higher ? v2 : v1;
+      const highHasPre = !!highVersion.prerelease.length;
+      const lowHasPre = !!lowVersion.prerelease.length;
+      if (lowHasPre && !highHasPre) {
+        if (!lowVersion.patch && !lowVersion.minor) {
+          return "major";
+        }
+        if (lowVersion.compareMain(highVersion) === 0) {
+          if (lowVersion.minor && !lowVersion.patch) {
+            return "minor";
+          }
+          return "patch";
+        }
+      }
+      const prefix = highHasPre ? "pre" : "";
+      if (v1.major !== v2.major) {
+        return prefix + "major";
+      }
+      if (v1.minor !== v2.minor) {
+        return prefix + "minor";
+      }
+      if (v1.patch !== v2.patch) {
+        return prefix + "patch";
+      }
+      return "prerelease";
+    };
+    module2.exports = diff;
+  }
+});
+
+// node_modules/semver/functions/major.js
+var require_major = __commonJS({
+  "node_modules/semver/functions/major.js"(exports2, module2) {
+    "use strict";
+    var SemVer = require_semver();
+    var major = (a, loose) => new SemVer(a, loose).major;
+    module2.exports = major;
+  }
+});
+
+// node_modules/semver/functions/minor.js
+var require_minor = __commonJS({
+  "node_modules/semver/functions/minor.js"(exports2, module2) {
+    "use strict";
+    var SemVer = require_semver();
+    var minor = (a, loose) => new SemVer(a, loose).minor;
+    module2.exports = minor;
+  }
+});
+
+// node_modules/semver/functions/patch.js
+var require_patch = __commonJS({
+  "node_modules/semver/functions/patch.js"(exports2, module2) {
+    "use strict";
+    var SemVer = require_semver();
+    var patch = (a, loose) => new SemVer(a, loose).patch;
+    module2.exports = patch;
+  }
+});
+
+// node_modules/semver/functions/prerelease.js
+var require_prerelease = __commonJS({
+  "node_modules/semver/functions/prerelease.js"(exports2, module2) {
+    "use strict";
+    var parse5 = require_parse4();
+    var prerelease = (version, options) => {
+      const parsed = parse5(version, options);
+      return parsed && parsed.prerelease.length ? parsed.prerelease : null;
+    };
+    module2.exports = prerelease;
+  }
+});
+
+// node_modules/semver/functions/compare.js
+var require_compare = __commonJS({
+  "node_modules/semver/functions/compare.js"(exports2, module2) {
+    "use strict";
+    var SemVer = require_semver();
+    var compare = (a, b, loose) => new SemVer(a, loose).compare(new SemVer(b, loose));
+    module2.exports = compare;
+  }
+});
+
+// node_modules/semver/functions/rcompare.js
+var require_rcompare = __commonJS({
+  "node_modules/semver/functions/rcompare.js"(exports2, module2) {
+    "use strict";
+    var compare = require_compare();
+    var rcompare = (a, b, loose) => compare(b, a, loose);
+    module2.exports = rcompare;
+  }
+});
+
+// node_modules/semver/functions/compare-loose.js
+var require_compare_loose = __commonJS({
+  "node_modules/semver/functions/compare-loose.js"(exports2, module2) {
+    "use strict";
+    var compare = require_compare();
+    var compareLoose = (a, b) => compare(a, b, true);
+    module2.exports = compareLoose;
+  }
+});
+
+// node_modules/semver/functions/compare-build.js
+var require_compare_build = __commonJS({
+  "node_modules/semver/functions/compare-build.js"(exports2, module2) {
+    "use strict";
+    var SemVer = require_semver();
+    var compareBuild = (a, b, loose) => {
+      const versionA = new SemVer(a, loose);
+      const versionB = new SemVer(b, loose);
+      return versionA.compare(versionB) || versionA.compareBuild(versionB);
+    };
+    module2.exports = compareBuild;
+  }
+});
+
+// node_modules/semver/functions/sort.js
+var require_sort = __commonJS({
+  "node_modules/semver/functions/sort.js"(exports2, module2) {
+    "use strict";
+    var compareBuild = require_compare_build();
+    var sort = (list, loose) => list.sort((a, b) => compareBuild(a, b, loose));
+    module2.exports = sort;
+  }
+});
+
+// node_modules/semver/functions/rsort.js
+var require_rsort = __commonJS({
+  "node_modules/semver/functions/rsort.js"(exports2, module2) {
+    "use strict";
+    var compareBuild = require_compare_build();
+    var rsort = (list, loose) => list.sort((a, b) => compareBuild(b, a, loose));
+    module2.exports = rsort;
+  }
+});
+
+// node_modules/semver/functions/gt.js
+var require_gt = __commonJS({
+  "node_modules/semver/functions/gt.js"(exports2, module2) {
+    "use strict";
+    var compare = require_compare();
+    var gt = (a, b, loose) => compare(a, b, loose) > 0;
+    module2.exports = gt;
+  }
+});
+
+// node_modules/semver/functions/lt.js
+var require_lt = __commonJS({
+  "node_modules/semver/functions/lt.js"(exports2, module2) {
+    "use strict";
+    var compare = require_compare();
+    var lt = (a, b, loose) => compare(a, b, loose) < 0;
+    module2.exports = lt;
+  }
+});
+
+// node_modules/semver/functions/eq.js
+var require_eq = __commonJS({
+  "node_modules/semver/functions/eq.js"(exports2, module2) {
+    "use strict";
+    var compare = require_compare();
+    var eq = (a, b, loose) => compare(a, b, loose) === 0;
+    module2.exports = eq;
+  }
+});
+
+// node_modules/semver/functions/neq.js
+var require_neq = __commonJS({
+  "node_modules/semver/functions/neq.js"(exports2, module2) {
+    "use strict";
+    var compare = require_compare();
+    var neq = (a, b, loose) => compare(a, b, loose) !== 0;
+    module2.exports = neq;
+  }
+});
+
+// node_modules/semver/functions/gte.js
+var require_gte = __commonJS({
+  "node_modules/semver/functions/gte.js"(exports2, module2) {
+    "use strict";
+    var compare = require_compare();
+    var gte = (a, b, loose) => compare(a, b, loose) >= 0;
+    module2.exports = gte;
+  }
+});
+
+// node_modules/semver/functions/lte.js
+var require_lte = __commonJS({
+  "node_modules/semver/functions/lte.js"(exports2, module2) {
+    "use strict";
+    var compare = require_compare();
+    var lte = (a, b, loose) => compare(a, b, loose) <= 0;
+    module2.exports = lte;
+  }
+});
+
+// node_modules/semver/functions/cmp.js
+var require_cmp = __commonJS({
+  "node_modules/semver/functions/cmp.js"(exports2, module2) {
+    "use strict";
+    var eq = require_eq();
+    var neq = require_neq();
+    var gt = require_gt();
+    var gte = require_gte();
+    var lt = require_lt();
+    var lte = require_lte();
+    var cmp = (a, op, b, loose) => {
+      switch (op) {
+        case "===":
+          if (typeof a === "object") {
+            a = a.version;
+          }
+          if (typeof b === "object") {
+            b = b.version;
+          }
+          return a === b;
+        case "!==":
+          if (typeof a === "object") {
+            a = a.version;
+          }
+          if (typeof b === "object") {
+            b = b.version;
+          }
+          return a !== b;
+        case "":
+        case "=":
+        case "==":
+          return eq(a, b, loose);
+        case "!=":
+          return neq(a, b, loose);
+        case ">":
+          return gt(a, b, loose);
+        case ">=":
+          return gte(a, b, loose);
+        case "<":
+          return lt(a, b, loose);
+        case "<=":
+          return lte(a, b, loose);
+        default:
+          throw new TypeError(`Invalid operator: ${op}`);
+      }
+    };
+    module2.exports = cmp;
+  }
+});
+
+// node_modules/semver/functions/coerce.js
+var require_coerce = __commonJS({
+  "node_modules/semver/functions/coerce.js"(exports2, module2) {
+    "use strict";
+    var SemVer = require_semver();
+    var parse5 = require_parse4();
+    var { safeRe: re, t } = require_re();
+    var coerce = (version, options) => {
+      if (version instanceof SemVer) {
+        return version;
+      }
+      if (typeof version === "number") {
+        version = String(version);
+      }
+      if (typeof version !== "string") {
+        return null;
+      }
+      options = options || {};
+      let match2 = null;
+      if (!options.rtl) {
+        match2 = version.match(options.includePrerelease ? re[t.COERCEFULL] : re[t.COERCE]);
+      } else {
+        const coerceRtlRegex = options.includePrerelease ? re[t.COERCERTLFULL] : re[t.COERCERTL];
+        let next;
+        while ((next = coerceRtlRegex.exec(version)) && (!match2 || match2.index + match2[0].length !== version.length)) {
+          if (!match2 || next.index + next[0].length !== match2.index + match2[0].length) {
+            match2 = next;
+          }
+          coerceRtlRegex.lastIndex = next.index + next[1].length + next[2].length;
+        }
+        coerceRtlRegex.lastIndex = -1;
+      }
+      if (match2 === null) {
+        return null;
+      }
+      const major = match2[2];
+      const minor = match2[3] || "0";
+      const patch = match2[4] || "0";
+      const prerelease = options.includePrerelease && match2[5] ? `-${match2[5]}` : "";
+      const build = options.includePrerelease && match2[6] ? `+${match2[6]}` : "";
+      return parse5(`${major}.${minor}.${patch}${prerelease}${build}`, options);
+    };
+    module2.exports = coerce;
+  }
+});
+
+// node_modules/semver/functions/truncate.js
+var require_truncate = __commonJS({
+  "node_modules/semver/functions/truncate.js"(exports2, module2) {
+    "use strict";
+    var parse5 = require_parse4();
+    var constants = require_constants9();
+    var SemVer = require_semver();
+    var truncate = (version, truncation, options) => {
+      if (!constants.RELEASE_TYPES.includes(truncation)) {
+        return null;
+      }
+      const clonedVersion = cloneInputVersion(version, options);
+      return clonedVersion && doTruncation(clonedVersion, truncation);
+    };
+    var cloneInputVersion = (version, options) => {
+      const versionStringToParse = version instanceof SemVer ? version.version : version;
+      return parse5(versionStringToParse, options);
+    };
+    var doTruncation = (version, truncation) => {
+      if (isPrerelease(truncation)) {
+        return version.version;
+      }
+      version.prerelease = [];
+      switch (truncation) {
+        case "major":
+          version.minor = 0;
+          version.patch = 0;
+          break;
+        case "minor":
+          version.patch = 0;
+          break;
+      }
+      return version.format();
+    };
+    var isPrerelease = (type) => {
+      return type.startsWith("pre");
+    };
+    module2.exports = truncate;
+  }
+});
+
+// node_modules/semver/internal/lrucache.js
+var require_lrucache = __commonJS({
+  "node_modules/semver/internal/lrucache.js"(exports2, module2) {
+    "use strict";
+    var LRUCache = class {
+      constructor() {
+        this.max = 1e3;
+        this.map = /* @__PURE__ */ new Map();
+      }
+      get(key) {
+        const value = this.map.get(key);
+        if (value === void 0) {
+          return void 0;
+        } else {
+          this.map.delete(key);
+          this.map.set(key, value);
+          return value;
+        }
+      }
+      delete(key) {
+        return this.map.delete(key);
+      }
+      set(key, value) {
+        const deleted = this.delete(key);
+        if (!deleted && value !== void 0) {
+          if (this.map.size >= this.max) {
+            const firstKey = this.map.keys().next().value;
+            this.delete(firstKey);
+          }
+          this.map.set(key, value);
+        }
+        return this;
+      }
+    };
+    module2.exports = LRUCache;
+  }
+});
+
+// node_modules/semver/classes/range.js
+var require_range = __commonJS({
+  "node_modules/semver/classes/range.js"(exports2, module2) {
+    "use strict";
+    var SPACE_CHARACTERS = /\s+/g;
+    var Range = class _Range {
+      constructor(range, options) {
+        options = parseOptions(options);
+        if (range instanceof _Range) {
+          if (range.loose === !!options.loose && range.includePrerelease === !!options.includePrerelease) {
+            return range;
+          } else {
+            return new _Range(range.raw, options);
+          }
+        }
+        if (range instanceof Comparator) {
+          this.raw = range.value;
+          this.set = [[range]];
+          this.formatted = void 0;
+          return this;
+        }
+        this.options = options;
+        this.loose = !!options.loose;
+        this.includePrerelease = !!options.includePrerelease;
+        this.raw = range.trim().replace(SPACE_CHARACTERS, " ");
+        this.set = this.raw.split("||").map((r) => this.parseRange(r.trim())).filter((c) => c.length);
+        if (!this.set.length) {
+          throw new TypeError(`Invalid SemVer Range: ${this.raw}`);
+        }
+        if (this.set.length > 1) {
+          const first2 = this.set[0];
+          this.set = this.set.filter((c) => !isNullSet(c[0]));
+          if (this.set.length === 0) {
+            this.set = [first2];
+          } else if (this.set.length > 1) {
+            for (const c of this.set) {
+              if (c.length === 1 && isAny(c[0])) {
+                this.set = [c];
+                break;
+              }
+            }
+          }
+        }
+        this.formatted = void 0;
+      }
+      get range() {
+        if (this.formatted === void 0) {
+          this.formatted = "";
+          for (let i2 = 0; i2 < this.set.length; i2++) {
+            if (i2 > 0) {
+              this.formatted += "||";
+            }
+            const comps = this.set[i2];
+            for (let k = 0; k < comps.length; k++) {
+              if (k > 0) {
+                this.formatted += " ";
+              }
+              this.formatted += comps[k].toString().trim();
+            }
+          }
+        }
+        return this.formatted;
+      }
+      format() {
+        return this.range;
+      }
+      toString() {
+        return this.range;
+      }
+      parseRange(range) {
+        range = range.replace(BUILDSTRIPRE, "");
+        const memoOpts = (this.options.includePrerelease && FLAG_INCLUDE_PRERELEASE) | (this.options.loose && FLAG_LOOSE);
+        const memoKey = memoOpts + ":" + range;
+        const cached = cache.get(memoKey);
+        if (cached) {
+          return cached;
+        }
+        const loose = this.options.loose;
+        const hr = loose ? re[t.HYPHENRANGELOOSE] : re[t.HYPHENRANGE];
+        range = range.replace(hr, hyphenReplace(this.options.includePrerelease));
+        debug3("hyphen replace", range);
+        range = range.replace(re[t.COMPARATORTRIM], comparatorTrimReplace);
+        debug3("comparator trim", range);
+        range = range.replace(re[t.TILDETRIM], tildeTrimReplace);
+        debug3("tilde trim", range);
+        range = range.replace(re[t.CARETTRIM], caretTrimReplace);
+        debug3("caret trim", range);
+        let rangeList = range.split(" ").map((comp) => parseComparator(comp, this.options)).join(" ").split(/\s+/).map((comp) => replaceGTE0(comp, this.options));
+        if (loose) {
+          rangeList = rangeList.filter((comp) => {
+            debug3("loose invalid filter", comp, this.options);
+            return !!comp.match(re[t.COMPARATORLOOSE]);
+          });
+        }
+        debug3("range list", rangeList);
+        const rangeMap = /* @__PURE__ */ new Map();
+        const comparators = rangeList.map((comp) => new Comparator(comp, this.options));
+        for (const comp of comparators) {
+          if (isNullSet(comp)) {
+            return [comp];
+          }
+          rangeMap.set(comp.value, comp);
+        }
+        if (rangeMap.size > 1 && rangeMap.has("")) {
+          rangeMap.delete("");
+        }
+        const result = [...rangeMap.values()];
+        cache.set(memoKey, result);
+        return result;
+      }
+      intersects(range, options) {
+        if (!(range instanceof _Range)) {
+          throw new TypeError("a Range is required");
+        }
+        return this.set.some((thisComparators) => {
+          return isSatisfiable(thisComparators, options) && range.set.some((rangeComparators) => {
+            return isSatisfiable(rangeComparators, options) && thisComparators.every((thisComparator) => {
+              return rangeComparators.every((rangeComparator) => {
+                return thisComparator.intersects(rangeComparator, options);
+              });
+            });
+          });
+        });
+      }
+      // if ANY of the sets match ALL of its comparators, then pass
+      test(version) {
+        if (!version) {
+          return false;
+        }
+        if (typeof version === "string") {
+          try {
+            version = new SemVer(version, this.options);
+          } catch (er) {
+            return false;
+          }
+        }
+        for (let i2 = 0; i2 < this.set.length; i2++) {
+          if (testSet(this.set[i2], version, this.options)) {
+            return true;
+          }
+        }
+        return false;
+      }
+    };
+    module2.exports = Range;
+    var LRU = require_lrucache();
+    var cache = new LRU();
+    var parseOptions = require_parse_options();
+    var Comparator = require_comparator();
+    var debug3 = require_debug();
+    var SemVer = require_semver();
+    var {
+      safeRe: re,
+      src,
+      t,
+      comparatorTrimReplace,
+      tildeTrimReplace,
+      caretTrimReplace
+    } = require_re();
+    var { FLAG_INCLUDE_PRERELEASE, FLAG_LOOSE } = require_constants9();
+    var BUILDSTRIPRE = new RegExp(src[t.BUILD], "g");
+    var isNullSet = (c) => c.value === "<0.0.0-0";
+    var isAny = (c) => c.value === "";
+    var isSatisfiable = (comparators, options) => {
+      let result = true;
+      const remainingComparators = comparators.slice();
+      let testComparator = remainingComparators.pop();
+      while (result && remainingComparators.length) {
+        result = remainingComparators.every((otherComparator) => {
+          return testComparator.intersects(otherComparator, options);
+        });
+        testComparator = remainingComparators.pop();
+      }
+      return result;
+    };
+    var parseComparator = (comp, options) => {
+      comp = comp.replace(re[t.BUILD], "");
+      debug3("comp", comp, options);
+      comp = replaceCarets(comp, options);
+      debug3("caret", comp);
+      comp = replaceTildes(comp, options);
+      debug3("tildes", comp);
+      comp = replaceXRanges(comp, options);
+      debug3("xrange", comp);
+      comp = replaceStars(comp, options);
+      debug3("stars", comp);
+      return comp;
+    };
+    var isX = (id) => !id || id.toLowerCase() === "x" || id === "*";
+    var invalidXRangeOrder = (M, m, p) => isX(M) && !isX(m) || isX(m) && p && !isX(p);
+    var replaceTildes = (comp, options) => {
+      return comp.trim().split(/\s+/).map((c) => replaceTilde(c, options)).join(" ");
+    };
+    var replaceTilde = (comp, options) => {
+      const r = options.loose ? re[t.TILDELOOSE] : re[t.TILDE];
+      const z = options.includePrerelease ? "-0" : "";
+      return comp.replace(r, (_, M, m, p, pr) => {
+        debug3("tilde", comp, _, M, m, p, pr);
+        let ret;
+        if (isX(M)) {
+          ret = "";
+        } else if (isX(m)) {
+          ret = `>=${M}.0.0${z} <${+M + 1}.0.0-0`;
+        } else if (isX(p)) {
+          ret = `>=${M}.${m}.0${z} <${M}.${+m + 1}.0-0`;
+        } else if (pr) {
+          debug3("replaceTilde pr", pr);
+          ret = `>=${M}.${m}.${p}-${pr} <${M}.${+m + 1}.0-0`;
+        } else {
+          ret = `>=${M}.${m}.${p} <${M}.${+m + 1}.0-0`;
+        }
+        debug3("tilde return", ret);
+        return ret;
+      });
+    };
+    var replaceCarets = (comp, options) => {
+      return comp.trim().split(/\s+/).map((c) => replaceCaret(c, options)).join(" ");
+    };
+    var replaceCaret = (comp, options) => {
+      debug3("caret", comp, options);
+      const r = options.loose ? re[t.CARETLOOSE] : re[t.CARET];
+      const z = options.includePrerelease ? "-0" : "";
+      return comp.replace(r, (_, M, m, p, pr) => {
+        debug3("caret", comp, _, M, m, p, pr);
+        let ret;
+        if (isX(M)) {
+          ret = "";
+        } else if (isX(m)) {
+          ret = `>=${M}.0.0${z} <${+M + 1}.0.0-0`;
+        } else if (isX(p)) {
+          if (M === "0") {
+            ret = `>=${M}.${m}.0${z} <${M}.${+m + 1}.0-0`;
+          } else {
+            ret = `>=${M}.${m}.0${z} <${+M + 1}.0.0-0`;
+          }
+        } else if (pr) {
+          debug3("replaceCaret pr", pr);
+          if (M === "0") {
+            if (m === "0") {
+              ret = `>=${M}.${m}.${p}-${pr} <${M}.${m}.${+p + 1}-0`;
+            } else {
+              ret = `>=${M}.${m}.${p}-${pr} <${M}.${+m + 1}.0-0`;
+            }
+          } else {
+            ret = `>=${M}.${m}.${p}-${pr} <${+M + 1}.0.0-0`;
+          }
+        } else {
+          debug3("no pr");
+          if (M === "0") {
+            if (m === "0") {
+              ret = `>=${M}.${m}.${p} <${M}.${m}.${+p + 1}-0`;
+            } else {
+              ret = `>=${M}.${m}.${p} <${M}.${+m + 1}.0-0`;
+            }
+          } else {
+            ret = `>=${M}.${m}.${p} <${+M + 1}.0.0-0`;
+          }
+        }
+        debug3("caret return", ret);
+        return ret;
+      });
+    };
+    var replaceXRanges = (comp, options) => {
+      debug3("replaceXRanges", comp, options);
+      return comp.split(/\s+/).map((c) => replaceXRange(c, options)).join(" ");
+    };
+    var replaceXRange = (comp, options) => {
+      comp = comp.trim();
+      const r = options.loose ? re[t.XRANGELOOSE] : re[t.XRANGE];
+      return comp.replace(r, (ret, gtlt, M, m, p, pr) => {
+        debug3("xRange", comp, ret, gtlt, M, m, p, pr);
+        if (invalidXRangeOrder(M, m, p)) {
+          return comp;
+        }
+        const xM = isX(M);
+        const xm = xM || isX(m);
+        const xp = xm || isX(p);
+        const anyX = xp;
+        if (gtlt === "=" && anyX) {
+          gtlt = "";
+        }
+        pr = options.includePrerelease ? "-0" : "";
+        if (xM) {
+          if (gtlt === ">" || gtlt === "<") {
+            ret = "<0.0.0-0";
+          } else {
+            ret = "*";
+          }
+        } else if (gtlt && anyX) {
+          if (xm) {
+            m = 0;
+          }
+          p = 0;
+          if (gtlt === ">") {
+            gtlt = ">=";
+            if (xm) {
+              M = +M + 1;
+              m = 0;
+              p = 0;
+            } else {
+              m = +m + 1;
+              p = 0;
+            }
+          } else if (gtlt === "<=") {
+            gtlt = "<";
+            if (xm) {
+              M = +M + 1;
+            } else {
+              m = +m + 1;
+            }
+          }
+          if (gtlt === "<") {
+            pr = "-0";
+          }
+          ret = `${gtlt + M}.${m}.${p}${pr}`;
+        } else if (xm) {
+          ret = `>=${M}.0.0${pr} <${+M + 1}.0.0-0`;
+        } else if (xp) {
+          ret = `>=${M}.${m}.0${pr} <${M}.${+m + 1}.0-0`;
+        }
+        debug3("xRange return", ret);
+        return ret;
+      });
+    };
+    var replaceStars = (comp, options) => {
+      debug3("replaceStars", comp, options);
+      return comp.trim().replace(re[t.STAR], "");
+    };
+    var replaceGTE0 = (comp, options) => {
+      debug3("replaceGTE0", comp, options);
+      return comp.trim().replace(re[options.includePrerelease ? t.GTE0PRE : t.GTE0], "");
+    };
+    var hyphenReplace = (incPr) => ($0, from, fM, fm, fp, fpr, fb, to, tM, tm, tp, tpr) => {
+      if (isX(fM)) {
+        from = "";
+      } else if (isX(fm)) {
+        from = `>=${fM}.0.0${incPr ? "-0" : ""}`;
+      } else if (isX(fp)) {
+        from = `>=${fM}.${fm}.0${incPr ? "-0" : ""}`;
+      } else if (fpr) {
+        from = `>=${from}`;
+      } else {
+        from = `>=${from}${incPr ? "-0" : ""}`;
+      }
+      if (isX(tM)) {
+        to = "";
+      } else if (isX(tm)) {
+        to = `<${+tM + 1}.0.0-0`;
+      } else if (isX(tp)) {
+        to = `<${tM}.${+tm + 1}.0-0`;
+      } else if (tpr) {
+        to = `<=${tM}.${tm}.${tp}-${tpr}`;
+      } else if (incPr) {
+        to = `<${tM}.${tm}.${+tp + 1}-0`;
+      } else {
+        to = `<=${to}`;
+      }
+      return `${from} ${to}`.trim();
+    };
+    var testSet = (set, version, options) => {
+      for (let i2 = 0; i2 < set.length; i2++) {
+        if (!set[i2].test(version)) {
+          return false;
+        }
+      }
+      if (version.prerelease.length && !options.includePrerelease) {
+        for (let i2 = 0; i2 < set.length; i2++) {
+          debug3(set[i2].semver);
+          if (set[i2].semver === Comparator.ANY) {
+            continue;
+          }
+          if (set[i2].semver.prerelease.length > 0) {
+            const allowed = set[i2].semver;
+            if (allowed.major === version.major && allowed.minor === version.minor && allowed.patch === version.patch) {
+              return true;
+            }
+          }
+        }
+        return false;
+      }
+      return true;
+    };
+  }
+});
+
+// node_modules/semver/classes/comparator.js
+var require_comparator = __commonJS({
+  "node_modules/semver/classes/comparator.js"(exports2, module2) {
+    "use strict";
+    var ANY = Symbol("SemVer ANY");
+    var Comparator = class _Comparator {
+      static get ANY() {
+        return ANY;
+      }
+      constructor(comp, options) {
+        options = parseOptions(options);
+        if (comp instanceof _Comparator) {
+          if (comp.loose === !!options.loose) {
+            return comp;
+          } else {
+            comp = comp.value;
+          }
+        }
+        comp = comp.trim().split(/\s+/).join(" ");
+        debug3("comparator", comp, options);
+        this.options = options;
+        this.loose = !!options.loose;
+        this.parse(comp);
+        if (this.semver === ANY) {
+          this.value = "";
+        } else {
+          this.value = this.operator + this.semver.version;
+        }
+        debug3("comp", this);
+      }
+      parse(comp) {
+        const r = this.options.loose ? re[t.COMPARATORLOOSE] : re[t.COMPARATOR];
+        const m = comp.match(r);
+        if (!m) {
+          throw new TypeError(`Invalid comparator: ${comp}`);
+        }
+        this.operator = m[1] !== void 0 ? m[1] : "";
+        if (this.operator === "=") {
+          this.operator = "";
+        }
+        if (!m[2]) {
+          this.semver = ANY;
+        } else {
+          this.semver = new SemVer(m[2], this.options.loose);
+        }
+      }
+      toString() {
+        return this.value;
+      }
+      test(version) {
+        debug3("Comparator.test", version, this.options.loose);
+        if (this.semver === ANY || version === ANY) {
+          return true;
+        }
+        if (typeof version === "string") {
+          try {
+            version = new SemVer(version, this.options);
+          } catch (er) {
+            return false;
+          }
+        }
+        return cmp(version, this.operator, this.semver, this.options);
+      }
+      intersects(comp, options) {
+        if (!(comp instanceof _Comparator)) {
+          throw new TypeError("a Comparator is required");
+        }
+        if (this.operator === "") {
+          if (this.value === "") {
+            return true;
+          }
+          return new Range(comp.value, options).test(this.value);
+        } else if (comp.operator === "") {
+          if (comp.value === "") {
+            return true;
+          }
+          return new Range(this.value, options).test(comp.semver);
+        }
+        options = parseOptions(options);
+        if (options.includePrerelease && (this.value === "<0.0.0-0" || comp.value === "<0.0.0-0")) {
+          return false;
+        }
+        if (!options.includePrerelease && (this.value.startsWith("<0.0.0") || comp.value.startsWith("<0.0.0"))) {
+          return false;
+        }
+        if (this.operator.startsWith(">") && comp.operator.startsWith(">")) {
+          return true;
+        }
+        if (this.operator.startsWith("<") && comp.operator.startsWith("<")) {
+          return true;
+        }
+        if (this.semver.version === comp.semver.version && this.operator.includes("=") && comp.operator.includes("=")) {
+          return true;
+        }
+        if (cmp(this.semver, "<", comp.semver, options) && this.operator.startsWith(">") && comp.operator.startsWith("<")) {
+          return true;
+        }
+        if (cmp(this.semver, ">", comp.semver, options) && this.operator.startsWith("<") && comp.operator.startsWith(">")) {
+          return true;
+        }
+        return false;
+      }
+    };
+    module2.exports = Comparator;
+    var parseOptions = require_parse_options();
+    var { safeRe: re, t } = require_re();
+    var cmp = require_cmp();
+    var debug3 = require_debug();
+    var SemVer = require_semver();
+    var Range = require_range();
+  }
+});
+
+// node_modules/semver/functions/satisfies.js
+var require_satisfies = __commonJS({
+  "node_modules/semver/functions/satisfies.js"(exports2, module2) {
+    "use strict";
+    var Range = require_range();
+    var satisfies = (version, range, options) => {
+      try {
+        range = new Range(range, options);
+      } catch (er) {
+        return false;
+      }
+      return range.test(version);
+    };
+    module2.exports = satisfies;
+  }
+});
+
+// node_modules/semver/ranges/to-comparators.js
+var require_to_comparators = __commonJS({
+  "node_modules/semver/ranges/to-comparators.js"(exports2, module2) {
+    "use strict";
+    var Range = require_range();
+    var toComparators = (range, options) => new Range(range, options).set.map((comp) => comp.map((c) => c.value).join(" ").trim().split(" "));
+    module2.exports = toComparators;
+  }
+});
+
+// node_modules/semver/ranges/max-satisfying.js
+var require_max_satisfying = __commonJS({
+  "node_modules/semver/ranges/max-satisfying.js"(exports2, module2) {
+    "use strict";
+    var SemVer = require_semver();
+    var Range = require_range();
+    var maxSatisfying = (versions, range, options) => {
+      let max = null;
+      let maxSV = null;
+      let rangeObj = null;
+      try {
+        rangeObj = new Range(range, options);
+      } catch (er) {
+        return null;
+      }
+      versions.forEach((v) => {
+        if (rangeObj.test(v)) {
+          if (!max || maxSV.compare(v) === -1) {
+            max = v;
+            maxSV = new SemVer(max, options);
+          }
+        }
+      });
+      return max;
+    };
+    module2.exports = maxSatisfying;
+  }
+});
+
+// node_modules/semver/ranges/min-satisfying.js
+var require_min_satisfying = __commonJS({
+  "node_modules/semver/ranges/min-satisfying.js"(exports2, module2) {
+    "use strict";
+    var SemVer = require_semver();
+    var Range = require_range();
+    var minSatisfying = (versions, range, options) => {
+      let min = null;
+      let minSV = null;
+      let rangeObj = null;
+      try {
+        rangeObj = new Range(range, options);
+      } catch (er) {
+        return null;
+      }
+      versions.forEach((v) => {
+        if (rangeObj.test(v)) {
+          if (!min || minSV.compare(v) === 1) {
+            min = v;
+            minSV = new SemVer(min, options);
+          }
+        }
+      });
+      return min;
+    };
+    module2.exports = minSatisfying;
+  }
+});
+
+// node_modules/semver/ranges/min-version.js
+var require_min_version = __commonJS({
+  "node_modules/semver/ranges/min-version.js"(exports2, module2) {
+    "use strict";
+    var SemVer = require_semver();
+    var Range = require_range();
+    var gt = require_gt();
+    var minVersion = (range, loose) => {
+      range = new Range(range, loose);
+      let minver = new SemVer("0.0.0");
+      if (range.test(minver)) {
+        return minver;
+      }
+      minver = new SemVer("0.0.0-0");
+      if (range.test(minver)) {
+        return minver;
+      }
+      minver = null;
+      for (let i2 = 0; i2 < range.set.length; ++i2) {
+        const comparators = range.set[i2];
+        let setMin = null;
+        comparators.forEach((comparator) => {
+          const compver = new SemVer(comparator.semver.version);
+          switch (comparator.operator) {
+            case ">":
+              if (compver.prerelease.length === 0) {
+                compver.patch++;
+              } else {
+                compver.prerelease.push(0);
+              }
+              compver.raw = compver.format();
+            /* fallthrough */
+            case "":
+            case ">=":
+              if (!setMin || gt(compver, setMin)) {
+                setMin = compver;
+              }
+              break;
+            case "<":
+            case "<=":
+              break;
+            /* istanbul ignore next */
+            default:
+              throw new Error(`Unexpected operation: ${comparator.operator}`);
+          }
+        });
+        if (setMin && (!minver || gt(minver, setMin))) {
+          minver = setMin;
+        }
+      }
+      if (minver && range.test(minver)) {
+        return minver;
+      }
+      return null;
+    };
+    module2.exports = minVersion;
+  }
+});
+
+// node_modules/semver/ranges/valid.js
+var require_valid2 = __commonJS({
+  "node_modules/semver/ranges/valid.js"(exports2, module2) {
+    "use strict";
+    var Range = require_range();
+    var validRange = (range, options) => {
+      try {
+        return new Range(range, options).range || "*";
+      } catch (er) {
+        return null;
+      }
+    };
+    module2.exports = validRange;
+  }
+});
+
+// node_modules/semver/ranges/outside.js
+var require_outside = __commonJS({
+  "node_modules/semver/ranges/outside.js"(exports2, module2) {
+    "use strict";
+    var SemVer = require_semver();
+    var Comparator = require_comparator();
+    var { ANY } = Comparator;
+    var Range = require_range();
+    var satisfies = require_satisfies();
+    var gt = require_gt();
+    var lt = require_lt();
+    var lte = require_lte();
+    var gte = require_gte();
+    var outside = (version, range, hilo, options) => {
+      version = new SemVer(version, options);
+      range = new Range(range, options);
+      let gtfn, ltefn, ltfn, comp, ecomp;
+      switch (hilo) {
+        case ">":
+          gtfn = gt;
+          ltefn = lte;
+          ltfn = lt;
+          comp = ">";
+          ecomp = ">=";
+          break;
+        case "<":
+          gtfn = lt;
+          ltefn = gte;
+          ltfn = gt;
+          comp = "<";
+          ecomp = "<=";
+          break;
+        default:
+          throw new TypeError('Must provide a hilo val of "<" or ">"');
+      }
+      if (satisfies(version, range, options)) {
+        return false;
+      }
+      for (let i2 = 0; i2 < range.set.length; ++i2) {
+        const comparators = range.set[i2];
+        let high = null;
+        let low = null;
+        comparators.forEach((comparator) => {
+          if (comparator.semver === ANY) {
+            comparator = new Comparator(">=0.0.0");
+          }
+          high = high || comparator;
+          low = low || comparator;
+          if (gtfn(comparator.semver, high.semver, options)) {
+            high = comparator;
+          } else if (ltfn(comparator.semver, low.semver, options)) {
+            low = comparator;
+          }
+        });
+        if (high.operator === comp || high.operator === ecomp) {
+          return false;
+        }
+        if ((!low.operator || low.operator === comp) && ltefn(version, low.semver)) {
+          return false;
+        } else if (low.operator === ecomp && ltfn(version, low.semver)) {
+          return false;
+        }
+      }
+      return true;
+    };
+    module2.exports = outside;
+  }
+});
+
+// node_modules/semver/ranges/gtr.js
+var require_gtr = __commonJS({
+  "node_modules/semver/ranges/gtr.js"(exports2, module2) {
+    "use strict";
+    var outside = require_outside();
+    var gtr = (version, range, options) => outside(version, range, ">", options);
+    module2.exports = gtr;
+  }
+});
+
+// node_modules/semver/ranges/ltr.js
+var require_ltr = __commonJS({
+  "node_modules/semver/ranges/ltr.js"(exports2, module2) {
+    "use strict";
+    var outside = require_outside();
+    var ltr = (version, range, options) => outside(version, range, "<", options);
+    module2.exports = ltr;
+  }
+});
+
+// node_modules/semver/ranges/intersects.js
+var require_intersects = __commonJS({
+  "node_modules/semver/ranges/intersects.js"(exports2, module2) {
+    "use strict";
+    var Range = require_range();
+    var intersects = (r1, r2, options) => {
+      r1 = new Range(r1, options);
+      r2 = new Range(r2, options);
+      return r1.intersects(r2, options);
+    };
+    module2.exports = intersects;
+  }
+});
+
+// node_modules/semver/ranges/simplify.js
+var require_simplify = __commonJS({
+  "node_modules/semver/ranges/simplify.js"(exports2, module2) {
+    "use strict";
+    var satisfies = require_satisfies();
+    var compare = require_compare();
+    module2.exports = (versions, range, options) => {
+      const set = [];
+      let first2 = null;
+      let prev = null;
+      const v = versions.sort((a, b) => compare(a, b, options));
+      for (const version of v) {
+        const included = satisfies(version, range, options);
+        if (included) {
+          prev = version;
+          if (!first2) {
+            first2 = version;
+          }
+        } else {
+          if (prev) {
+            set.push([first2, prev]);
+          }
+          prev = null;
+          first2 = null;
+        }
+      }
+      if (first2) {
+        set.push([first2, null]);
+      }
+      const ranges = [];
+      for (const [min, max] of set) {
+        if (min === max) {
+          ranges.push(min);
+        } else if (!max && min === v[0]) {
+          ranges.push("*");
+        } else if (!max) {
+          ranges.push(`>=${min}`);
+        } else if (min === v[0]) {
+          ranges.push(`<=${max}`);
+        } else {
+          ranges.push(`${min} - ${max}`);
+        }
+      }
+      const simplified = ranges.join(" || ");
+      const original = typeof range.raw === "string" ? range.raw : String(range);
+      return simplified.length < original.length ? simplified : range;
+    };
+  }
+});
+
+// node_modules/semver/ranges/subset.js
+var require_subset = __commonJS({
+  "node_modules/semver/ranges/subset.js"(exports2, module2) {
+    "use strict";
+    var Range = require_range();
+    var Comparator = require_comparator();
+    var { ANY } = Comparator;
+    var satisfies = require_satisfies();
+    var compare = require_compare();
+    var subset = (sub, dom, options = {}) => {
+      if (sub === dom) {
+        return true;
+      }
+      sub = new Range(sub, options);
+      dom = new Range(dom, options);
+      let sawNonNull = false;
+      OUTER: for (const simpleSub of sub.set) {
+        for (const simpleDom of dom.set) {
+          const isSub = simpleSubset(simpleSub, simpleDom, options);
+          sawNonNull = sawNonNull || isSub !== null;
+          if (isSub) {
+            continue OUTER;
+          }
+        }
+        if (sawNonNull) {
+          return false;
+        }
+      }
+      return true;
+    };
+    var minimumVersionWithPreRelease = [new Comparator(">=0.0.0-0")];
+    var minimumVersion = [new Comparator(">=0.0.0")];
+    var simpleSubset = (sub, dom, options) => {
+      if (sub === dom) {
+        return true;
+      }
+      if (sub.length === 1 && sub[0].semver === ANY) {
+        if (dom.length === 1 && dom[0].semver === ANY) {
+          return true;
+        } else if (options.includePrerelease) {
+          sub = minimumVersionWithPreRelease;
+        } else {
+          sub = minimumVersion;
+        }
+      }
+      if (dom.length === 1 && dom[0].semver === ANY) {
+        if (options.includePrerelease) {
+          return true;
+        } else {
+          dom = minimumVersion;
+        }
+      }
+      const eqSet = /* @__PURE__ */ new Set();
+      let gt, lt;
+      for (const c of sub) {
+        if (c.operator === ">" || c.operator === ">=") {
+          gt = higherGT(gt, c, options);
+        } else if (c.operator === "<" || c.operator === "<=") {
+          lt = lowerLT(lt, c, options);
+        } else {
+          eqSet.add(c.semver);
+        }
+      }
+      if (eqSet.size > 1) {
+        return null;
+      }
+      let gtltComp;
+      if (gt && lt) {
+        gtltComp = compare(gt.semver, lt.semver, options);
+        if (gtltComp > 0) {
+          return null;
+        } else if (gtltComp === 0 && (gt.operator !== ">=" || lt.operator !== "<=")) {
+          return null;
+        }
+      }
+      for (const eq of eqSet) {
+        if (gt && !satisfies(eq, String(gt), options)) {
+          return null;
+        }
+        if (lt && !satisfies(eq, String(lt), options)) {
+          return null;
+        }
+        for (const c of dom) {
+          if (!satisfies(eq, String(c), options)) {
+            return false;
+          }
+        }
+        return true;
+      }
+      let higher, lower;
+      let hasDomLT, hasDomGT;
+      let needDomLTPre = lt && !options.includePrerelease && lt.semver.prerelease.length ? lt.semver : false;
+      let needDomGTPre = gt && !options.includePrerelease && gt.semver.prerelease.length ? gt.semver : false;
+      if (needDomLTPre && needDomLTPre.prerelease.length === 1 && lt.operator === "<" && needDomLTPre.prerelease[0] === 0) {
+        needDomLTPre = false;
+      }
+      for (const c of dom) {
+        hasDomGT = hasDomGT || c.operator === ">" || c.operator === ">=";
+        hasDomLT = hasDomLT || c.operator === "<" || c.operator === "<=";
+        if (gt) {
+          if (needDomGTPre) {
+            if (c.semver.prerelease && c.semver.prerelease.length && c.semver.major === needDomGTPre.major && c.semver.minor === needDomGTPre.minor && c.semver.patch === needDomGTPre.patch) {
+              needDomGTPre = false;
+            }
+          }
+          if (c.operator === ">" || c.operator === ">=") {
+            higher = higherGT(gt, c, options);
+            if (higher === c && higher !== gt) {
+              return false;
+            }
+          } else if (gt.operator === ">=" && !c.test(gt.semver)) {
+            return false;
+          }
+        }
+        if (lt) {
+          if (needDomLTPre) {
+            if (c.semver.prerelease && c.semver.prerelease.length && c.semver.major === needDomLTPre.major && c.semver.minor === needDomLTPre.minor && c.semver.patch === needDomLTPre.patch) {
+              needDomLTPre = false;
+            }
+          }
+          if (c.operator === "<" || c.operator === "<=") {
+            lower = lowerLT(lt, c, options);
+            if (lower === c && lower !== lt) {
+              return false;
+            }
+          } else if (lt.operator === "<=" && !c.test(lt.semver)) {
+            return false;
+          }
+        }
+        if (!c.operator && (lt || gt) && gtltComp !== 0) {
+          return false;
+        }
+      }
+      if (gt && hasDomLT && !lt && gtltComp !== 0) {
+        return false;
+      }
+      if (lt && hasDomGT && !gt && gtltComp !== 0) {
+        return false;
+      }
+      if (needDomGTPre || needDomLTPre) {
+        return false;
+      }
+      return true;
+    };
+    var higherGT = (a, b, options) => {
+      if (!a) {
+        return b;
+      }
+      const comp = compare(a.semver, b.semver, options);
+      return comp > 0 ? a : comp < 0 ? b : b.operator === ">" && a.operator === ">=" ? b : a;
+    };
+    var lowerLT = (a, b, options) => {
+      if (!a) {
+        return b;
+      }
+      const comp = compare(a.semver, b.semver, options);
+      return comp < 0 ? a : comp > 0 ? b : b.operator === "<" && a.operator === "<=" ? b : a;
+    };
+    module2.exports = subset;
+  }
+});
+
+// node_modules/semver/index.js
+var require_semver2 = __commonJS({
+  "node_modules/semver/index.js"(exports2, module2) {
+    "use strict";
+    var internalRe = require_re();
+    var constants = require_constants9();
+    var SemVer = require_semver();
+    var identifiers = require_identifiers();
+    var parse5 = require_parse4();
+    var valid = require_valid();
+    var clean = require_clean();
+    var inc = require_inc();
+    var diff = require_diff();
+    var major = require_major();
+    var minor = require_minor();
+    var patch = require_patch();
+    var prerelease = require_prerelease();
+    var compare = require_compare();
+    var rcompare = require_rcompare();
+    var compareLoose = require_compare_loose();
+    var compareBuild = require_compare_build();
+    var sort = require_sort();
+    var rsort = require_rsort();
+    var gt = require_gt();
+    var lt = require_lt();
+    var eq = require_eq();
+    var neq = require_neq();
+    var gte = require_gte();
+    var lte = require_lte();
+    var cmp = require_cmp();
+    var coerce = require_coerce();
+    var truncate = require_truncate();
+    var Comparator = require_comparator();
+    var Range = require_range();
+    var satisfies = require_satisfies();
+    var toComparators = require_to_comparators();
+    var maxSatisfying = require_max_satisfying();
+    var minSatisfying = require_min_satisfying();
+    var minVersion = require_min_version();
+    var validRange = require_valid2();
+    var outside = require_outside();
+    var gtr = require_gtr();
+    var ltr = require_ltr();
+    var intersects = require_intersects();
+    var simplifyRange = require_simplify();
+    var subset = require_subset();
+    module2.exports = {
+      parse: parse5,
+      valid,
+      clean,
+      inc,
+      diff,
+      major,
+      minor,
+      patch,
+      prerelease,
+      compare,
+      rcompare,
+      compareLoose,
+      compareBuild,
+      sort,
+      rsort,
+      gt,
+      lt,
+      eq,
+      neq,
+      gte,
+      lte,
+      cmp,
+      coerce,
+      truncate,
+      Comparator,
+      Range,
+      satisfies,
+      toComparators,
+      maxSatisfying,
+      minSatisfying,
+      minVersion,
+      validRange,
+      outside,
+      gtr,
+      ltr,
+      intersects,
+      simplifyRange,
+      subset,
+      SemVer,
+      re: internalRe.re,
+      src: internalRe.src,
+      tokens: internalRe.t,
+      SEMVER_SPEC_VERSION: constants.SEMVER_SPEC_VERSION,
+      RELEASE_TYPES: constants.RELEASE_TYPES,
+      compareIdentifiers: identifiers.compareIdentifiers,
+      rcompareIdentifiers: identifiers.rcompareIdentifiers
+    };
+  }
+});
+
 // src/main.ts
 var core6 = __toESM(require_core(), 1);
 
@@ -39924,7 +41918,7 @@ var nullCoreTag = defineScalarTag("tag:yaml.org,2002:null", {
     if (NULL_VALUES$1.indexOf(source) !== -1) return null;
     return NOT_RESOLVED;
   },
-  identify: (object) => object === null,
+  identify: (object2) => object2 === null,
   represent: () => "null"
 });
 var nullJsonTag = defineScalarTag("tag:yaml.org,2002:null", {
@@ -39934,7 +41928,7 @@ var nullJsonTag = defineScalarTag("tag:yaml.org,2002:null", {
     if (source === "null" || isExplicit && source === "") return null;
     return NOT_RESOLVED;
   },
-  identify: (object) => object === null,
+  identify: (object2) => object2 === null,
   represent: () => "null"
 });
 var NULL_VALUES = [
@@ -39956,7 +41950,7 @@ var nullYaml11Tag = defineScalarTag("tag:yaml.org,2002:null", {
     if (NULL_VALUES.indexOf(source) !== -1) return null;
     return NOT_RESOLVED;
   },
-  identify: (object) => object === null,
+  identify: (object2) => object2 === null,
   represent: () => "null"
 });
 var TRUE_VALUES$2 = [
@@ -39982,8 +41976,8 @@ var boolCoreTag = defineScalarTag("tag:yaml.org,2002:bool", {
     if (FALSE_VALUES$2.indexOf(source) !== -1) return false;
     return NOT_RESOLVED;
   },
-  identify: (object) => Object.prototype.toString.call(object) === "[object Boolean]",
-  represent: (object) => object ? "true" : "false"
+  identify: (object2) => Object.prototype.toString.call(object2) === "[object Boolean]",
+  represent: (object2) => object2 ? "true" : "false"
 });
 var TRUE_VALUES$1 = ["true"];
 var FALSE_VALUES$1 = ["false"];
@@ -39995,8 +41989,8 @@ var boolJsonTag = defineScalarTag("tag:yaml.org,2002:bool", {
     if (FALSE_VALUES$1.indexOf(source) !== -1) return false;
     return NOT_RESOLVED;
   },
-  identify: (object) => Object.prototype.toString.call(object) === "[object Boolean]",
-  represent: (object) => object ? "true" : "false"
+  identify: (object2) => Object.prototype.toString.call(object2) === "[object Boolean]",
+  represent: (object2) => object2 ? "true" : "false"
 });
 var TRUE_VALUES = [
   "true",
@@ -40043,8 +42037,8 @@ var boolYaml11Tag = defineScalarTag("tag:yaml.org,2002:bool", {
     if (FALSE_VALUES.indexOf(source) !== -1) return false;
     return NOT_RESOLVED;
   },
-  identify: (object) => Object.prototype.toString.call(object) === "[object Boolean]",
-  represent: (object) => object ? "true" : "false"
+  identify: (object2) => Object.prototype.toString.call(object2) === "[object Boolean]",
+  represent: (object2) => object2 ? "true" : "false"
 });
 var YAML_INTEGER_IMPLICIT_PATTERN$1 = /* @__PURE__ */ new RegExp("^(?:0o[0-7]+|0x[0-9a-fA-F]+|[-+]?[0-9]+)$");
 var YAML_INTEGER_EXPLICIT_PATTERN$1 = /* @__PURE__ */ new RegExp("^(?:[-+]?0b[0-1]+|[-+]?0o[0-7]+|[-+]?0x[0-9a-fA-F]+|[-+]?[0-9]+)$");
@@ -40075,8 +42069,8 @@ var intCoreTag = defineScalarTag("tag:yaml.org,2002:int", {
     ..."0123456789"
   ],
   resolve: resolveYamlInteger$2,
-  identify: (object) => Number.isInteger(object) && !Object.is(object, -0) && object.toString(10).indexOf("e") < 0,
-  represent: (object) => object.toString(10)
+  identify: (object2) => Number.isInteger(object2) && !Object.is(object2, -0) && object2.toString(10).indexOf("e") < 0,
+  represent: (object2) => object2.toString(10)
 });
 var YAML_INTEGER_IMPLICIT_PATTERN = /* @__PURE__ */ new RegExp("^-?(?:0|[1-9][0-9]*)$");
 var YAML_INTEGER_EXPLICIT_PATTERN = /* @__PURE__ */ new RegExp("^(?:[-+]?0b[0-1]+|[-+]?0o[0-7]+|[-+]?0x[0-9a-fA-F]+|[-+]?[0-9]+)$");
@@ -40103,8 +42097,8 @@ var intJsonTag = defineScalarTag("tag:yaml.org,2002:int", {
   implicit: true,
   implicitFirstChars: ["-", ..."0123456789"],
   resolve: resolveYamlInteger$1,
-  identify: (object) => Number.isInteger(object) && !Object.is(object, -0) && object.toString(10).indexOf("e") < 0,
-  represent: (object) => object.toString(10)
+  identify: (object2) => Number.isInteger(object2) && !Object.is(object2, -0) && object2.toString(10).indexOf("e") < 0,
+  represent: (object2) => object2.toString(10)
 });
 var YAML_INTEGER_PATTERN = /* @__PURE__ */ new RegExp("^(?:[-+]?0b[0-1_]+|[-+]?0[0-7_]+|[-+]?0x[0-9a-fA-F_]+|[-+]?[0-9][0-9_]*(?::[0-5]?[0-9])+|[-+]?(?:0|[1-9][0-9_]*))$");
 function parseYamlInteger(source) {
@@ -40137,8 +42131,8 @@ var intYaml11Tag = defineScalarTag("tag:yaml.org,2002:int", {
     ..."0123456789"
   ],
   resolve: resolveYamlInteger,
-  identify: (object) => Number.isInteger(object) && !Object.is(object, -0) && object.toString(10).indexOf("e") < 0,
-  represent: (object) => object.toString(10)
+  identify: (object2) => Number.isInteger(object2) && !Object.is(object2, -0) && object2.toString(10).indexOf("e") < 0,
+  represent: (object2) => object2.toString(10)
 });
 var YAML_FLOAT_PATTERN$1 = /* @__PURE__ */ new RegExp("^(?:[-+]?[0-9]+(?:\\.[0-9]*)?(?:[eE][-+]?[0-9]+)?|[-+]?\\.[0-9]+(?:[eE][-+]?[0-9]+)?|[-+]?\\.(?:inf|Inf|INF)|\\.(?:nan|NaN|NAN))$");
 var YAML_FLOAT_SPECIAL_PATTERN$1 = /* @__PURE__ */ new RegExp("^(?:[-+]?\\.(?:inf|Inf|INF)|\\.(?:nan|NaN|NAN))$");
@@ -40153,12 +42147,12 @@ function resolveYamlFloat$2(source) {
   if (Number.isFinite(result) || YAML_FLOAT_SPECIAL_PATTERN$1.test(source)) return result;
   return NOT_RESOLVED;
 }
-function representYamlFloat$2(object) {
-  if (isNaN(object)) return ".nan";
-  if (object === Number.POSITIVE_INFINITY) return ".inf";
-  if (object === Number.NEGATIVE_INFINITY) return "-.inf";
-  if (Object.is(object, -0)) return "-0.0";
-  const result = object.toString(10);
+function representYamlFloat$2(object2) {
+  if (isNaN(object2)) return ".nan";
+  if (object2 === Number.POSITIVE_INFINITY) return ".inf";
+  if (object2 === Number.NEGATIVE_INFINITY) return "-.inf";
+  if (Object.is(object2, -0)) return "-0.0";
+  const result = object2.toString(10);
   return /^[-+]?[0-9]+e/.test(result) ? result.replace("e", ".e") : result;
 }
 var floatCoreTag = defineScalarTag("tag:yaml.org,2002:float", {
@@ -40170,7 +42164,7 @@ var floatCoreTag = defineScalarTag("tag:yaml.org,2002:float", {
     ..."0123456789"
   ],
   resolve: resolveYamlFloat$2,
-  identify: (object) => typeof object === "number" && (!Number.isInteger(object) || Object.is(object, -0) || object.toString(10).indexOf("e") >= 0),
+  identify: (object2) => typeof object2 === "number" && (!Number.isInteger(object2) || Object.is(object2, -0) || object2.toString(10).indexOf("e") >= 0),
   represent: representYamlFloat$2
 });
 var YAML_FLOAT_IMPLICIT_PATTERN = /* @__PURE__ */ new RegExp("^-?(?:0|[1-9][0-9]*)(?:\\.[0-9]*)?(?:[eE][-+]?[0-9]+)?$");
@@ -40191,19 +42185,19 @@ function resolveYamlFloat$1(source, isExplicit) {
   if (Number.isFinite(result)) return result;
   return NOT_RESOLVED;
 }
-function representYamlFloat$1(object) {
-  if (isNaN(object)) return ".nan";
-  if (object === Number.POSITIVE_INFINITY) return ".inf";
-  if (object === Number.NEGATIVE_INFINITY) return "-.inf";
-  if (Object.is(object, -0)) return "-0.0";
-  const result = object.toString(10);
+function representYamlFloat$1(object2) {
+  if (isNaN(object2)) return ".nan";
+  if (object2 === Number.POSITIVE_INFINITY) return ".inf";
+  if (object2 === Number.NEGATIVE_INFINITY) return "-.inf";
+  if (Object.is(object2, -0)) return "-0.0";
+  const result = object2.toString(10);
   return /^[-+]?[0-9]+e/.test(result) ? result.replace("e", ".e") : result;
 }
 var floatJsonTag = defineScalarTag("tag:yaml.org,2002:float", {
   implicit: true,
   implicitFirstChars: ["-", ..."0123456789"],
   resolve: resolveYamlFloat$1,
-  identify: (object) => typeof object === "number" && (!Number.isInteger(object) || Object.is(object, -0) || object.toString(10).indexOf("e") >= 0),
+  identify: (object2) => typeof object2 === "number" && (!Number.isInteger(object2) || Object.is(object2, -0) || object2.toString(10).indexOf("e") >= 0),
   represent: representYamlFloat$1
 });
 var YAML_FLOAT_PATTERN = /* @__PURE__ */ new RegExp("^(?:[-+]?(?:(?:[0-9][0-9_]*)?\\.[0-9_]*)(?:[eE][-+][0-9]+)?|[-+]?[0-9][0-9_]*(?::[0-5]?[0-9])+\\.[0-9_]*|[-+]?\\.(?:inf|Inf|INF)|\\.(?:nan|NaN|NAN))$");
@@ -40223,12 +42217,12 @@ function resolveYamlFloat(source) {
   if (Number.isFinite(result) || YAML_FLOAT_SPECIAL_PATTERN.test(source)) return result;
   return NOT_RESOLVED;
 }
-function representYamlFloat(object) {
-  if (isNaN(object)) return ".nan";
-  if (object === Number.POSITIVE_INFINITY) return ".inf";
-  if (object === Number.NEGATIVE_INFINITY) return "-.inf";
-  if (Object.is(object, -0)) return "-0.0";
-  const result = object.toString(10);
+function representYamlFloat(object2) {
+  if (isNaN(object2)) return ".nan";
+  if (object2 === Number.POSITIVE_INFINITY) return ".inf";
+  if (object2 === Number.NEGATIVE_INFINITY) return "-.inf";
+  if (Object.is(object2, -0)) return "-0.0";
+  const result = object2.toString(10);
   return /^[-+]?[0-9]+e/.test(result) ? result.replace("e", ".e") : result;
 }
 var floatYaml11Tag = defineScalarTag("tag:yaml.org,2002:float", {
@@ -40240,7 +42234,7 @@ var floatYaml11Tag = defineScalarTag("tag:yaml.org,2002:float", {
     ..."0123456789"
   ],
   resolve: resolveYamlFloat,
-  identify: (object) => typeof object === "number" && (!Number.isInteger(object) || Object.is(object, -0) || object.toString(10).indexOf("e") >= 0),
+  identify: (object2) => typeof object2 === "number" && (!Number.isInteger(object2) || Object.is(object2, -0) || object2.toString(10).indexOf("e") >= 0),
   represent: representYamlFloat
 });
 var mergeTag = defineScalarTag("tag:yaml.org,2002:merge", {
@@ -40261,14 +42255,14 @@ function resolveYamlBinary(source) {
   for (let index = 0; index < binary2.length; index++) result[index] = binary2.charCodeAt(index);
   return result;
 }
-function representYamlBinary(object) {
+function representYamlBinary(object2) {
   let binary2 = "";
-  for (let index = 0; index < object.length; index++) binary2 += String.fromCharCode(object[index]);
+  for (let index = 0; index < object2.length; index++) binary2 += String.fromCharCode(object2[index]);
   return btoa(binary2);
 }
 var binaryTag = defineScalarTag("tag:yaml.org,2002:binary", {
   resolve: resolveYamlBinary,
-  identify: (object) => Object.prototype.toString.call(object) === "[object Uint8Array]",
+  identify: (object2) => Object.prototype.toString.call(object2) === "[object Uint8Array]",
   represent: representYamlBinary
 });
 var YAML_DATE_REGEXP = /* @__PURE__ */ new RegExp("^([0-9][0-9][0-9][0-9])-([0-9][0-9])-([0-9][0-9])$");
@@ -40315,8 +42309,8 @@ var timestampTag = defineScalarTag("tag:yaml.org,2002:timestamp", {
   implicit: true,
   implicitFirstChars: [..."0123456789"],
   resolve: resolveYamlTimestamp,
-  identify: (object) => object instanceof Date,
-  represent: (object) => object.toISOString()
+  identify: (object2) => object2 instanceof Date,
+  represent: (object2) => object2.toISOString()
 });
 var seqTag = defineSequenceTag("tag:yaml.org,2002:seq", {
   create: () => [],
@@ -40330,9 +42324,9 @@ function isPlainObject(data) {
   const prototype = Object.getPrototypeOf(data);
   return prototype === null || prototype === Object.prototype;
 }
-function pick(object, keys) {
+function pick(object2, keys) {
   const result = {};
-  for (const key of keys) if (object[key] !== void 0) result[key] = object[key];
+  for (const key of keys) if (object2[key] !== void 0) result[key] = object2[key];
   return result;
 }
 var omapTag = defineSequenceTag("tag:yaml.org,2002:omap", {
@@ -40367,10 +42361,10 @@ var pairsTag = defineSequenceTag("tag:yaml.org,2002:pairs", {
       return "";
     }
     if (Object.prototype.toString.call(item) !== "[object Object]") return "cannot resolve a pairs item";
-    const object = item;
-    const keys = Object.keys(object);
+    const object2 = item;
+    const keys = Object.keys(object2);
     if (keys.length !== 1) return "cannot resolve a pairs item";
-    container.push([keys[0], object[keys[0]]]);
+    container.push([keys[0], object2[keys[0]]]);
     return "";
   },
   identify: () => false
@@ -42167,6 +44161,14 @@ function loadDocuments(input, options = {}) {
     source
   });
 }
+function loadAll(input, iteratorOrOptions, options) {
+  let iterator2 = null;
+  if (typeof iteratorOrOptions === "function") iterator2 = iteratorOrOptions;
+  else if (iteratorOrOptions !== null && typeof iteratorOrOptions === "object") options = iteratorOrOptions;
+  const documents = loadDocuments(input, options);
+  if (iterator2 === null) return documents;
+  for (const document2 of documents) iterator2(document2);
+}
 function load(input, options) {
   const documents = loadDocuments(input, options);
   if (documents.length === 0) throw new YAMLException("expected a document, but the input is empty");
@@ -42554,15 +44556,15 @@ import { writeFile } from "node:fs/promises";
 import { resolve } from "node:path";
 
 // node_modules/@trustify-da/trustify-da-javascript-client/dist/src/remediate.js
-var import_micromatch2 = __toESM(require_micromatch(), 1);
+var import_micromatch3 = __toESM(require_micromatch(), 1);
 var import_packageurl_js11 = __toESM(require_packageurl_js(), 1);
-import fs27 from "node:fs";
-import path25 from "node:path";
+import fs28 from "node:fs";
+import path27 from "node:path";
 
 // node_modules/@trustify-da/trustify-da-javascript-client/dist/src/analysis.js
-import fs26 from "node:fs";
-import path24 from "node:path";
-import { EOL as EOL8 } from "os";
+import fs27 from "node:fs";
+import path26 from "node:path";
+import { EOL as EOL7 } from "os";
 
 // node_modules/@trustify-da/trustify-da-javascript-client/dist/src/license/license_utils.js
 import fs3 from "node:fs";
@@ -42666,9 +44668,9 @@ function getCompatibility(projectCategory, dependencyCategory) {
 var import_packageurl_js10 = __toESM(require_packageurl_js(), 1);
 
 // node_modules/@trustify-da/trustify-da-javascript-client/dist/src/index.js
-import fs24 from "node:fs";
-import path22 from "node:path";
-import { EOL as EOL7 } from "os";
+import fs25 from "node:fs";
+import path24 from "node:path";
+import { EOL as EOL6 } from "os";
 
 // node_modules/@trustify-da/trustify-da-javascript-client/node_modules/yocto-queue/index.js
 var Node = class {
@@ -43306,15 +45308,15 @@ function getWrapperPreference(name2, opts = {}) {
 function environmentVariableIsPopulated(envVariableName) {
   return envVariableName in process.env && process.env[envVariableName].trim() !== "";
 }
-function handleSpacesInPath(path26) {
-  let transformedPath = path26;
-  if (hasSpaces(path26)) {
-    transformedPath = `"${path26}"`;
+function handleSpacesInPath(path28) {
+  let transformedPath = path28;
+  if (hasSpaces(path28)) {
+    transformedPath = `"${path28}"`;
   }
   return transformedPath;
 }
-function hasSpaces(path26) {
-  return path26.trim().includes(" ");
+function hasSpaces(path28) {
+  return path28.trim().includes(" ");
 }
 function toPurl(type, name2, version) {
   let parts2 = name2.split("/");
@@ -43463,7 +45465,7 @@ function getPackageVersion() {
 }
 
 // node_modules/@trustify-da/trustify-da-javascript-client/dist/src/provider.js
-import path21 from "node:path";
+import path23 from "node:path";
 
 // node_modules/@trustify-da/trustify-da-javascript-client/dist/src/providers/golang_gomodules.js
 var import_packageurl_js3 = __toESM(require_packageurl_js(), 1);
@@ -43474,7 +45476,7 @@ import path6 from "node:path";
 var import_packageurl_js2 = __toESM(require_packageurl_js(), 1);
 import { EOL as EOL2 } from "os";
 var PACKAGE_VERSION = getPackageVersion();
-function getComponent(component, type, scope, licenses, hashes) {
+function getComponent(component, type, scope, licenses, hashes2) {
   let componentObject;
   if (component instanceof import_packageurl_js2.PackageURL) {
     if (component.namespace) {
@@ -43515,8 +45517,8 @@ function getComponent(component, type, scope, licenses, hashes) {
       componentObject.licenses = validLicenses;
     }
   }
-  if (hashes && hashes.length > 0) {
-    componentObject.hashes = hashes;
+  if (hashes2 && hashes2.length > 0) {
+    componentObject.hashes = hashes2;
   }
   return componentObject;
 }
@@ -43567,8 +45569,8 @@ var CycloneDxSbom = class {
       const purl = index === 0 ? sourcePurl : targetPurl;
       const existingIndex = this.getComponentIndex(purl);
       if (existingIndex < 0) {
-        const hashes = index === 1 ? targetHashes : void 0;
-        this.components.push(getComponent(ref, "library", scope, void 0, hashes));
+        const hashes2 = index === 1 ? targetHashes : void 0;
+        this.components.push(getComponent(ref, "library", scope, void 0, hashes2));
       } else if (index === 1 && targetHashes && targetHashes.length > 0 && !this.components[existingIndex].hashes) {
         this.components[existingIndex].hashes = targetHashes;
       }
@@ -43603,9 +45605,9 @@ var CycloneDxSbom = class {
       if (component.hashes) {
         continue;
       }
-      const hashes = hashMap.get(component.purl);
-      if (hashes && hashes.length > 0) {
-        component.hashes = hashes;
+      const hashes2 = hashMap.get(component.purl);
+      if (hashes2 && hashes2.length > 0) {
+        component.hashes = hashes2;
       }
     }
     return this;
@@ -45569,8 +47571,8 @@ var Language = class _Language {
     if (input instanceof Uint8Array) {
       binary2 = input;
     } else if (globalThis.process?.versions.node) {
-      const fs28 = await import("fs/promises");
-      binary2 = await fs28.readFile(input);
+      const fs29 = await import("fs/promises");
+      binary2 = await fs29.readFile(input);
     } else {
       const response = await fetch(input);
       if (!response.ok) {
@@ -45632,11 +47634,11 @@ async function Module2(moduleArg = {}) {
   }, "quit_");
   var _scriptName = import.meta.url;
   var scriptDirectory = "";
-  function locateFile(path26) {
+  function locateFile(path28) {
     if (Module["locateFile"]) {
-      return Module["locateFile"](path26, scriptDirectory);
+      return Module["locateFile"](path28, scriptDirectory);
     }
-    return scriptDirectory + path26;
+    return scriptDirectory + path28;
   }
   __name(locateFile, "locateFile");
   var readAsync, readBinary;
@@ -48325,9 +50327,9 @@ async function getSBOM(manifest, opts = {}, includeTransitive) {
   for (const comp of sbom.sbomModel.components) {
     if (!comp.hashes && comp.purl) {
       let key = decodeURIComponent(comp.purl.replace("pkg:golang/", ""));
-      let hashes = goSumHashes.get(key);
-      if (hashes) {
-        comp.hashes = hashes;
+      let hashes2 = goSumHashes.get(key);
+      if (hashes2) {
+        comp.hashes = hashes2;
       }
     }
   }
@@ -52245,16 +54247,16 @@ var MatcherView = class {
    * @returns {string|undefined}
    */
   getCurrentTag() {
-    const path26 = this._matcher.path;
-    return path26.length > 0 ? path26[path26.length - 1].tag : void 0;
+    const path28 = this._matcher.path;
+    return path28.length > 0 ? path28[path28.length - 1].tag : void 0;
   }
   /**
    * Get current namespace.
    * @returns {string|undefined}
    */
   getCurrentNamespace() {
-    const path26 = this._matcher.path;
-    return path26.length > 0 ? path26[path26.length - 1].namespace : void 0;
+    const path28 = this._matcher.path;
+    return path28.length > 0 ? path28[path28.length - 1].namespace : void 0;
   }
   /**
    * Get current node's attribute value.
@@ -52262,9 +54264,9 @@ var MatcherView = class {
    * @returns {*}
    */
   getAttrValue(attrName) {
-    const path26 = this._matcher.path;
-    if (path26.length === 0) return void 0;
-    return path26[path26.length - 1].values?.[attrName];
+    const path28 = this._matcher.path;
+    if (path28.length === 0) return void 0;
+    return path28[path28.length - 1].values?.[attrName];
   }
   /**
    * Check if current node has an attribute.
@@ -52272,9 +54274,9 @@ var MatcherView = class {
    * @returns {boolean}
    */
   hasAttr(attrName) {
-    const path26 = this._matcher.path;
-    if (path26.length === 0) return false;
-    const current = path26[path26.length - 1];
+    const path28 = this._matcher.path;
+    if (path28.length === 0) return false;
+    const current = path28[path28.length - 1];
     return current.values !== void 0 && attrName in current.values;
   }
   /**
@@ -52300,18 +54302,18 @@ var MatcherView = class {
    * @returns {number}
    */
   getPosition() {
-    const path26 = this._matcher.path;
-    if (path26.length === 0) return -1;
-    return path26[path26.length - 1].position ?? 0;
+    const path28 = this._matcher.path;
+    if (path28.length === 0) return -1;
+    return path28[path28.length - 1].position ?? 0;
   }
   /**
    * Get current node's repeat counter (occurrence count of this tag name).
    * @returns {number}
    */
   getCounter() {
-    const path26 = this._matcher.path;
-    if (path26.length === 0) return -1;
-    return path26[path26.length - 1].counter ?? 0;
+    const path28 = this._matcher.path;
+    if (path28.length === 0) return -1;
+    return path28[path28.length - 1].counter ?? 0;
   }
   /**
    * Get current node's sibling index (alias for getPosition).
@@ -54700,8 +56702,20 @@ function parseMavenModuleList(raw) {
 }
 
 // node_modules/@trustify-da/trustify-da-javascript-client/dist/src/providers/javascript_bun.js
+import fs13 from "node:fs";
+import path13 from "node:path";
+
+// node_modules/@trustify-da/trustify-da-javascript-client/dist/src/providers/base_javascript.js
 import fs12 from "node:fs";
-import path11 from "node:path";
+import os3 from "node:os";
+import path12 from "node:path";
+
+// node_modules/@trustify-da/trustify-da-javascript-client/dist/src/providers/javascript_lockfile.js
+var import_parsers = __toESM(require_lib2(), 1);
+var import_fast_glob2 = __toESM(require_out4(), 1);
+import fs10 from "node:fs";
+import path10 from "node:path";
+import { isDeepStrictEqual } from "node:util";
 
 // node_modules/jsonc-parser/lib/esm/impl/scanner.js
 function createScanner(text, ignoreTrivia = false) {
@@ -55174,10 +57188,10 @@ function parse3(text, errors = [], options = ParseOptions.DEFAULT) {
   }
   const visitor = {
     onObjectBegin: () => {
-      const object = {};
-      onValue(object);
+      const object2 = {};
+      onValue(object2);
       previousParents.push(currentParent);
-      currentParent = object;
+      currentParent = object2;
       currentProperty = null;
     },
     onObjectProperty: (name2) => {
@@ -55562,13 +57576,1040 @@ var ParseErrorCode;
   ParseErrorCode2[ParseErrorCode2["InvalidCharacter"] = 16] = "InvalidCharacter";
 })(ParseErrorCode || (ParseErrorCode = {}));
 
-// node_modules/@trustify-da/trustify-da-javascript-client/dist/src/providers/base_javascript.js
-import fs11 from "node:fs";
-import os3 from "node:os";
-import path10 from "node:path";
+// node_modules/@trustify-da/trustify-da-javascript-client/dist/src/providers/javascript_lockfile.js
+var import_micromatch2 = __toESM(require_micromatch(), 1);
+var import_semver = __toESM(require_semver2(), 1);
+function object(value) {
+  return value != null && typeof value === "object" && !Array.isArray(value);
+}
+function enabled(value) {
+  return value === true || value === "true";
+}
+function readJson(file) {
+  try {
+    const data = JSON.parse(fs10.readFileSync(file, "utf8"));
+    if (!object(data)) {
+      throw new Error("expected an object");
+    }
+    return data;
+  } catch (cause) {
+    throw new Error(`Cannot read ${file}: ${cause.message}`, { cause });
+  }
+}
+function dependencyMap(data, field, file) {
+  const value = data[field] ?? {};
+  if (!object(value) || Object.values(value).some((spec) => typeof spec !== "string" || !spec)) {
+    throw new Error(`Invalid ${field} in ${file}: expected dependency names and string specifications.`);
+  }
+  return value;
+}
+function stale(file, dependency, detail) {
+  throw new Error(`Lockfile is out of date for ${file}: ${dependency} ${detail}. Synchronize the project with its package manager before scanning.`);
+}
+function unsupported(file, dependency, detail) {
+  throw new Error(`Unsupported lockfile metadata in ${file} for ${dependency}: ${detail}. No dependency analysis was produced.`);
+}
+function manifestDependencies(data, file, includeDev = false) {
+  return {
+    ...includeDev ? dependencyMap(data, "devDependencies", file) : {},
+    ...dependencyMap(data, "dependencies", file),
+    ...dependencyMap(data, "optionalDependencies", file)
+  };
+}
+function projectManifests(root, selected, data) {
+  const selectedPath = path10.resolve(selected);
+  const rootPath = path10.join(root, "package.json");
+  const manifests = /* @__PURE__ */ new Map([[selectedPath, data]]);
+  const rootData = selectedPath === rootPath ? data : readJson(rootPath);
+  manifests.set(rootPath, rootData);
+  const workspaces = Array.isArray(rootData.workspaces) ? rootData.workspaces : rootData.workspaces?.packages;
+  if (workspaces != null) {
+    if (!Array.isArray(workspaces) || workspaces.some((pattern) => typeof pattern !== "string")) {
+      throw new Error(`Invalid workspaces in ${rootPath}.`);
+    }
+    const files = import_fast_glob2.default.sync(workspaces.map((pattern) => `${pattern}/package.json`), {
+      cwd: root,
+      absolute: true,
+      onlyFiles: true,
+      ignore: ["**/node_modules/**", "**/.git/**", "**/.yarn/**"]
+    });
+    for (const file of files) {
+      const resolved = path10.resolve(file);
+      if (!manifests.has(resolved)) {
+        manifests.set(resolved, readJson(resolved));
+      }
+    }
+  }
+  return manifests;
+}
+function descriptor(spec) {
+  const match2 = /^(@[^/]+\/[^@]+|[^@]+)@(.+)$/.exec(spec);
+  if (!match2) {
+    throw new Error(`Invalid lockfile descriptor: ${spec}`);
+  }
+  return { name: match2[1], range: match2[2] };
+}
+function normalizedYarnRange(range) {
+  return /^(?:[a-z][a-z+.-]*:|https?:|git\+|git@)/i.test(range) ? range : `npm:${range}`;
+}
+function validateRange(file, name2, spec, target) {
+  let range = spec;
+  if (range.startsWith("npm:")) {
+    range = range.slice(4);
+    if (range.includes("@")) {
+      const alias = descriptor(range);
+      if (target.name !== alias.name) {
+        stale(file, name2, `resolves to ${target.name}, expected ${alias.name}`);
+      }
+      range = alias.range;
+    }
+  }
+  if (range.startsWith("workspace:")) {
+    range = range.slice(10);
+    if (range === "^" || range === "~") {
+      range = "*";
+    }
+  }
+  if (import_semver.default.validRange(range) && !import_semver.default.satisfies(target.version, range)) {
+    stale(file, name2, `requires ${spec} but resolves to ${target.version}`);
+  }
+}
+function validateSnapshot(file, actual, recorded, fields, normalize = (value) => value) {
+  for (const field of fields) {
+    const expected = dependencyMap(actual, field, file);
+    const locked = dependencyMap(recorded, field, file);
+    for (const name2 of /* @__PURE__ */ new Set([...Object.keys(expected), ...Object.keys(locked)])) {
+      if (normalize(expected[name2]) !== normalize(locked[name2])) {
+        stale(file, name2, `has a different ${field} declaration`);
+      }
+    }
+  }
+}
+function berryChecksumToHash(checksum) {
+  if (typeof checksum !== "string") {
+    return null;
+  }
+  const hex = checksum.slice(checksum.lastIndexOf("/") + 1);
+  return /^[0-9a-f]{128}$/i.test(hex) ? { alg: "SHA-512", content: hex.toLowerCase() } : null;
+}
+function hashes(entry) {
+  const hash = entry.integrity ? sriToHash(entry.integrity) : berryChecksumToHash(entry.checksum);
+  return hash ? [hash] : void 0;
+}
+function graphRootDependencies(graph) {
+  return new Map([...graph.nodes.get(graph.rootId).dependencies].map(([name2, id]) => {
+    const node = graph.nodes.get(id);
+    return [name2, toPurl("npm", node.name, node.version)];
+  }));
+}
+function addGraphToSbom(sbom, graph) {
+  const visited = /* @__PURE__ */ new Set();
+  const queue = [graph.rootId];
+  for (let i2 = 0; i2 < queue.length; i2++) {
+    const id = queue[i2];
+    if (visited.has(id)) {
+      continue;
+    }
+    visited.add(id);
+    const node = graph.nodes.get(id);
+    const from = id === graph.rootId ? toPurlFromString(sbom.getRoot().purl) : toPurl("npm", node.name, node.version);
+    for (const targetId of node.dependencies.values()) {
+      const target = graph.nodes.get(targetId);
+      sbom.addDependency(from, toPurl("npm", target.name, target.version), void 0, target.hashes);
+      queue.push(targetId);
+    }
+  }
+}
+function readNpmGraph(root, manifestPath, manifest) {
+  const file = path10.join(root, fs10.existsSync(path10.join(root, "npm-shrinkwrap.json")) ? "npm-shrinkwrap.json" : "package-lock.json");
+  const lock = readJson(file);
+  if (![2, 3].includes(lock.lockfileVersion)) {
+    throw new Error(`Unsupported npm lockfile version ${lock.lockfileVersion} in ${file}. Regenerate a version 2 or 3 lockfile before scanning.`);
+  }
+  if (!object(lock.packages) || !object(lock.packages[""])) {
+    unsupported(file, "packages", "missing root package table");
+  }
+  const manifests = projectManifests(root, manifestPath, manifest);
+  for (const entry of Object.values(lock.packages)) {
+    if (entry?.link && typeof entry.resolved === "string") {
+      const manifestFile = path10.resolve(root, entry.resolved, "package.json");
+      if (!manifests.has(manifestFile)) {
+        manifests.set(manifestFile, readJson(manifestFile));
+      }
+    }
+  }
+  const local = /* @__PURE__ */ new Map();
+  for (const [manifestFile, data] of manifests) {
+    const location = path10.relative(root, path10.dirname(manifestFile)).split(path10.sep).join("/");
+    const entry = lock.packages[location];
+    if (!object(entry)) {
+      stale(manifestFile, data.name, "is missing from the lockfile");
+    }
+    if (entry.name != null && data.name !== entry.name || entry.version != null && data.version !== entry.version) {
+      stale(manifestFile, data.name, "has a different locked identity");
+    }
+    validateSnapshot(manifestFile, data, entry, ["dependencies", "devDependencies", "optionalDependencies", "peerDependencies"]);
+    local.set(location, { data, file: manifestFile });
+  }
+  const rootId = path10.relative(root, path10.dirname(path10.resolve(manifestPath))).split(path10.sep).join("/");
+  const graph = { rootId, nodes: /* @__PURE__ */ new Map() };
+  const rootData = manifests.get(path10.join(root, "package.json"));
+  if (rootData.overrides != null && !object(rootData.overrides)) {
+    unsupported(file, "overrides", "expected a mapping");
+  }
+  function target(location, name2, peer = false) {
+    let dir = path10.resolve(root, location);
+    if (peer && location.includes("node_modules/")) {
+      dir = path10.dirname(dir);
+    }
+    while (true) {
+      if (path10.basename(dir) !== "node_modules") {
+        let id = path10.relative(root, path10.join(dir, "node_modules", name2)).split(path10.sep).join("/");
+        const seen = /* @__PURE__ */ new Set();
+        while (lock.packages[id]?.link) {
+          if (seen.has(id)) {
+            unsupported(file, name2, "cyclic package links");
+          }
+          seen.add(id);
+          id = lock.packages[id].resolved;
+          if (typeof id !== "string") {
+            unsupported(file, name2, "missing link target");
+          }
+        }
+        if (object(lock.packages[id])) {
+          return id;
+        }
+      }
+      const parent = path10.dirname(dir);
+      if (parent === dir) {
+        return void 0;
+      }
+      dir = parent;
+    }
+  }
+  function visit2(id, ancestry = []) {
+    if (graph.nodes.has(id)) {
+      return;
+    }
+    const entry = lock.packages[id];
+    if (!object(entry)) {
+      unsupported(file, id, "missing package metadata");
+    }
+    const identity = local.get(id)?.data ?? entry;
+    const name2 = identity.name || id.slice(id.lastIndexOf("node_modules/") + 13);
+    const version = identity.version ?? (local.has(id) ? "v0.0.0" : void 0);
+    if (typeof name2 !== "string" || !name2 || typeof version !== "string" || !version) {
+      unsupported(file, id, "missing package name or version");
+    }
+    const node = { name: name2, version, dependencies: /* @__PURE__ */ new Map(), hashes: hashes(entry) };
+    graph.nodes.set(id, node);
+    const data = local.get(id)?.data ?? entry;
+    const source = local.get(id)?.file ?? file;
+    const specs = { ...manifestDependencies(data, source), ...dependencyMap(data, "peerDependencies", source) };
+    if (id === "" && rootId === "") {
+      for (const [location, workspace] of local) {
+        if (location && !location.startsWith("..") && lock.packages[`node_modules/${workspace.data.name}`]?.link && !Object.hasOwn(specs, workspace.data.name)) {
+          specs[workspace.data.name] = workspace.data.version ?? "*";
+        }
+      }
+    }
+    for (const [dependency, spec] of Object.entries(specs)) {
+      const peer = Object.hasOwn(data.peerDependencies ?? {}, dependency) && !Object.hasOwn(manifestDependencies(data, source), dependency);
+      const optional = Object.hasOwn(data.optionalDependencies ?? {}, dependency) || peer && enabled(data.peerDependenciesMeta?.[dependency]?.optional);
+      const childId = target(id, dependency, peer);
+      if (childId == null) {
+        if (optional || peer) {
+          continue;
+        }
+        stale(source, dependency, "has no locked resolution");
+      }
+      visit2(childId, [...ancestry, node]);
+      const child = graph.nodes.get(childId);
+      const override = npmOverride(rootData, dependency, spec, ancestry.concat(node), source);
+      validateRange(source, dependency, override ?? spec, child);
+      node.dependencies.set(dependency, childId);
+    }
+  }
+  for (const [id, localManifest] of local) {
+    for (const [name2, spec] of Object.entries(manifestDependencies(localManifest.data, localManifest.file, true))) {
+      const targetId = target(id, name2);
+      if (targetId == null) {
+        if (Object.hasOwn(localManifest.data.optionalDependencies ?? {}, name2)) {
+          continue;
+        }
+        stale(localManifest.file, name2, "has no locked resolution");
+      }
+      const entry = lock.packages[targetId];
+      const identity = { ...entry, name: entry.name || name2 };
+      validateRange(localManifest.file, name2, npmOverride(rootData, name2, spec, [localManifest.data], localManifest.file) ?? spec, identity);
+    }
+  }
+  visit2(rootId);
+  return graph;
+}
+function npmOverride(root, name2, spec, ancestors, file) {
+  const overrides = root.overrides;
+  let result;
+  function search(rules, chain) {
+    if (!object(rules)) {
+      return;
+    }
+    for (const [key, value] of Object.entries(rules)) {
+      if (key === ".") {
+        continue;
+      }
+      const parsed = key.includes("@", 1) ? descriptor(key) : { name: key, range: "*" };
+      let range = spec;
+      if (range.startsWith("npm:")) {
+        range = range.slice(4);
+        if (range.includes("@")) {
+          range = descriptor(range).range;
+        }
+      }
+      if (parsed.name === name2 && chain.length === 0 && (!import_semver.default.validRange(range) || import_semver.default.intersects(range, parsed.range))) {
+        result ??= object(value) ? value["."] : value;
+      }
+      const replacement = object(value) ? value["."] : value;
+      const index = chain.findIndex((node) => node.name === parsed.name && (import_semver.default.satisfies(node.version, parsed.range) || typeof replacement === "string" && import_semver.default.validRange(replacement) && import_semver.default.satisfies(node.version, replacement)));
+      if (index >= 0) {
+        search(value, chain.slice(index + 1));
+      }
+    }
+  }
+  search(overrides, ancestors);
+  search(overrides, []);
+  if (typeof result === "string" && result.startsWith("$")) {
+    result = manifestDependencies(root, file, true)[result.slice(1)];
+  }
+  if (result != null && typeof result !== "string") {
+    unsupported(file, name2, "invalid override");
+  }
+  return result;
+}
+function readYarnLock(file) {
+  let lock;
+  try {
+    lock = (0, import_parsers.parseSyml)(fs10.readFileSync(file, "utf8"));
+    if (!object(lock)) {
+      throw new Error("expected a lockfile mapping");
+    }
+  } catch (cause) {
+    throw new Error(`Cannot read ${file}: ${cause.message}`, { cause });
+  }
+  if (lock.__metadata != null && (!object(lock.__metadata) || !/^\d+$/.test(String(lock.__metadata.version)) || Number(lock.__metadata.version) < 2 || Number(lock.__metadata.version) > 10)) {
+    unsupported(file, "__metadata", "unknown Berry lockfile version");
+  }
+  return lock;
+}
+function readYarnGraph(root, manifestPath, manifest, lock) {
+  const file = path10.join(root, "yarn.lock");
+  const berry = lock.__metadata != null;
+  const manifests = projectManifests(root, manifestPath, manifest);
+  const rootData = manifests.get(path10.join(root, "package.json"));
+  if (rootData.resolutions != null && (!object(rootData.resolutions) || Object.values(rootData.resolutions).some((value) => typeof value !== "string"))) {
+    unsupported(file, "resolutions", "expected string specifications");
+  }
+  const resolutions = Object.entries(rootData.resolutions ?? {}).map(([selector, replacement]) => {
+    try {
+      return { selector, replacement, pattern: berry ? (0, import_parsers.parseResolution)(selector) : void 0 };
+    } catch {
+      unsupported(file, selector, "invalid resolution selector");
+    }
+  });
+  const entries = /* @__PURE__ */ new Map();
+  const selectors = /* @__PURE__ */ new Map();
+  const locals = /* @__PURE__ */ new Map();
+  for (const [key, entry] of Object.entries(lock)) {
+    if (key === "__metadata") {
+      continue;
+    }
+    if (!object(entry) || typeof entry.version !== "string" || !entry.version || berry && typeof entry.resolution !== "string") {
+      unsupported(file, key, "missing version or resolution");
+    }
+    const keys = key.split(/,\s+(?=@?[^ ,]+@)/);
+    const identity = descriptor(berry ? entry.resolution : keys[0]);
+    const name2 = !berry && identity.range.startsWith("npm:") ? descriptor(identity.range.slice(4)).name : identity.name;
+    const id = berry ? entry.resolution : key;
+    if (berry && !/^(?:npm:|workspace:|patch:|file:|portal:|link:|https?:|git(?:\+|:)|ssh:)/.test(descriptor(id).range)) {
+      unsupported(file, id, "unknown resolution protocol");
+    }
+    if (entries.has(id) && JSON.stringify(entries.get(id)) !== JSON.stringify({ ...entry, name: name2 })) {
+      unsupported(file, id, "conflicting package metadata");
+    }
+    entries.set(id, { ...entry, name: name2 });
+    for (const selector of keys) {
+      descriptor(selector);
+      if (selectors.has(selector) && selectors.get(selector) !== id) {
+        unsupported(file, selector, "ambiguous resolutions");
+      }
+      selectors.set(selector, id);
+    }
+  }
+  for (const [manifestFile, data] of manifests) {
+    const location = path10.relative(root, path10.dirname(manifestFile)).split(path10.sep).join("/") || ".";
+    const id = `${data.name}@workspace:${location}`;
+    if (berry) {
+      const entry = entries.get(id);
+      if (!entry) {
+        stale(manifestFile, data.name, "has no workspace lockfile entry");
+      }
+      const actual = manifestDependencies(data, manifestFile, true);
+      const recorded = dependencyMap(entry, "dependencies", file);
+      for (const name2 of /* @__PURE__ */ new Set([...Object.keys(actual), ...Object.keys(recorded)])) {
+        if (actual[name2] == null || recorded[name2] == null || normalizedYarnRange(actual[name2]) !== normalizedYarnRange(recorded[name2])) {
+          stale(manifestFile, name2, "has a different dependency declaration");
+        }
+      }
+      validateSnapshot(manifestFile, data, entry, ["peerDependencies"], (value) => value == null ? value : normalizedYarnRange(value));
+    } else {
+      entries.set(id, { name: data.name, version: data.version ?? "v0.0.0", dependencies: manifestDependencies(data, manifestFile, true) });
+    }
+    locals.set(id, { data, file: manifestFile });
+  }
+  for (const [id, entry] of entries) {
+    const range = descriptor(berry ? id : id.split(/,\s+/)[0]).range;
+    if (!/^(portal:|file:|link:)/.test(range)) {
+      continue;
+    }
+    const [reference, parameters] = range.split("::");
+    const owner = new URLSearchParams(parameters).get("locator");
+    const ownerRange = owner ? descriptor(owner).range : "";
+    const origin = ownerRange.startsWith("workspace:") ? path10.resolve(root, ownerRange.slice(10)) : root;
+    const targetPath = reference.slice(reference.indexOf(":") + 1).split("#")[0];
+    const manifestFile = path10.resolve(origin, targetPath, "package.json");
+    if (!fs10.existsSync(manifestFile)) {
+      if (range.startsWith("portal:") || entry.version === "0.0.0-use.local") {
+        unsupported(file, id, "missing local package manifest");
+      }
+      continue;
+    }
+    if (range.startsWith("link:")) {
+      unsupported(file, id, "link protocol does not provide package dependency metadata; use a package-aware local protocol");
+    }
+    const data = readJson(manifestFile);
+    if (data.name !== entry.name || entry.version !== "0.0.0-use.local" && data.version !== entry.version) {
+      stale(manifestFile, data.name, "has a different locked identity");
+    }
+    const includeDev = range.startsWith("portal:");
+    const actual = manifestDependencies(data, manifestFile, includeDev);
+    const recorded = dependencyMap(entry, "dependencies", file);
+    for (const name2 of /* @__PURE__ */ new Set([...Object.keys(actual), ...Object.keys(recorded)])) {
+      if (actual[name2] == null || recorded[name2] == null || normalizedYarnRange(actual[name2]) !== normalizedYarnRange(recorded[name2])) {
+        stale(manifestFile, name2, "has a different dependency declaration");
+      }
+    }
+    validateSnapshot(manifestFile, data, entry, ["peerDependencies"], (value) => value == null ? value : normalizedYarnRange(value));
+    locals.set(id, { data, file: manifestFile, includeDev });
+  }
+  const contextualResolutions = !berry && resolutions.some(({ selector }) => {
+    const globalName = selector.replace(/^\*\*\//, "");
+    return !/^(?:@[^/]+\/)?[^/@*]+$/.test(globalName);
+  });
+  const rootId = [...locals].find(([, value]) => value.file === path10.resolve(manifestPath))?.[0];
+  if (!rootId) {
+    unsupported(file, manifest.name, "manifest is not in the workspace");
+  }
+  function resolve2(name2, range, ancestry, source) {
+    const owner = ancestry.at(-1);
+    const resolution = resolutions.find(({ selector, pattern }) => {
+      if (!berry) {
+        return selector === name2 || import_micromatch2.default.isMatch([...ancestry.slice(1).map((n) => n.name), name2].join("/"), selector);
+      }
+      return pattern.descriptor.fullName === name2 && (pattern.descriptor.description == null || normalizedYarnRange(pattern.descriptor.description) === normalizedYarnRange(range)) && (!pattern.from || pattern.from.fullName === owner?.name && (pattern.from.description == null || normalizedYarnRange(pattern.from.description) === descriptor(owner.locator).range));
+    });
+    const effective = resolution?.replacement ?? range;
+    const normalized = berry ? normalizedYarnRange(effective) : effective;
+    const declared = berry ? normalizedYarnRange(range) : range;
+    let id = selectors.get(`${name2}@${normalized}`) ?? selectors.get(`${name2}@${effective}`) ?? selectors.get(`${name2}@${declared}`);
+    if (!id && range.startsWith("workspace:")) {
+      const loc = [...locals].find(([, value]) => value.data.name === name2);
+      if (loc) {
+        id = loc[0];
+      }
+    }
+    if (!id && !range.includes(":")) {
+      const loc = [...locals].find(([, value]) => value.data.name === name2 && import_semver.default.satisfies(value.data.version, range));
+      if (loc) {
+        id = loc[0];
+      }
+    }
+    if (id) {
+      validateRange(source, name2, effective, locals.get(id)?.data ?? entries.get(id));
+    }
+    return id;
+  }
+  for (const [id, local] of locals) {
+    for (const [name2, spec] of Object.entries(manifestDependencies(local.data, local.file, local.includeDev !== false))) {
+      if (!resolve2(name2, spec, [{ ...local.data, locator: id }], local.file) && !Object.hasOwn(local.data.optionalDependencies ?? {}, name2)) {
+        stale(local.file, name2, "has no locked resolution");
+      }
+    }
+    if (!berry) {
+      entries.get(id).peerDependencies = local.data.peerDependencies;
+    }
+  }
+  const graph = { rootId: "", nodes: /* @__PURE__ */ new Map() };
+  function peerSignature(id, providers, seen = /* @__PURE__ */ new Set()) {
+    if (seen.has(id)) {
+      return [id];
+    }
+    const nextSeen = /* @__PURE__ */ new Set([...seen, id]);
+    const data = locals.get(id)?.data ?? entries.get(id);
+    const names = berry ? Object.keys(data?.peerDependencies ?? {}).sort() : [];
+    return [id, names.filter((name2) => providers.has(name2)).map((name2) => [name2, peerSignature(providers.get(name2), providers, nextSeen)])];
+  }
+  function visit2(id, providers = /* @__PURE__ */ new Map(), ancestry = []) {
+    const entry = entries.get(id);
+    const local = locals.get(id);
+    const data = local?.data ?? entry;
+    const source = local?.file ?? file;
+    if (!entry) {
+      unsupported(source, id, "missing resolution");
+    }
+    const version = data.version ?? (local ? "v0.0.0" : void 0);
+    if (typeof data.name !== "string" || !data.name || typeof version !== "string" || !version) {
+      unsupported(source, id, "missing package identity");
+    }
+    const peers = /* @__PURE__ */ new Map();
+    if (berry) {
+      for (const [name2, spec] of Object.entries(dependencyMap(data, "peerDependencies", source))) {
+        const peerId = providers.get(name2);
+        if (peerId) {
+          validateRange(source, name2, spec, locals.get(peerId)?.data ?? entries.get(peerId));
+          peers.set(name2, peerId);
+        }
+      }
+    }
+    if (contextualResolutions && ancestry.some((node2) => node2.locator === id)) {
+      unsupported(source, id, "cyclic graph with path-dependent Classic resolutions");
+    }
+    const context3 = JSON.stringify([peerSignature(id, providers), contextualResolutions ? ancestry.map((node2) => node2.locator) : []]);
+    if (graph.nodes.has(context3)) {
+      return context3;
+    }
+    const node = { name: data.name, version, locator: id, dependencies: /* @__PURE__ */ new Map(), hashes: hashes(entry) };
+    graph.nodes.set(context3, node);
+    const specs = local ? manifestDependencies(data, source, local.includeDev !== false) : { ...dependencyMap(entry, "dependencies", source), ...dependencyMap(entry, "optionalDependencies", source) };
+    const resolved = /* @__PURE__ */ new Map();
+    for (const [name2, spec] of Object.entries(specs)) {
+      const target = resolve2(name2, spec, ancestry.concat(node), source);
+      if (!target) {
+        const optional = Object.hasOwn(data.optionalDependencies ?? {}, name2) || enabled(entry.dependenciesMeta?.[name2]?.optional);
+        if (optional) {
+          continue;
+        }
+        stale(source, name2, "has no locked resolution");
+      }
+      resolved.set(name2, target);
+    }
+    const provided = new Map([...peers, ...resolved, [node.name, id]]);
+    for (const [name2, target] of [...resolved, ...peers]) {
+      if (local && !Object.hasOwn(manifestDependencies(data, source), name2) && !Object.hasOwn(data.peerDependencies ?? {}, name2)) {
+        continue;
+      }
+      node.dependencies.set(name2, peers.has(name2) ? visit2(target, providers, ancestry) : visit2(target, provided, ancestry.concat(node)));
+    }
+    return context3;
+  }
+  graph.rootId = visit2(rootId);
+  return graph;
+}
+function readPnpmLock(file) {
+  let documents;
+  try {
+    documents = loadAll(fs10.readFileSync(file, "utf8"));
+  } catch (cause) {
+    throw new Error(`Cannot read ${file}: ${cause.message}`, { cause });
+  }
+  const lock = documents.filter(object).at(-1);
+  if (!object(lock)) {
+    throw new Error(`Cannot read ${file}: expected a lockfile mapping.`);
+  }
+  return lock;
+}
+function pnpmLockMajor(lock, file) {
+  const major = parseInt(String(lock.lockfileVersion), 10);
+  if (![6, 9].includes(major)) {
+    throw new Error(`Unsupported pnpm lockfile version ${lock.lockfileVersion} in ${file}. Regenerate a version 6 or 9 lockfile before scanning.`);
+  }
+  return major;
+}
+function pnpmSpecifiers(group, file) {
+  const out2 = {};
+  if (group == null) {
+    return out2;
+  }
+  if (!object(group)) {
+    unsupported(file, "importers", "expected a dependency mapping");
+  }
+  for (const [name2, entry] of Object.entries(group)) {
+    const specifier = typeof entry === "string" ? entry : entry?.specifier;
+    if (typeof specifier !== "string" || !specifier) {
+      unsupported(file, name2, "missing dependency specifier");
+    }
+    out2[name2] = specifier;
+  }
+  return out2;
+}
+function pnpmOverrides(root, rootData, lock, file) {
+  const rootFile = path10.join(root, "package.json");
+  const workspaceFile = path10.join(root, "pnpm-workspace.yaml");
+  const workspace = fs10.existsSync(workspaceFile) ? load(fs10.readFileSync(workspaceFile, "utf8"), { filename: workspaceFile }) ?? {} : {};
+  if (!object(workspace)) {
+    unsupported(workspaceFile, "overrides", "expected a workspace mapping");
+  }
+  const manifestOverrides = { ...dependencyMap(rootData, "resolutions", rootFile), ...dependencyMap(rootData.pnpm ?? {}, "overrides", rootFile) };
+  const configured = Object.keys(manifestOverrides).length ? manifestOverrides : dependencyMap(workspace, "overrides", workspaceFile);
+  const resolved = {};
+  const selector = (value) => value.includes("@", 1) ? descriptor(value) : { name: value, range: void 0 };
+  const rules = Object.entries(configured).map(([key, value]) => {
+    const delimiter2 = key.search(/[^ |@]>/) + 1;
+    const target = selector(delimiter2 ? key.slice(delimiter2 + 1) : key);
+    const parent = delimiter2 ? selector(key.slice(0, delimiter2)) : void 0;
+    if (value.startsWith("$")) {
+      value = manifestDependencies(rootData, rootFile, true)[value.slice(1)];
+    }
+    if (value?.startsWith("catalog:")) {
+      const catalog = value.slice(8) ? workspace.catalogs?.[value.slice(8)] : workspace.catalog;
+      value = dependencyMap({ dependencies: catalog }, "dependencies", workspaceFile)[target.name];
+    }
+    if (typeof value !== "string" || !value) {
+      unsupported(rootFile, key, "cannot resolve override");
+    }
+    resolved[key] = value;
+    return { parent, target, value };
+  });
+  if (!isDeepStrictEqual(resolved, lock.overrides ?? {})) {
+    stale(file, "overrides", "have different declarations");
+  }
+  const intersects = (range, spec) => !range || range === spec || import_semver.default.validRange(range) && import_semver.default.validRange(spec) && import_semver.default.intersects(range, spec);
+  return (data, manifestFile, name2, spec) => {
+    let matches = rules.filter((rule) => rule.target.name === name2 && intersects(rule.target.range, spec) && (!rule.parent || rule.parent.name === data.name && (!rule.parent.range || import_semver.default.satisfies(data.version, rule.parent.range))));
+    const parentMatches = matches.filter((rule) => rule.parent);
+    if (parentMatches.length) {
+      matches = parentMatches;
+    }
+    const value = matches.at(-1)?.value;
+    const local = /^(file:|link:)(.*)$/.exec(value ?? "");
+    return local && !path10.isAbsolute(local[2]) ? `${local[1]}${path10.relative(path10.dirname(manifestFile), path10.resolve(root, local[2])).split(path10.sep).join("/")}` : value;
+  };
+}
+function validatePnpmImporter(manifestFile, data, importer, file, override) {
+  const declared = {
+    ...dependencyMap(data, "peerDependencies", manifestFile),
+    ...dependencyMap(data, "devDependencies", manifestFile),
+    ...dependencyMap(data, "dependencies", manifestFile),
+    ...dependencyMap(data, "optionalDependencies", manifestFile)
+  };
+  const recorded = {
+    ...pnpmSpecifiers(importer.dependencies, file),
+    ...pnpmSpecifiers(importer.devDependencies, file),
+    ...pnpmSpecifiers(importer.optionalDependencies, file)
+  };
+  for (const [name2, specifier] of Object.entries(recorded)) {
+    if (declared[name2] != null && (override(data, manifestFile, name2, declared[name2]) ?? declared[name2]) !== specifier) {
+      stale(manifestFile, name2, "has a different dependency declaration");
+    }
+  }
+  for (const section of ["dependencies", "devDependencies"]) {
+    for (const [name2, spec] of Object.entries(dependencyMap(data, section, manifestFile))) {
+      if (Object.hasOwn(data.optionalDependencies ?? {}, name2) || section === "devDependencies" && Object.hasOwn(data.dependencies ?? {}, name2)) {
+        continue;
+      }
+      if (override(data, manifestFile, name2, spec) === "-") {
+        continue;
+      }
+      if (!Object.hasOwn(importer[section] ?? {}, name2)) {
+        stale(manifestFile, name2, `has a different ${section} declaration`);
+      }
+    }
+  }
+}
+function readPnpmGraph(root, manifestPath, manifest, lock) {
+  const file = path10.join(root, "pnpm-lock.yaml");
+  const major = pnpmLockMajor(lock, file);
+  const prefix = major === 6 ? "/" : "";
+  const packages = object(lock.packages) ? lock.packages : {};
+  const snapshots = major === 6 ? packages : object(lock.snapshots) ? lock.snapshots : {};
+  const importers = object(lock.importers) ? lock.importers : { ".": { dependencies: lock.dependencies, devDependencies: lock.devDependencies, optionalDependencies: lock.optionalDependencies } };
+  const manifests = projectManifests(root, manifestPath, manifest);
+  const override = pnpmOverrides(root, manifests.get(path10.join(root, "package.json")), lock, file);
+  const locals = /* @__PURE__ */ new Map();
+  for (const [manifestFile, data] of manifests) {
+    const location = path10.relative(root, path10.dirname(manifestFile)).split(path10.sep).join("/") || ".";
+    const importer = importers[location];
+    if (!object(importer)) {
+      stale(manifestFile, data.name, "is missing from the lockfile");
+    }
+    validatePnpmImporter(manifestFile, data, importer, file, override);
+    locals.set(location, { data, file: manifestFile });
+  }
+  const rootId = path10.relative(root, path10.dirname(path10.resolve(manifestPath))).split(path10.sep).join("/") || ".";
+  if (!locals.has(rootId)) {
+    unsupported(file, manifest.name, "manifest is not in the workspace");
+  }
+  const graph = { rootId: `importer:${rootId}`, nodes: /* @__PURE__ */ new Map() };
+  function childId(name2, version) {
+    if (major === 6 && object(packages[version])) {
+      return version;
+    }
+    const base = version.split("(")[0].replace(/^\//, "");
+    const at = base.indexOf("@");
+    const colon = base.indexOf(":");
+    return at !== -1 && (colon === -1 || at < colon) ? version : `${prefix}${name2}@${version}`;
+  }
+  function packageEntry(id) {
+    return major === 6 ? packages[id] : packages[id.split("(")[0]];
+  }
+  function identity(id) {
+    const entry = packageEntry(id);
+    const directory = entry?.resolution?.directory;
+    if (typeof directory === "string" || entry?.resolution?.type === "directory") {
+      if (typeof directory !== "string") {
+        unsupported(file, id, "missing local package directory");
+      }
+      const manifestFile = path10.resolve(root, directory, "package.json");
+      if (!fs10.existsSync(manifestFile)) {
+        unsupported(file, id, "missing local package manifest");
+      }
+      const data = readJson(manifestFile);
+      if (typeof data.name !== "string" || !data.name || typeof data.version !== "string" || !data.version) {
+        unsupported(file, id, "missing local package identity");
+      }
+      return { name: data.name, version: data.version };
+    }
+    const bare = id.startsWith("/") ? id.slice(1) : id;
+    const parsed = bare.includes("@", 1) ? descriptor(bare.split("(")[0]) : {};
+    const name2 = entry?.name ?? parsed.name;
+    const version = entry?.version ?? parsed.range;
+    if (typeof name2 !== "string" || !name2) {
+      unsupported(file, id, "missing locked package name");
+    }
+    if (!import_semver.default.valid(version)) {
+      unsupported(file, id, "missing or invalid locked package version");
+    }
+    return { name: name2, version };
+  }
+  function resolve2(ownerLocation, name2, version, source, optional, range) {
+    if (version.startsWith("link:")) {
+      const location = path10.relative(root, path10.resolve(root, ownerLocation, version.slice(5))).split(path10.sep).join("/") || ".";
+      if (locals.has(location) || object(importers[location])) {
+        return `importer:${location}`;
+      }
+      unsupported(source, name2, "link protocol does not provide package dependency metadata; use a package-aware local protocol");
+    }
+    const id = childId(name2, version);
+    if (!object(snapshots[id])) {
+      if (optional) {
+        return void 0;
+      }
+      stale(source, name2, "has no locked resolution");
+    }
+    if (range != null) {
+      validateRange(source, name2, range, identity(id));
+    }
+    return id;
+  }
+  function edges(groups, source) {
+    const out2 = [];
+    for (const [group, optional] of groups) {
+      if (group == null) {
+        continue;
+      }
+      if (!object(group)) {
+        unsupported(source, "dependencies", "expected a dependency mapping");
+      }
+      for (const [name2, entry] of Object.entries(group)) {
+        const version = typeof entry === "string" ? entry : entry?.version;
+        if (typeof version !== "string" || !version) {
+          unsupported(source, name2, "missing resolved version");
+        }
+        out2.push([name2, version, optional, typeof entry === "string" ? void 0 : entry?.specifier]);
+      }
+    }
+    return out2;
+  }
+  function visit2(rootId2) {
+    const stack = [rootId2];
+    while (stack.length > 0) {
+      const id = stack.pop();
+      if (graph.nodes.has(id)) {
+        continue;
+      }
+      const children = [];
+      if (id.startsWith("importer:")) {
+        const location = id.slice("importer:".length);
+        let local = locals.get(location);
+        if (!local) {
+          const manifestFile = path10.resolve(root, location, "package.json");
+          const data = readJson(manifestFile);
+          validatePnpmImporter(manifestFile, data, importers[location], file, override);
+          local = { data, file: manifestFile };
+          locals.set(location, local);
+        }
+        const source = local.file;
+        const node = { name: local.data.name ?? location, version: local.data.version ?? "v0.0.0", dependencies: /* @__PURE__ */ new Map(), hashes: void 0 };
+        graph.nodes.set(id, node);
+        const importer = importers[location];
+        for (const [name2, version, optional, specifier] of edges([[importer.dependencies, false], [importer.optionalDependencies, true]], source)) {
+          const childNodeId = resolve2(location, name2, version, source, optional, specifier);
+          if (childNodeId == null) {
+            continue;
+          }
+          node.dependencies.set(name2, childNodeId);
+          children.push(childNodeId);
+        }
+      } else {
+        const { name: name2, version } = identity(id);
+        const node = { name: name2, version, dependencies: /* @__PURE__ */ new Map(), hashes: hashes({ integrity: packageEntry(id)?.resolution?.integrity }) };
+        graph.nodes.set(id, node);
+        const snapshot = snapshots[id];
+        for (const [depName, depVersion, optional] of edges([[snapshot?.dependencies, false], [snapshot?.optionalDependencies, true]], file)) {
+          const childNodeId = resolve2(".", depName, depVersion, file, optional);
+          if (childNodeId == null) {
+            continue;
+          }
+          node.dependencies.set(depName, childNodeId);
+          children.push(childNodeId);
+        }
+      }
+      for (let i2 = children.length - 1; i2 >= 0; i2--) {
+        stack.push(children[i2]);
+      }
+    }
+  }
+  visit2(graph.rootId);
+  return graph;
+}
+function readBunLock(file) {
+  let lock;
+  try {
+    const errors = [];
+    lock = parse4(fs10.readFileSync(file, "utf8"), errors, { allowTrailingComma: true });
+    if (errors.length > 0) {
+      throw new Error("invalid JSONC syntax");
+    }
+    if (!object(lock)) {
+      throw new Error("expected a lockfile mapping");
+    }
+  } catch (cause) {
+    throw new Error(`Cannot read ${file}: ${cause.message}`, { cause });
+  }
+  return lock;
+}
+function parseBunEntry(tuple) {
+  const id = tuple[0];
+  const { name: name2, range } = descriptor(id);
+  const info5 = tuple.slice(1).find(object) ?? {};
+  const last = tuple.length > 1 ? tuple[tuple.length - 1] : void 0;
+  const integrity = typeof last === "string" ? last : void 0;
+  const workspace = range.startsWith("workspace:");
+  return { id, name: name2, range, version: workspace ? void 0 : range, info: info5, integrity, workspace };
+}
+function readBunGraph(root, manifestPath, manifest, lock) {
+  const file = path10.join(root, "bun.lock");
+  if (![0, 1, 2].includes(lock.lockfileVersion)) {
+    throw new Error(`Unsupported bun lockfile version ${lock.lockfileVersion} in ${file}. Regenerate a version 0, 1, or 2 bun.lock before scanning.`);
+  }
+  if (!object(lock.workspaces)) {
+    unsupported(file, "workspaces", "missing workspaces table");
+  }
+  const workspaces = lock.workspaces;
+  const packages = object(lock.packages) ? lock.packages : {};
+  const manifests = projectManifests(root, manifestPath, manifest);
+  const rootFile = path10.join(root, "package.json");
+  const rootData = manifests.get(rootFile);
+  const overrideField = Object.hasOwn(rootData, "overrides") ? "overrides" : "resolutions";
+  const overrideEntries = Object.entries(dependencyMap(rootData, overrideField, rootFile));
+  const overrides = Object.fromEntries(overrideEntries.map(([name2, spec]) => {
+    if (overrideField === "resolutions") {
+      name2 = name2.replace(/^\*\*\//, "");
+    }
+    if (spec.startsWith("$")) {
+      const dependencies = {
+        ...dependencyMap(rootData, "peerDependencies", rootFile),
+        ...manifestDependencies(rootData, rootFile, true)
+      };
+      spec = dependencies[spec.slice(1)];
+      if (typeof spec !== "string" || !spec) {
+        unsupported(rootFile, name2, "override reference has no declared dependency");
+      }
+    }
+    return [name2, spec];
+  }));
+  validateSnapshot(rootFile, { overrides }, lock, ["overrides"]);
+  const locals = /* @__PURE__ */ new Map();
+  for (const [manifestFile, data] of manifests) {
+    const location = path10.relative(root, path10.dirname(manifestFile)).split(path10.sep).join("/") || ".";
+    const entry = workspaces[location === "." ? "" : location];
+    if (!object(entry)) {
+      stale(manifestFile, data.name, "is missing from the lockfile");
+    }
+    if (entry.name != null && data.name !== entry.name) {
+      stale(manifestFile, data.name, "has a different locked identity");
+    }
+    const snapshot = {
+      dependencies: { ...dependencyMap(data, "dependencies", manifestFile) },
+      devDependencies: { ...dependencyMap(data, "devDependencies", manifestFile) },
+      optionalDependencies: dependencyMap(data, "optionalDependencies", manifestFile),
+      peerDependencies: data.peerDependencies
+    };
+    for (const name2 of Object.keys(snapshot.optionalDependencies)) {
+      if (Object.hasOwn(snapshot.dependencies, name2)) {
+        delete snapshot.dependencies[name2];
+      } else {
+        delete snapshot.devDependencies[name2];
+      }
+    }
+    validateSnapshot(manifestFile, snapshot, entry, [
+      "dependencies",
+      "devDependencies",
+      "optionalDependencies",
+      "peerDependencies"
+    ]);
+    locals.set(location, {
+      data,
+      file: manifestFile,
+      packageKey: location === "." ? "" : data.name,
+      devDependencies: snapshot.devDependencies
+    });
+  }
+  const rootLocation = path10.relative(root, path10.dirname(path10.resolve(manifestPath))).split(path10.sep).join("/") || ".";
+  if (!locals.has(rootLocation)) {
+    unsupported(file, manifest.name, "manifest is not in the workspace");
+  }
+  function resolveKey(ownerPath, name2) {
+    const parts2 = ownerPath ? ownerPath.split("/") : [];
+    while (true) {
+      const candidate = [...parts2, name2].join("/");
+      if (packages[candidate] !== void 0) {
+        return candidate;
+      }
+      if (parts2.length === 0) {
+        return void 0;
+      }
+      parts2.pop();
+      if (parts2.at(-1)?.startsWith("@")) {
+        parts2.pop();
+      }
+    }
+  }
+  const graph = { rootId: `ws:${rootLocation}`, nodes: /* @__PURE__ */ new Map() };
+  function childId(ownerPath, name2, spec, source, optional) {
+    const key = resolveKey(ownerPath, name2);
+    if (key === void 0) {
+      if (optional) {
+        return void 0;
+      }
+      stale(source, name2, "has no locked resolution");
+    }
+    const entry = packages[key];
+    if (!Array.isArray(entry) || typeof entry[0] !== "string") {
+      unsupported(file, key, "malformed package entry");
+    }
+    const parsed = parseBunEntry(entry);
+    if (parsed.workspace) {
+      const location = parsed.range.slice("workspace:".length) || ".";
+      const local = locals.get(location);
+      if (!local) {
+        unsupported(file, key, "workspace package missing from the lockfile");
+      }
+      if (spec != null && !["workspace:*", "workspace:^", "workspace:~"].includes(spec)) {
+        validateRange(source, name2, spec, {
+          name: local.data.name,
+          version: local.data.version ?? "v0.0.0"
+        });
+      }
+      return `ws:${location}`;
+    }
+    const aliased = spec?.startsWith("npm:") && !import_semver.default.validRange(spec.slice(4));
+    const effective = !aliased && Object.hasOwn(overrides, name2) ? overrides[name2] : spec;
+    if (effective != null) {
+      validateRange(source, name2, effective, { name: parsed.name, version: parsed.version });
+    }
+    return key;
+  }
+  function visit2(startId) {
+    const stack = [startId];
+    while (stack.length > 0) {
+      const id = stack.pop();
+      if (graph.nodes.has(id)) {
+        continue;
+      }
+      const children = [];
+      if (id.startsWith("ws:")) {
+        const local = locals.get(id.slice(3));
+        const node = {
+          name: local.data.name ?? path10.basename(path10.dirname(local.file)),
+          version: local.data.version ?? "v0.0.0",
+          dependencies: /* @__PURE__ */ new Map(),
+          hashes: void 0
+        };
+        graph.nodes.set(id, node);
+        const optionalDeps = local.data.optionalDependencies ?? {};
+        for (const [name2, spec] of Object.entries(manifestDependencies(local.data, local.file))) {
+          const devSpec = local.devDependencies[name2];
+          const bothRanges = typeof devSpec === "string" && import_semver.default.validRange(spec) && import_semver.default.validRange(devSpec);
+          const effective = bothRanges ? `${spec} || ${devSpec}` : spec;
+          const cid = childId(local.packageKey, name2, effective, local.file, Object.hasOwn(optionalDeps, name2));
+          if (cid == null) {
+            continue;
+          }
+          node.dependencies.set(name2, cid);
+          children.push(cid);
+        }
+      } else {
+        const parsed = parseBunEntry(packages[id]);
+        const validId = typeof parsed.name === "string" && parsed.name && typeof parsed.version === "string" && parsed.version;
+        if (!validId) {
+          unsupported(file, id, "missing package name or version");
+        }
+        const node = {
+          name: parsed.name,
+          version: parsed.version,
+          dependencies: /* @__PURE__ */ new Map(),
+          hashes: hashes({ integrity: parsed.integrity })
+        };
+        graph.nodes.set(id, node);
+        for (const field of ["dependencies", "optionalDependencies"]) {
+          if (Object.hasOwn(parsed.info, field) && !object(parsed.info[field])) {
+            throw new Error(`Invalid ${field} in ${file} for ${id}: expected a dependency mapping.`);
+          }
+        }
+        const required = dependencyMap(parsed.info, "dependencies", `${file} for ${id}`);
+        const optionalDeps = dependencyMap(parsed.info, "optionalDependencies", `${file} for ${id}`);
+        for (const [name2, spec] of Object.entries(required)) {
+          const cid = childId(id, name2, spec, file, false);
+          if (cid == null) {
+            continue;
+          }
+          node.dependencies.set(name2, cid);
+          children.push(cid);
+        }
+        for (const [name2, spec] of Object.entries(optionalDeps)) {
+          if (node.dependencies.has(name2)) {
+            continue;
+          }
+          const cid = childId(id, name2, spec, file, true);
+          if (cid == null) {
+            continue;
+          }
+          node.dependencies.set(name2, cid);
+          children.push(cid);
+        }
+      }
+      for (let i2 = children.length - 1; i2 >= 0; i2--) {
+        stack.push(children[i2]);
+      }
+    }
+  }
+  visit2(graph.rootId);
+  return graph;
+}
 
 // node_modules/@trustify-da/trustify-da-javascript-client/dist/src/providers/manifest.js
-import fs10 from "fs";
+import fs11 from "node:fs";
+import path11 from "node:path";
 var DEFAULT_VERSION = "v0.0.0";
 var Manifest = class {
   constructor(manifestPath) {
@@ -55577,10 +58618,12 @@ var Manifest = class {
     }
     this.manifestPath = manifestPath;
     const content = this.loadManifest();
+    this.content = content;
     this.dependencies = this.loadDependencies(content);
     this.peerDependencies = content.peerDependencies || {};
     this.optionalDependencies = content.optionalDependencies || {};
-    this.name = content.name;
+    this.hasExplicitName = !!content.name;
+    this.name = content.name || path11.basename(path11.dirname(path11.resolve(manifestPath)));
     this.version = content.version || DEFAULT_VERSION;
     this.packageManager = content.packageManager;
     this.devEngines = content.devEngines;
@@ -55588,7 +58631,7 @@ var Manifest = class {
   }
   loadManifest() {
     try {
-      let manifest = JSON.parse(fs10.readFileSync(this.manifestPath, "utf-8"));
+      let manifest = JSON.parse(fs11.readFileSync(this.manifestPath, "utf-8"));
       return manifest;
     } catch (err2) {
       if (err2.code === "ENOENT") {
@@ -55687,6 +58730,10 @@ var Base_javascript = class {
   */
   _setUp(manifestPath, opts, manifest) {
     this.#cmd = getCustomPath(this._cmdName(), opts);
+    this._setUpManifest(manifestPath, manifest);
+  }
+  /** Initializes read-only providers without resolving an executable. */
+  _setUpManifest(manifestPath, manifest) {
     this.#manifest = manifest ?? new Manifest(manifestPath);
     this.#ecosystem = purlType;
   }
@@ -55714,6 +58761,9 @@ var Base_javascript = class {
   */
   _lockFileName() {
     throw new TypeError("_lockFileName must be implemented");
+  }
+  _lockFileNames() {
+    return [this._lockFileName()];
   }
   /**
   * Returns the command name to use for the specific JS package manager
@@ -55822,13 +58872,13 @@ var Base_javascript = class {
   * @protected
   */
   _isWorkspaceRoot(dir) {
-    if (fs11.existsSync(path10.join(dir, "pnpm-workspace.yaml"))) {
+    if (fs12.existsSync(path12.join(dir, "pnpm-workspace.yaml"))) {
       return true;
     }
-    const pkgJsonPath = path10.join(dir, "package.json");
-    if (fs11.existsSync(pkgJsonPath)) {
+    const pkgJsonPath = path12.join(dir, "package.json");
+    if (fs12.existsSync(pkgJsonPath)) {
       try {
-        const content = JSON.parse(fs11.readFileSync(pkgJsonPath, "utf-8"));
+        const content = JSON.parse(fs12.readFileSync(pkgJsonPath, "utf-8"));
         if (content.workspaces) {
           return true;
         }
@@ -55837,23 +58887,23 @@ var Base_javascript = class {
     }
     return false;
   }
-  _findLockFileDir(manifestDir, opts = {}) {
+  _findLockFileDir(manifestDir, opts = {}, names = this._lockFileNames()) {
     const workspaceDir = getCustom("TRUSTIFY_DA_WORKSPACE_DIR", null, opts);
     if (workspaceDir) {
-      const dir2 = path10.resolve(workspaceDir);
-      return fs11.existsSync(path10.join(dir2, this._lockFileName())) ? dir2 : null;
+      const dir2 = path12.resolve(workspaceDir);
+      return names.some((name2) => fs12.existsSync(path12.join(dir2, name2))) ? dir2 : null;
     }
-    let dir = path10.resolve(manifestDir);
+    let dir = path12.resolve(manifestDir);
     let parent = dir;
     do {
       dir = parent;
-      if (fs11.existsSync(path10.join(dir, this._lockFileName()))) {
+      if (names.some((name2) => fs12.existsSync(path12.join(dir, name2)))) {
         return dir;
       }
       if (this._isWorkspaceRoot(dir)) {
         return null;
       }
-      parent = path10.dirname(dir);
+      parent = path12.dirname(dir);
     } while (parent !== dir);
     return null;
   }
@@ -55863,7 +58913,7 @@ var Base_javascript = class {
   * @returns {boolean} True if the lock file exists
   */
   validateLockFile(manifestDir, opts = {}) {
-    return this._findLockFileDir(manifestDir, opts) !== null;
+    return this._findLockFileDir(manifestDir, opts) != null;
   }
   /**
   * Provides content and content type for stack analysis
@@ -55901,7 +58951,7 @@ var Base_javascript = class {
   readLicenseFromManifest(manifestPath) {
     let manifestLicense;
     try {
-      const content = JSON.parse(fs11.readFileSync(manifestPath, "utf-8"));
+      const content = JSON.parse(fs12.readFileSync(manifestPath, "utf-8"));
       if (typeof content.license === "string") {
         manifestLicense = content.license.trim() || null;
       } else if (Array.isArray(content.licenses) && content.licenses.length > 0) {
@@ -55922,7 +58972,7 @@ var Base_javascript = class {
   * @protected
   */
   _buildDependencyTree(includeTransitive, opts = {}) {
-    const manifestDir = path10.dirname(this.#manifest.manifestPath);
+    const manifestDir = path12.dirname(this.#manifest.manifestPath);
     const cmdDir = this._findLockFileDir(manifestDir, opts) || manifestDir;
     this._version({ cwd: cmdDir });
     this._createLockFile(cmdDir);
@@ -55939,12 +58989,13 @@ var Base_javascript = class {
   */
   #getSBOM(opts = {}) {
     const depsObject = this._buildDependencyTree(true, opts);
-    let mainComponent = toPurl(purlType, this.#manifest.name, this.#manifest.version);
+    const name2 = getCustom("TRUSTIFY_DA_SBOM_NAME", null, opts) || this.#manifest.name;
+    let mainComponent = toPurl(purlType, name2, this.#manifest.version);
     const license = this.readLicenseFromManifest(this.#manifest.manifestPath);
     let sbom = new Sbom();
     sbom.addRoot(mainComponent, license);
     this._addDependenciesToSbom(sbom, depsObject);
-    this.#ensurePeerAndOptionalDeps(sbom);
+    this.#ensurePeerAndOptionalDeps(sbom, depsObject);
     sbom.filterIgnoredDeps(this.#manifest.ignored);
     return sbom.getAsJsonString(opts);
   }
@@ -55953,13 +59004,17 @@ var Base_javascript = class {
    * present in the SBOM, even when the package manager does not resolve them
    * (e.g. yarn does not include peer deps in its dependency listing).
    * @param {Sbom} sbom - The SBOM to supplement
+   * @param {Object} graph - The resolved dependency graph or dependency tree
    * @private
    */
-  #ensurePeerAndOptionalDeps(sbom) {
+  #ensurePeerAndOptionalDeps(sbom, graph) {
     const rootPurl = toPurl(purlType, this.#manifest.name, this.#manifest.version);
     const depSources = [this.#manifest.peerDependencies, this.#manifest.optionalDependencies];
     for (const source of depSources) {
       for (const [name2, version] of Object.entries(source)) {
+        if (graph?.nodes && graph.nodes.get(graph.rootId).dependencies.has(name2)) {
+          continue;
+        }
         const probe = toPurl(purlType, name2, version);
         const purlPrefix = probe.toString().replace(/@[^@]*$/, "@");
         if (!sbom.checkDependsOnByPurlPrefix(rootPurl, purlPrefix)) {
@@ -55969,12 +59024,16 @@ var Base_javascript = class {
     }
   }
   /**
-  * Recursively builds the Sbom from the JSON that npm listing returns
+  * Builds the SBOM from a lockfile dependency graph or dependency tree
   * @param {Sbom} sbom - The SBOM object to add dependencies to
-  * @param {Object} depTree - The current dependency tree
+  * @param {Object} depTree - The lockfile dependency graph or dependency tree
   * @protected
   */
   _addDependenciesToSbom(sbom, depTree) {
+    if (depTree.nodes) {
+      addGraphToSbom(sbom, depTree);
+      return;
+    }
     const dependencies = {
       ...depTree["dependencies"],
       ...depTree["optionalDependencies"]
@@ -56024,7 +59083,7 @@ var Base_javascript = class {
       const targetPurl = rootDeps.get(key);
       sbom.addDependency(rootPurl, targetPurl, void 0, this._hashesForPurl(targetPurl));
     }
-    this.#ensurePeerAndOptionalDeps(sbom);
+    this.#ensurePeerAndOptionalDeps(sbom, depTree);
     sbom.filterIgnoredDeps(this.#manifest.ignored);
     return sbom.getAsJsonString(opts);
   }
@@ -56035,6 +59094,9 @@ var Base_javascript = class {
   * @protected
   */
   _getRootDependencies(depTree) {
+    if (depTree.nodes) {
+      return graphRootDependencies(depTree);
+    }
     const allDeps = {
       ...depTree.dependencies,
       ...depTree.optionalDependencies
@@ -56095,7 +59157,7 @@ var Base_javascript = class {
   #invokeCommand(args2, opts = {}) {
     try {
       if (!opts.cwd) {
-        opts.cwd = path10.dirname(this.#manifest.manifestPath);
+        opts.cwd = path12.dirname(this.#manifest.manifestPath);
       }
       if (process.platform !== "win32") {
         const versionManagerPaths = [];
@@ -56107,8 +59169,8 @@ var Base_javascript = class {
         if (nvmDir) {
           versionManagerPaths.push(`${nvmDir}/current/bin`);
         }
-        const localBinPath = path10.join(opts.cwd, "node_modules", ".bin");
-        if (fs11.existsSync(localBinPath)) {
+        const localBinPath = path12.join(opts.cwd, "node_modules", ".bin");
+        if (fs12.existsSync(localBinPath)) {
           versionManagerPaths.push(localBinPath);
         }
         if (versionManagerPaths.length > 0) {
@@ -56116,15 +59178,15 @@ var Base_javascript = class {
             ...opts,
             env: {
               ...opts.env,
-              PATH: `${versionManagerPaths.join(path10.delimiter)}${path10.delimiter}${process.env.PATH}`
+              PATH: `${versionManagerPaths.join(path12.delimiter)}${path12.delimiter}${process.env.PATH}`
             }
           };
         }
       }
       let cmd = this.#cmd;
-      if (!fs11.existsSync(cmd)) {
-        const localCmd = path10.join(opts.cwd, "node_modules", ".bin", this._cmdName());
-        if (fs11.existsSync(localCmd)) {
+      if (!fs12.existsSync(cmd)) {
+        const localCmd = path12.join(opts.cwd, "node_modules", ".bin", this._cmdName());
+        if (fs12.existsSync(localCmd)) {
           cmd = localCmd;
         }
       }
@@ -56151,146 +59213,94 @@ var Base_javascript = class {
 };
 
 // node_modules/@trustify-da/trustify-da-javascript-client/dist/src/providers/javascript_bun.js
+var BUN_BINARY_LOCK_FILE = "bun.lockb";
 var Javascript_bun = class extends Base_javascript {
   _lockFileName() {
     return "bun.lock";
   }
   /**
-   * Parses `bun.lock` into a hash map keyed by `name@version`. Each entry in
-   * the `packages` section is an array whose first element is the resolved id
-   * (`name@version`) and whose fourth element is the SRI integrity string.
+   * Recognize Bun's binary lock file during provider matching so analysis can
+   * report how to migrate it to the supported text lock file.
+   */
+  validateLockFile(manifestDir, opts = {}) {
+    return super.validateLockFile(manifestDir, opts) || this._findLockFileDir(manifestDir, opts, [BUN_BINARY_LOCK_FILE]) != null;
+  }
+  _cmdName() {
+    return "bun";
+  }
+  /** Initializes the provider without resolving the bun executable. */
+  _setUp(manifestPath) {
+    this._setUpManifest(manifestPath);
+  }
+  /**
+   * Parses `bun.lock` into a hash map keyed by `name@version`. Each entry in the
+   * `packages` section is a tuple whose resolved id (`name@version`) and trailing
+   * integrity string are extracted by {@link parseBunEntry}, so npm, hosted/git
+   * and empty-registry entries are all handled.
    * @param {string} lockDir - Directory containing bun.lock
    * @returns {Map<string, Array<{alg: string, content: string}>>} Hash map
    * @protected
    */
   _parseLockFileHashes(lockDir) {
     const map = /* @__PURE__ */ new Map();
-    const lockPath = path11.join(lockDir, this._lockFileName());
-    if (!fs12.existsSync(lockPath)) {
+    const lockPath = path13.join(lockDir, this._lockFileName());
+    if (!fs13.existsSync(lockPath)) {
       return map;
     }
     let lockData;
     try {
-      lockData = parse4(fs12.readFileSync(lockPath, "utf-8"));
+      lockData = readBunLock(lockPath);
     } catch (_) {
       return map;
     }
     const packages = lockData?.packages || {};
     for (const entry of Object.values(packages)) {
-      if (!Array.isArray(entry) || typeof entry[0] !== "string" || typeof entry[3] !== "string") {
+      if (!Array.isArray(entry) || typeof entry[0] !== "string") {
         continue;
       }
-      const id = entry[0];
-      const at = id.lastIndexOf("@");
-      if (at <= 0) {
+      let parsed;
+      try {
+        parsed = parseBunEntry(entry);
+      } catch (_) {
         continue;
       }
-      const name2 = id.slice(0, at);
-      const version = id.slice(at + 1);
-      const hash = sriToHash(entry[3]);
+      const { name: name2, version, integrity } = parsed;
+      const hash = integrity ? sriToHash(integrity) : null;
       if (name2 && version && hash) {
         map.set(`${name2}@${version}`, [hash]);
       }
     }
     return map;
   }
-  _cmdName() {
-    return "bun";
-  }
-  _listCmdArgs() {
-    throw new Error("not supported by Bun");
-  }
-  _updateLockFileCmdArgs() {
-    return ["install", "--lockfile-only"];
-  }
-  _buildDependencyTree(includeTransitive, opts = {}) {
-    this._version();
-    const manifestDir = path11.dirname(this._getManifest().manifestPath);
-    const lockDir = this._findLockFileDir(manifestDir, opts) || manifestDir;
-    this._createLockFile(lockDir);
+  /**
+   * Builds the dependency graph directly from `bun.lock`, requiring a
+   * pre-existing text lockfile and invoking no package manager. A binary
+   * `bun.lockb` without a text `bun.lock` is rejected with a migrate diagnostic.
+   * @param {boolean} _includeTransitive - Unused; the full graph is always read
+   * @param {Object} [opts={}] - Configuration options (may set the workspace dir)
+   * @returns {import('./javascript_lockfile.js').LockGraph} The dependency graph
+   * @protected
+   */
+  _buildDependencyTree(_includeTransitive, opts = {}) {
+    const manifest = this._getManifest();
+    const manifestDir = path13.dirname(manifest.manifestPath);
+    const lockDir = this._findLockFileDir(manifestDir, opts);
+    if (!lockDir) {
+      if (this._findLockFileDir(manifestDir, opts, [BUN_BINARY_LOCK_FILE])) {
+        throw new Error("Bun analysis found a binary 'bun.lockb' but no text 'bun.lock'. Migrate it with 'bun install --save-text-lockfile --frozen-lockfile --lockfile-only' (Bun >= 1.2) before scanning.");
+      }
+      throw new Error("Bun analysis requires a lockfile. Generate bun.lock before scanning.");
+    }
+    const lock = readBunLock(path13.join(lockDir, this._lockFileName()));
+    const graph = readBunGraph(lockDir, manifest.manifestPath, manifest.content, lock);
     this._loadHashes(lockDir);
-    const lockContent = fs12.readFileSync(path11.join(lockDir, "bun.lock"), "utf-8");
-    const lockData = parse4(lockContent);
-    const packages = lockData.packages || {};
-    const memberName = this._getManifest().name;
-    const workspaceEntry = this.#findWorkspaceEntry(lockData, lockDir, manifestDir, memberName);
-    const directDeps = workspaceEntry?.dependencies || {};
-    const tree = { name: memberName, version: this._getManifest().version, dependencies: {} };
-    const visited = /* @__PURE__ */ new Set();
-    for (const depName of Object.keys(directDeps)) {
-      const resolved = this.#resolvePackage(depName, "", packages);
-      if (resolved) {
-        tree.dependencies[depName] = this.#buildNode(depName, resolved, packages, includeTransitive, visited);
-      }
-    }
-    return tree;
-  }
-  #findWorkspaceEntry(lockData, lockDir, manifestDir, memberName) {
-    const workspaces = lockData.workspaces || {};
-    const relPath = path11.relative(lockDir, path11.resolve(manifestDir));
-    if (!relPath || relPath === ".") {
-      return workspaces[""] || {};
-    }
-    const normalised = relPath.split(path11.sep).join("/");
-    if (workspaces[normalised]) {
-      return workspaces[normalised];
-    }
-    for (const [wsPath, entry] of Object.entries(workspaces)) {
-      if (entry.name === memberName && wsPath !== "") {
-        return entry;
-      }
-    }
-    return workspaces[""] || {};
-  }
-  #resolvePackage(depName, parentKey, packages) {
-    if (parentKey) {
-      const scopedKey = `${parentKey}/${depName}`;
-      if (packages[scopedKey]) {
-        return packages[scopedKey];
-      }
-    }
-    return packages[depName] || null;
-  }
-  #buildNode(depName, resolved, packages, includeTransitive, visited) {
-    const resolvedId = Array.isArray(resolved) ? resolved[0] : resolved;
-    const version = this.#extractVersion(resolvedId);
-    const node = { version };
-    if (!includeTransitive) {
-      return node;
-    }
-    const metadata2 = Array.isArray(resolved) ? resolved[2] || {} : {};
-    const subDeps = metadata2.dependencies || {};
-    if (Object.keys(subDeps).length > 0) {
-      const visitKey = `${depName}@${version}`;
-      if (visited.has(visitKey)) {
-        return node;
-      }
-      visited.add(visitKey);
-      node.dependencies = {};
-      for (const subName of Object.keys(subDeps)) {
-        const subResolved = this.#resolvePackage(subName, depName, packages);
-        if (subResolved) {
-          node.dependencies[subName] = this.#buildNode(subName, subResolved, packages, true, visited);
-        }
-      }
-    }
-    return node;
-  }
-  #extractVersion(resolvedId) {
-    if (typeof resolvedId !== "string") {
-      return "0.0.0";
-    }
-    const atIdx = resolvedId.lastIndexOf("@");
-    if (atIdx > 0) {
-      return resolvedId.substring(atIdx + 1);
-    }
-    return "0.0.0";
+    return graph;
   }
 };
 
 // node_modules/@trustify-da/trustify-da-javascript-client/dist/src/providers/javascript_npm.js
-import fs13 from "node:fs";
-import path12 from "node:path";
+import fs14 from "node:fs";
+import path14 from "node:path";
 var Javascript_npm = class extends Base_javascript {
   _lockFileName() {
     return "package-lock.json";
@@ -56298,21 +59308,22 @@ var Javascript_npm = class extends Base_javascript {
   /**
    * Parses `package-lock.json` (lockfileVersion 2/3) into a hash map keyed by
    * `name@version`. Each `packages` entry is keyed by its install path
-   * (e.g. `node_modules/@hapi/joi`); the package name is the segment after the
-   * final `node_modules/`. The `integrity` field holds an SRI string.
+   * (e.g. `node_modules/@hapi/joi`). The package name comes from `entry.name`,
+   * falling back to the install path after the final `node_modules/` when present.
+   * The `integrity` field holds an SRI string.
    * @param {string} lockDir - Directory containing package-lock.json
    * @returns {Map<string, Array<{alg: string, content: string}>>} Hash map
    * @protected
    */
   _parseLockFileHashes(lockDir) {
     const map = /* @__PURE__ */ new Map();
-    const lockPath = path12.join(lockDir, this._lockFileName());
-    if (!fs13.existsSync(lockPath)) {
+    const lockPath = path14.join(lockDir, this._lockFileNames().find((name2) => fs14.existsSync(path14.join(lockDir, name2))) || this._lockFileName());
+    if (!fs14.existsSync(lockPath)) {
       return map;
     }
     let lock;
     try {
-      lock = JSON.parse(fs13.readFileSync(lockPath, "utf-8"));
+      lock = JSON.parse(fs14.readFileSync(lockPath, "utf-8"));
     } catch (_) {
       return map;
     }
@@ -56323,7 +59334,7 @@ var Javascript_npm = class extends Base_javascript {
       }
       const marker = "node_modules/";
       const idx = pkgPath.lastIndexOf(marker);
-      const name2 = idx < 0 ? pkgPath : pkgPath.slice(idx + marker.length);
+      const name2 = entry.name || (idx < 0 ? pkgPath : pkgPath.slice(idx + marker.length));
       const hash = sriToHash(entry.integrity);
       if (name2 && hash) {
         map.set(`${name2}@${entry.version}`, [hash]);
@@ -56334,56 +59345,57 @@ var Javascript_npm = class extends Base_javascript {
   _cmdName() {
     return "npm";
   }
-  _listCmdArgs(includeTransitive) {
-    return ["ls", includeTransitive ? "--all" : "--depth=0", "--package-lock-only", "--omit=dev", "--json"];
+  _lockFileNames() {
+    return ["npm-shrinkwrap.json", this._lockFileName()];
   }
-  _updateLockFileCmdArgs() {
-    return ["install", "--package-lock-only"];
+  _setUp(manifestPath) {
+    this._setUpManifest(manifestPath);
   }
-  _buildDependencyTree(includeTransitive, opts = {}) {
-    const tree = super._buildDependencyTree(includeTransitive, opts);
-    const memberName = this._getManifest().name;
-    if (tree.name === memberName) {
-      return tree;
+  _buildDependencyTree(_includeTransitive, opts = {}) {
+    const manifest = this._getManifest();
+    const lockDir = this._findLockFileDir(path14.dirname(manifest.manifestPath), opts);
+    if (!lockDir) {
+      throw new Error("npm analysis requires a lockfile. Generate package-lock.json before scanning.");
     }
-    const memberEntry = tree.dependencies?.[memberName];
-    if (memberEntry) {
-      return {
-        name: memberName,
-        version: memberEntry.version || this._getManifest().version,
-        dependencies: memberEntry.dependencies,
-        optionalDependencies: memberEntry.optionalDependencies
-      };
-    }
-    return tree;
+    const graph = readNpmGraph(lockDir, manifest.manifestPath, manifest.content);
+    this._loadHashes(lockDir);
+    return graph;
   }
 };
 
 // node_modules/@trustify-da/trustify-da-javascript-client/dist/src/providers/javascript_pnpm.js
-import fs14 from "node:fs";
-import path13 from "node:path";
+import fs15 from "node:fs";
+import path15 from "node:path";
 var Javascript_pnpm = class extends Base_javascript {
   _lockFileName() {
     return "pnpm-lock.yaml";
   }
+  _cmdName() {
+    return "pnpm";
+  }
+  /** Initializes the provider without resolving the pnpm executable. */
+  _setUp(manifestPath) {
+    this._setUpManifest(manifestPath);
+  }
   /**
-   * Parses `pnpm-lock.yaml` (lockfileVersion 9) into a hash map keyed by
-   * `name@version`. Entries in the `packages` section are keyed by
-   * `<name>@<version>` (optionally followed by a `(peer@x)` suffix); the
-   * `resolution.integrity` field holds an SRI string.
+   * Parses `pnpm-lock.yaml` into a hash map keyed by `name@version`. Entries in
+   * the `packages` section are keyed by `[/]<name>@<version>` (optionally
+   * followed by a `(peer@x)` suffix); the `resolution.integrity` field holds an
+   * SRI string. Handles lockfileVersion 6 (leading-slash keys) and 9, including
+   * multi-document streams (see {@link readPnpmLock}).
    * @param {string} lockDir - Directory containing pnpm-lock.yaml
    * @returns {Map<string, Array<{alg: string, content: string}>>} Hash map
    * @protected
    */
   _parseLockFileHashes(lockDir) {
     const map = /* @__PURE__ */ new Map();
-    const lockPath = path13.join(lockDir, this._lockFileName());
-    if (!fs14.existsSync(lockPath)) {
+    const lockPath = path15.join(lockDir, this._lockFileName());
+    if (!fs15.existsSync(lockPath)) {
       return map;
     }
     let lock;
     try {
-      lock = load(fs14.readFileSync(lockPath, "utf-8"));
+      lock = readPnpmLock(lockPath);
     } catch (_) {
       return map;
     }
@@ -56393,13 +59405,11 @@ var Javascript_pnpm = class extends Base_javascript {
       if (!key || !integrity) {
         continue;
       }
-      const base = key.split("(")[0];
-      const at = base.lastIndexOf("@");
-      if (at <= 0) {
-        continue;
-      }
-      const name2 = base.slice(0, at);
-      const version = base.slice(at + 1);
+      const bare = key.startsWith("/") ? key.slice(1) : key;
+      const base = bare.split("(")[0];
+      const at = base.indexOf("@", 1);
+      const name2 = entry.name ?? (at > 0 ? base.slice(0, at) : void 0);
+      const version = entry.version ?? (at > 0 ? base.slice(at + 1) : void 0);
       const hash = sriToHash(integrity);
       if (name2 && version && hash) {
         map.set(`${name2}@${version}`, [hash]);
@@ -56407,499 +59417,82 @@ var Javascript_pnpm = class extends Base_javascript {
     }
     return map;
   }
-  _cmdName() {
-    return "pnpm";
-  }
-  _listCmdArgs(includeTransitive) {
-    return ["ls", includeTransitive ? "--depth=Infinity" : "--depth=0", "--prod", "--json", "-r"];
-  }
-  _updateLockFileCmdArgs() {
-    return ["install", "--frozen-lockfile"];
-  }
-  _buildDependencyTree(includeTransitive, opts = {}) {
-    const tree = super._buildDependencyTree(includeTransitive, opts);
-    if (Array.isArray(tree) && tree.length > 0) {
-      const memberName = this._getManifest().name;
-      return tree.find((pkg) => pkg.name === memberName) || tree[0];
-    }
-    return {};
-  }
-};
-
-// node_modules/@trustify-da/trustify-da-javascript-client/dist/src/providers/javascript_yarn.js
-var import_parsers = __toESM(require_lib2(), 1);
-import fs15 from "node:fs";
-import path14 from "node:path";
-
-// node_modules/@trustify-da/trustify-da-javascript-client/dist/src/providers/processors/yarn_berry_processor.js
-import { EOL as EOL5 } from "os";
-
-// node_modules/@trustify-da/trustify-da-javascript-client/dist/src/providers/processors/yarn_processor.js
-var Yarn_processor = class {
-  constructor(manifest) {
-    this._manifest = manifest;
-  }
-  installCmd() {
-    throw new Error('Method "installCmd" must be implemented.');
-  }
-  listDepsCmd() {
-    throw new Error('Method "listDepsCmd" must be implemented.');
-  }
-  getRootDependencies() {
-    throw new Error('Method "getRootDependencies" must be implemented.');
-  }
-  addDependenciesToSbom() {
-    throw new Error('Method "addDependenciesToSbom" must be implemented.');
-  }
-  parseDepTreeOutput() {
-    throw new Error('Method "parseDepTreeOutput" must be implemented.');
-  }
-};
-
-// node_modules/@trustify-da/trustify-da-javascript-client/dist/src/providers/processors/yarn_berry_processor.js
-var Yarn_berry_processor = class _Yarn_berry_processor extends Yarn_processor {
-  static LOCATOR_PATTERN = /^(@?[^@]+(?:\/[^@]+)?)@npm:(.+)$/;
-  static VIRTUAL_LOCATOR_PATTERN = /^(@?[^@]+(?:\/[^@]+)?)@virtual:[^#]+#npm:(.+)$/;
   /**
-   * Returns the command arguments for listing dependencies
-   * @param {boolean} includeTransitive - Whether to include transitive dependencies
-   * @returns {string[]} Command arguments for listing dependencies
-   */
-  listCmdArgs(includeTransitive) {
-    return includeTransitive ? ["info", "--recursive", "--all", "--json"] : ["info", "--all", "--json"];
-  }
-  /**
-   * Returns the command arguments for updating the lock file
-   * @param {string}  - Directory containing the manifest file
-   * @returns {string[]} Command arguments for updating the lock file
-   */
-  updateLockFileCmdArgs() {
-    return ["install", "--immutable"];
-  }
-  /**
-  * Parses the dependency tree output from Yarn Berry
-  * Converts multiple JSON objects into a valid JSON array
-  * @param {string} output - The raw command output
-  * @returns {string} Properly formatted JSON string
-  */
-  parseDepTreeOutput(output) {
-    const normalizedOutput = output.replace(/\r\n|\n/g, EOL5);
-    const lines = normalizedOutput.split(EOL5).filter((line) => line.trim());
-    const outputArray = lines.join("").replaceAll("}{", "},{");
-    return `[${outputArray}]`;
-  }
-  /**
-  * Extracts root dependencies from the dependency tree
-  * @param {Object} depTree - The dependency tree object
-  * @returns {Map<string, PackageURL>} Map of dependency names to their PackageURL objects
-  */
-  getRootDependencies(depTree) {
-    if (!depTree) {
-      return /* @__PURE__ */ new Map();
-    }
-    return new Map(depTree.filter((dep) => !this.#isRoot(dep.value)).map((dep) => {
-      const depName = dep.value;
-      const idx = depName.lastIndexOf("@");
-      const name2 = depName.substring(0, idx);
-      const version = dep.children.Version;
-      return [name2, toPurl(purlType, name2, version)];
-    }).filter(([name2]) => this._manifest.dependencies.includes(name2)));
-  }
-  /**
-  * Checks if a dependency is the root package
-  * @param {string} name - Name of the dependency
-  * @returns {boolean} True if the dependency is the root package
-  * @private
-  */
-  #isRoot(name2) {
-    if (!name2) {
-      return false;
-    }
-    return name2.startsWith(`${this._manifest.name}@workspace:`);
-  }
-  /**
-  * Adds dependencies to the SBOM
-  * @param {Sbom} sbom - The SBOM object to add dependencies to
-  * @param {Object} depTree - The dependency tree object
-  * @param {function(PackageURL): (Array<{alg: string, content: string}>|undefined)} [hashesForPurl] - Resolves lock-file hashes for a purl
-  */
-  addDependenciesToSbom(sbom, depTree, hashesForPurl = () => void 0) {
-    if (!depTree) {
-      return;
-    }
-    const nodeIndex = /* @__PURE__ */ new Map();
-    depTree.forEach((n) => nodeIndex.set(n.value, n));
-    const prodDeps = new Set(this._manifest.dependencies);
-    const reachable = /* @__PURE__ */ new Set();
-    const queue = [];
-    const rootNode = depTree.find((n) => this.#isRoot(n.value));
-    if (rootNode?.children?.Dependencies) {
-      for (const d of rootNode.children.Dependencies) {
-        const to = this.#purlFromLocator(d.locator);
-        if (to) {
-          const fullName = to.namespace ? `${to.namespace}/${to.name}` : to.name;
-          if (prodDeps.has(fullName)) {
-            queue.push(d.locator);
-          }
-        }
-      }
-    }
-    while (queue.length > 0) {
-      const locator = queue.shift();
-      if (reachable.has(locator)) {
-        continue;
-      }
-      reachable.add(locator);
-      const node = nodeIndex.get(this.#nodeValueFromLocator(locator));
-      if (node?.children?.Dependencies) {
-        for (const d of node.children.Dependencies) {
-          if (!reachable.has(d.locator)) {
-            queue.push(d.locator);
-          }
-        }
-      }
-    }
-    depTree.forEach((n) => {
-      const depName = n.value;
-      const isRoot = this.#isRoot(depName);
-      if (!isRoot && !this.#isReachableNode(depName, reachable)) {
-        return;
-      }
-      const from = isRoot ? toPurlFromString(sbom.getRoot().purl) : this.#purlFromNode(depName, n);
-      const deps = n.children?.Dependencies;
-      if (!deps) {
-        return;
-      }
-      deps.forEach((d) => {
-        if (!reachable.has(d.locator)) {
-          return;
-        }
-        const to = this.#purlFromLocator(d.locator);
-        if (to) {
-          sbom.addDependency(from, to, void 0, hashesForPurl(to));
-        }
-      });
-    });
-  }
-  /**
-   * Converts a locator to the node value format used in yarn info output
-   * @param {string} locator - e.g. "express@npm:4.17.1"
-   * @returns {string} The node value, same as locator for non-virtual
-   * @private
-   */
-  #nodeValueFromLocator(locator) {
-    const virtualMatch = _Yarn_berry_processor.VIRTUAL_LOCATOR_PATTERN.exec(locator);
-    if (virtualMatch) {
-      return `${virtualMatch[1]}@npm:${virtualMatch[2]}`;
-    }
-    return locator;
-  }
-  /**
-   * Checks if a node is in the reachable set by matching its value against reachable locators
-   * @param {string} depName - The node value (e.g. "express@npm:4.17.1")
-   * @param {Set<string>} reachable - Set of reachable locators
-   * @returns {boolean}
-   * @private
-   */
-  #isReachableNode(depName, reachable) {
-    if (reachable.has(depName)) {
-      return true;
-    }
-    for (const locator of reachable) {
-      if (this.#nodeValueFromLocator(locator) === depName) {
-        return true;
-      }
-    }
-    return false;
-  }
-  /**
-  * Creates a PackageURL from a dependency locator
-  * @param {string} locator - The dependency locator
-  * @returns {PackageURL|undefined} The PackageURL or undefined if not valid
-  * @private
-  */
-  #purlFromLocator(locator) {
-    if (!locator) {
-      return void 0;
-    }
-    const matches = _Yarn_berry_processor.LOCATOR_PATTERN.exec(locator);
-    if (matches) {
-      return toPurl(purlType, matches[1], matches[2]);
-    }
-    const virtualMatches = _Yarn_berry_processor.VIRTUAL_LOCATOR_PATTERN.exec(locator);
-    if (virtualMatches) {
-      return toPurl(purlType, virtualMatches[1], virtualMatches[2]);
-    }
-    return void 0;
-  }
-  /**
-  * Creates a PackageURL from a dependency node
-  * @param {string} depName - The dependency name
-  * @param {Object} node - The dependency node object
-  * @returns {PackageURL|undefined} The PackageURL or undefined if not valid
-  * @private
-  */
-  #purlFromNode(depName, node) {
-    if (!node?.children?.Version) {
-      return void 0;
-    }
-    const name2 = depName.substring(0, depName.lastIndexOf("@"));
-    const version = node.children.Version;
-    return toPurl(purlType, name2, version);
-  }
-};
-
-// node_modules/@trustify-da/trustify-da-javascript-client/dist/src/providers/processors/yarn_classic_processor.js
-var Yarn_classic_processor = class extends Yarn_processor {
-  /**
-   * Returns the command arguments for listing dependencies
-   * @param {boolean} includeTransitive - Whether to include transitive dependencies
-   * @returns {string[]} Command arguments for listing dependencies
-   */
-  listCmdArgs(includeTransitive) {
-    return ["list", includeTransitive ? "--depth=Infinity" : "--depth=0", "--prod", "--frozen-lockfile", "--json"];
-  }
-  /**
-   * Returns the command arguments for updating the lock file
-   * @returns {string[]} Command arguments for updating the lock file
-   */
-  updateLockFileCmdArgs() {
-    return ["install", "--frozen-lockfile"];
-  }
-  /**
-  * Parses the dependency tree output from Yarn Classic
-  * @param {string} output - The raw command output
-  * @returns {string} Unchanged output as it's already in JSON format
-  */
-  parseDepTreeOutput(output) {
-    return output;
-  }
-  /**
-  * Extracts root dependencies from the dependency tree
-  * @param {Object} depTree - The dependency tree object
-  * @returns {Map<string, PackageURL>} Map of dependency names to their PackageURL objects
-  */
-  getRootDependencies(depTree) {
-    if (!depTree?.data?.trees) {
-      return /* @__PURE__ */ new Map();
-    }
-    return new Map(depTree.data.trees.map((dep) => {
-      const depName = dep.name;
-      const idx = depName.lastIndexOf("@");
-      const name2 = depName.substring(0, idx);
-      const version = idx !== -1 ? depName.substring(idx + 1) : "";
-      return [name2, toPurl(purlType, name2, version)];
-    }));
-  }
-  /**
-  * Adds dependencies to the SBOM
-  * @param {Sbom} sbom - The SBOM object to add dependencies to
-  * @param {Object} depTree - The dependency tree object
-  * @param {function(PackageURL): (Array<{alg: string, content: string}>|undefined)} [hashesForPurl] - Resolves lock-file hashes for a purl
-  */
-  addDependenciesToSbom(sbom, depTree, hashesForPurl = () => void 0) {
-    if (!depTree?.data?.trees) {
-      return;
-    }
-    const rootPurl = toPurlFromString(sbom.getRoot().purl);
-    const purls = /* @__PURE__ */ new Map();
-    depTree.data.trees.forEach((n) => {
-      const dep = new NodeMetaData(n);
-      if (this._manifest.dependencies.includes(dep.name)) {
-        sbom.addDependency(rootPurl, dep.purl, void 0, hashesForPurl(dep.purl));
-      }
-      purls.set(dep.name, dep.purl);
-    });
-    depTree.data.trees.forEach((n) => {
-      this.#addChildrenToSbom(sbom, n, purls, hashesForPurl);
-    });
-  }
-  /**
-  * Recursively adds child dependencies to the SBOM
-  * @param {Sbom} sbom - The SBOM object to add dependencies to
-  * @param {Object} node - The current dependency node
-  * @param {Map<string, PackageURL>} purls - Map of dependency names to their PackageURL objects
-  * @param {function(PackageURL): (Array<{alg: string, content: string}>|undefined)} hashesForPurl - Resolves lock-file hashes for a purl
-  * @private
-  */
-  #addChildrenToSbom(sbom, node, purls, hashesForPurl) {
-    const dep = new NodeMetaData(node);
-    const children = node.children ? node.children : [];
-    children.forEach((c) => {
-      const child = new NodeMetaData(c);
-      const from = dep.shadow ? purls.get(dep.name) : dep.purl;
-      const to = child.shadow ? purls.get(child.name) : child.purl;
-      if (from && to) {
-        sbom.addDependency(from, to, void 0, hashesForPurl(to));
-      }
-      this.#addChildrenToSbom(sbom, c, purls, hashesForPurl);
-    });
-  }
-};
-var NodeMetaData = class {
-  /**
-  * Creates a new NodeMetaData instance
-  * @param {Object} node - The dependency node
-  */
-  constructor(node) {
-    this.nodeName = node.name;
-    const idx = this.nodeName.lastIndexOf("@");
-    this.name = this.nodeName.substring(0, idx);
-    this.version = idx !== -1 ? this.nodeName.substring(idx + 1) : "";
-    this.purl = toPurl(purlType, this.name, this.version);
-    const shadowNode = node.shadow;
-    this.shadow = shadowNode ? shadowNode : false;
-  }
-};
-
-// node_modules/@trustify-da/trustify-da-javascript-client/dist/src/providers/javascript_yarn.js
-function berryChecksumToHash(checksum) {
-  if (typeof checksum !== "string") {
-    return null;
-  }
-  const slash = checksum.lastIndexOf("/");
-  const hex = (slash >= 0 ? checksum.slice(slash + 1) : checksum).trim();
-  if (!/^[0-9a-f]+$/i.test(hex)) {
-    return null;
-  }
-  return { alg: "SHA-512", content: hex.toLowerCase() };
-}
-var Javascript_yarn = class _Javascript_yarn extends Base_javascript {
-  static VERSION_PATTERN = /^([0-9]+)\./;
-  #processor;
-  _lockFileName() {
-    return "yarn.lock";
-  }
-  /**
-   * Parses `yarn.lock` into a hash map keyed by `name@version`. Supports both
-   * Yarn Classic (v1) entries with an `integrity` SRI field and Yarn Berry
-   * (v2+) entries with a `checksum` field.
-   * @param {string} lockDir - Directory containing yarn.lock
-   * @returns {Map<string, Array<{alg: string, content: string}>>} Hash map
+   * Builds the dependency graph directly from `pnpm-lock.yaml`, requiring a
+   * pre-existing lockfile and invoking no package manager.
+   * @param {boolean} _includeTransitive - Unused; the full graph is always read
+   * @param {Object} [opts={}] - Configuration options (may set the workspace dir)
+   * @returns {import('./javascript_lockfile.js').LockGraph} The dependency graph
    * @protected
    */
-  _parseLockFileHashes(lockDir) {
-    const map = /* @__PURE__ */ new Map();
-    const lockPath = path14.join(lockDir, this._lockFileName());
-    if (!fs15.existsSync(lockPath)) {
-      return map;
+  _buildDependencyTree(_includeTransitive, opts = {}) {
+    const manifest = this._getManifest();
+    const lockDir = this._findLockFileDir(path15.dirname(manifest.manifestPath), opts);
+    if (!lockDir) {
+      throw new Error("pnpm analysis requires a lockfile. Generate pnpm-lock.yaml before scanning.");
     }
-    let content;
-    try {
-      content = fs15.readFileSync(lockPath, "utf-8");
-    } catch (_) {
-      return map;
-    }
-    const parsed = (0, import_parsers.parseSyml)(content);
-    for (const [spec, entry] of Object.entries(parsed)) {
-      if (spec === "__metadata") {
-        continue;
-      }
-      const version = entry.version;
-      if (!version) {
-        continue;
-      }
-      let hash = null;
-      if (entry.integrity) {
-        hash = sriToHash(entry.integrity);
-      } else if (entry.checksum) {
-        hash = berryChecksumToHash(entry.checksum);
-      }
-      if (!hash) {
-        continue;
-      }
-      for (const rawSpec of spec.split(",")) {
-        const trimmed = rawSpec.trim();
-        const atIndex = trimmed.lastIndexOf("@");
-        if (atIndex > 0) {
-          const name2 = trimmed.slice(0, atIndex);
-          map.set(`${name2}@${version}`, [hash]);
-        }
-      }
-    }
-    return map;
+    const lock = readPnpmLock(path15.join(lockDir, this._lockFileName()));
+    const graph = readPnpmGraph(lockDir, manifest.manifestPath, manifest.content, lock);
+    this._loadHashes(lockDir);
+    return graph;
+  }
+};
+
+// node_modules/@trustify-da/trustify-da-javascript-client/dist/src/providers/javascript_yarn.js
+import fs16 from "node:fs";
+import path16 from "node:path";
+var Javascript_yarn = class extends Base_javascript {
+  #lock;
+  #lockDir;
+  _lockFileName() {
+    return "yarn.lock";
   }
   _cmdName() {
     return "yarn";
   }
-  _listCmdArgs(includeTransitive, manifestDir) {
-    return this.#processor.listCmdArgs(includeTransitive, manifestDir);
-  }
-  _updateLockFileCmdArgs(manifestDir) {
-    return this.#processor.updateLockFileCmdArgs(manifestDir);
-  }
   _setUp(manifestPath, opts) {
-    const manifest = new Manifest(manifestPath);
-    const yarnPathKey = "TRUSTIFY_DA_YARN_PATH";
-    const hasExplicitPath = typeof opts[yarnPathKey] === "string" && opts[yarnPathKey] !== "" || environmentVariableIsPopulated(yarnPathKey);
-    const resolvedOpts = { ...opts };
-    if (!hasExplicitPath) {
-      const autoPath = this._detectYarnPath(manifestPath, opts, manifest);
-      if (autoPath) {
-        resolvedOpts[yarnPathKey] = fs15.existsSync(autoPath) ? autoPath : this._cmdName();
+    this._setUpManifest(manifestPath);
+    this.#lockDir = this._findLockFileDir(path16.dirname(manifestPath), opts);
+    if (!this.#lockDir) {
+      throw new Error("Yarn analysis requires a lockfile. Generate yarn.lock before scanning.");
+    }
+    this.#lock = readYarnLock(path16.join(this.#lockDir, this._lockFileName()));
+    this._setEcosystem(this.#lock.__metadata != null ? "yarn-berry" : "yarn-classic");
+  }
+  _buildDependencyTree() {
+    const manifest = this._getManifest();
+    const graph = readYarnGraph(this.#lockDir, manifest.manifestPath, manifest.content, this.#lock);
+    this._loadHashes(this.#lockDir);
+    return graph;
+  }
+  _parseLockFileHashes(lockDir) {
+    const file = path16.join(lockDir, this._lockFileName());
+    const map = /* @__PURE__ */ new Map();
+    if (!fs16.existsSync(file)) {
+      return map;
+    }
+    const lock = lockDir === this.#lockDir ? this.#lock : readYarnLock(file);
+    for (const [selectors, entry] of Object.entries(lock)) {
+      if (selectors === "__metadata") {
+        continue;
+      }
+      const hash = entry.integrity ? sriToHash(entry.integrity) : berryChecksumToHash(entry.checksum);
+      if (!hash || !entry.version) {
+        continue;
+      }
+      const spec = entry.resolution || selectors.split(",")[0];
+      const identity = !entry.resolution && spec.includes("@npm:") ? spec.slice(spec.indexOf("@npm:") + 5) : spec;
+      const name2 = /^(@[^/]+\/[^@]+|[^@]+)@/.exec(identity)?.[1];
+      if (name2) {
+        map.set(`${name2}@${entry.version}`, [hash]);
       }
     }
-    super._setUp(manifestPath, resolvedOpts, manifest);
-    const versionDir = this._findLockFileDir(path14.dirname(manifestPath), opts) || path14.dirname(manifestPath);
-    const version = this._version({ cwd: versionDir }) ?? "";
-    const matches = _Javascript_yarn.VERSION_PATTERN.exec(version);
-    if (matches?.length !== 2) {
-      throw new Error(`Invalid Yarn version format: ${version}`);
-    }
-    const isClassic = matches[1] === "1";
-    this._setEcosystem(isClassic ? "yarn-classic" : "yarn-berry");
-    this.#processor = isClassic ? new Yarn_classic_processor(this._getManifest()) : new Yarn_berry_processor(this._getManifest());
-  }
-  /**
-   * Detects the correct Yarn binary path based on project manifest signals.
-   * Uses the same workspace lock file lookup as dependency analysis.
-   * Uses the container's Corepack shim for project declarations, falling back to PATH during setup.
-   * Otherwise checks .yarnrc.yml and the lockfile format before defaulting to Classic.
-   * @param {string} manifestPath - Path to package.json
-   * @param {Object} [opts={}] - Options, including TRUSTIFY_DA_WORKSPACE_DIR
-   * @param {Manifest} [manifest] - Manifest already loaded during setup
-   * @returns {string|null} Yarn command name or absolute binary path, or null if not a Yarn project
-   * @private
-   */
-  _detectYarnPath(manifestPath, opts = {}, manifest) {
-    const manifestName = path14.basename(manifestPath);
-    if (manifestName !== "package.json") {
-      return null;
-    }
-    const manifestDir = this._findLockFileDir(path14.dirname(manifestPath), opts);
-    if (!manifestDir) {
-      return null;
-    }
-    try {
-      const rootManifestPath = path14.join(manifestDir, "package.json");
-      const rootManifest = manifest && path14.resolve(manifest.manifestPath) === rootManifestPath ? manifest : JSON.parse(fs15.readFileSync(rootManifestPath, "utf-8"));
-      const packageManager = rootManifest.packageManager;
-      const devPackageManager = rootManifest.devEngines?.packageManager;
-      if (packageManager != null || devPackageManager != null) {
-        const isYarn = packageManager != null ? typeof packageManager === "string" && packageManager.startsWith("yarn@") : devPackageManager.name === "yarn";
-        return isYarn ? "/usr/local/corepack/bin/yarn" : null;
-      }
-    } catch (err2) {
-    }
-    const yarnrcPath = path14.join(manifestDir, ".yarnrc.yml");
-    if (fs15.existsSync(yarnrcPath) || (0, import_parsers.parseSyml)(fs15.readFileSync(path14.join(manifestDir, this._lockFileName()), "utf-8")).__metadata) {
-      return "/usr/local/bin/yarn-berry";
-    }
-    return "/usr/local/bin/yarn-classic";
-  }
-  _getRootDependencies(depTree) {
-    return this.#processor.getRootDependencies(depTree);
-  }
-  _parseDepTreeOutput(output) {
-    return this.#processor.parseDepTreeOutput(output);
-  }
-  _addDependenciesToSbom(sbom, depTree) {
-    this.#processor.addDependenciesToSbom(sbom, depTree, (purl) => this._hashesForPurl(purl));
+    return map;
   }
 };
 
 // node_modules/@trustify-da/trustify-da-javascript-client/dist/src/providers/oci_dockerfile.js
-import fs16 from "node:fs";
+import fs17 from "node:fs";
 
 // node_modules/@trustify-da/trustify-da-javascript-client/dist/src/oci_image/utils.js
 import { delimiter, sep as sep2 } from "path";
@@ -57381,23 +59974,23 @@ function execSyft(imageRef, opts = {}) {
   }
 }
 function getSyftEnvs(dockerPath, podmanPath) {
-  let path26 = null;
+  let path28 = null;
   if (dockerPath && podmanPath) {
-    path26 = `${dockerPath}${delimiter}${podmanPath}`;
+    path28 = `${dockerPath}${delimiter}${podmanPath}`;
   } else if (dockerPath) {
-    path26 = dockerPath;
+    path28 = dockerPath;
   } else if (podmanPath) {
-    path26 = podmanPath;
+    path28 = podmanPath;
   }
   const prependPath = () => {
     const systemPath = process.env["PATH"];
     if (systemPath) {
-      return `${systemPath}${delimiter}${path26}`;
+      return `${systemPath}${delimiter}${path28}`;
     } else {
-      return `${path26}`;
+      return `${path28}`;
     }
   };
-  return path26 ? { "PATH": prependPath() } : {};
+  return path28 ? { "PATH": prependPath() } : {};
 }
 function getImagePlatform(opts = {}) {
   const platform = getCustom(TRUSTIFY_DA_IMAGE_PLATFORM, null, opts);
@@ -57726,7 +60319,7 @@ async function parseAllFromImages(manifestContent) {
   return images;
 }
 async function getImageSBOM(manifest, opts = {}) {
-  const manifestContent = fs16.readFileSync(manifest, "utf-8");
+  const manifestContent = fs17.readFileSync(manifest, "utf-8");
   const images = await parseAllFromImages(manifestContent);
   const sbomByPurl = {};
   for (const image of images) {
@@ -57755,12 +60348,12 @@ function readLicenseFromManifest2() {
 
 // node_modules/@trustify-da/trustify-da-javascript-client/dist/src/providers/python_pip.js
 var import_packageurl_js6 = __toESM(require_packageurl_js(), 1);
-import fs18 from "node:fs";
+import fs19 from "node:fs";
 
 // node_modules/@trustify-da/trustify-da-javascript-client/dist/src/providers/python_controller.js
-import fs17 from "node:fs";
-import path15 from "node:path";
-import os4, { EOL as EOL6 } from "os";
+import fs18 from "node:fs";
+import path17 from "node:path";
+import os4, { EOL as EOL5 } from "os";
 
 // node_modules/@trustify-da/trustify-da-javascript-client/dist/src/providers/requirements_parser.js
 import { readFile as readFile3 } from "node:fs/promises";
@@ -57867,25 +60460,25 @@ var Python_controller = class {
   }
   prepareEnvironment() {
     if (!this.realEnvironment) {
-      this.pythonEnvDir = path15.join(path15.sep, "tmp", "trustify_da_env_js");
+      this.pythonEnvDir = path17.join(path17.sep, "tmp", "trustify_da_env_js");
       try {
         invokeCommand(this.pathToPythonBin, ["-m", "venv", this.pythonEnvDir]);
       } catch (error) {
         throw new Error("Failed creating virtual python environment", { cause: error });
       }
       if (this.pathToPythonBin.includes("python3")) {
-        this.pathToPipBin = path15.join(path15.sep, this.pythonEnvDir, os4.platform() === "win32" ? "Scripts" : "bin", this.#decideIfWindowsOrLinuxPath("pip3"));
-        this.pathToPythonBin = path15.join(path15.sep, this.pythonEnvDir, os4.platform() === "win32" ? "Scripts" : "bin", this.#decideIfWindowsOrLinuxPath("python3"));
+        this.pathToPipBin = path17.join(path17.sep, this.pythonEnvDir, os4.platform() === "win32" ? "Scripts" : "bin", this.#decideIfWindowsOrLinuxPath("pip3"));
+        this.pathToPythonBin = path17.join(path17.sep, this.pythonEnvDir, os4.platform() === "win32" ? "Scripts" : "bin", this.#decideIfWindowsOrLinuxPath("python3"));
         if (os4.platform() === "win32") {
-          let driveLetter = path15.parse(process.cwd()).root;
+          let driveLetter = path17.parse(process.cwd()).root;
           this.pathToPythonBin = `${driveLetter}${this.pathToPythonBin.substring(1)}`;
           this.pathToPipBin = `${driveLetter}${this.pathToPipBin.substring(1)}`;
         }
       } else {
-        this.pathToPipBin = path15.join(path15.sep, this.pythonEnvDir, os4.platform() === "win32" ? "Scripts" : "bin", this.#decideIfWindowsOrLinuxPath("pip"));
-        this.pathToPythonBin = path15.join(path15.sep, this.pythonEnvDir, os4.platform() === "win32" ? "Scripts" : "bin", this.#decideIfWindowsOrLinuxPath("python"));
+        this.pathToPipBin = path17.join(path17.sep, this.pythonEnvDir, os4.platform() === "win32" ? "Scripts" : "bin", this.#decideIfWindowsOrLinuxPath("pip"));
+        this.pathToPythonBin = path17.join(path17.sep, this.pythonEnvDir, os4.platform() === "win32" ? "Scripts" : "bin", this.#decideIfWindowsOrLinuxPath("python"));
         if (os4.platform() === "win32") {
-          let driveLetter = path15.parse(process.cwd()).root;
+          let driveLetter = path17.parse(process.cwd()).root;
           this.pathToPythonBin = `${driveLetter}${this.pathToPythonBin.substring(1)}`;
           this.pathToPipBin = `${driveLetter}${this.pathToPipBin.substring(1)}`;
         }
@@ -57899,7 +60492,7 @@ var Python_controller = class {
       if (this.pathToPythonBin.startsWith("python")) {
         this.pythonEnvDir = process.cwd();
       } else {
-        this.pythonEnvDir = path15.dirname(this.pathToPythonBin);
+        this.pythonEnvDir = path17.dirname(this.pathToPythonBin);
       }
     }
   }
@@ -57908,7 +60501,7 @@ var Python_controller = class {
    * @return {Promise<{name: string, version: string|null, hasMarker: boolean}[]>}
    */
   async #parseRequirements() {
-    const content = fs17.readFileSync(this.pathToRequirements).toString();
+    const content = fs18.readFileSync(this.pathToRequirements).toString();
     const tree = (await this.parser).parse(content);
     return Promise.all((await this.requirementsQuery).matches(tree.rootNode).map(async (match2) => {
       const reqNode = match2.captures.find((c) => c.name === "req").node;
@@ -57996,10 +60589,10 @@ var Python_controller = class {
     let pipDepTreeJsonArrayOutput;
     if (usePipDepTree !== "true") {
       const freezeOutput = getPipFreezeOutput.call(this);
-      const lines = freezeOutput.split(EOL6);
+      const lines = freezeOutput.split(EOL5);
       const depNames = lines.map((line) => getDependencyName(line));
       const pipShowOutput = getPipShowOutput.call(this, depNames);
-      allPipShowDeps = pipShowOutput.split(EOL6 + "---" + EOL6);
+      allPipShowDeps = pipShowOutput.split(EOL5 + "---" + EOL5);
     } else {
       pipDepTreeJsonArrayOutput = getDependencyTreeJsonFromPipDepTree(this.pathToPipBin, this.pathToPythonBin);
     }
@@ -58047,9 +60640,9 @@ var Python_controller = class {
           }
         }
       }
-      let path26 = [];
-      path26.push(depName.toLowerCase());
-      bringAllDependencies(dependencies, depName, CachedEnvironmentDeps, includeTransitive, path26, usePipDepTree, hashMap);
+      let path28 = [];
+      path28.push(depName.toLowerCase());
+      bringAllDependencies(dependencies, depName, CachedEnvironmentDeps, includeTransitive, path28, usePipDepTree, hashMap);
     });
     dependencies.sort((dep1, dep2) => {
       const DEP1 = dep1.name.toLowerCase();
@@ -58068,13 +60661,13 @@ var Python_controller = class {
 function getDependencyNameShow(record) {
   let versionKeyIndex = record.indexOf("Name:");
   let versionToken = record.substring(versionKeyIndex + 5);
-  let endOfLine = versionToken.indexOf(EOL6);
+  let endOfLine = versionToken.indexOf(EOL5);
   return versionToken.substring(0, endOfLine).trim();
 }
 function getDependencyVersion(record) {
   let versionKeyIndex = record.indexOf("Version:");
   let versionToken = record.substring(versionKeyIndex + 8);
-  let endOfLine = versionToken.indexOf(EOL6);
+  let endOfLine = versionToken.indexOf(EOL5);
   return versionToken.substring(0, endOfLine).trim();
 }
 function getDependencyName(depLine) {
@@ -58094,12 +60687,12 @@ function getDependencyName(depLine) {
 function getDepsList(record) {
   let requiresKeyIndex = record.indexOf("Requires:");
   let requiresToken = record.substring(requiresKeyIndex + 9);
-  let endOfLine = requiresToken.indexOf(EOL6);
+  let endOfLine = requiresToken.indexOf(EOL5);
   let listOfDepsString = requiresToken.substring(0, endOfLine);
   let list = listOfDepsString.split(",").filter((line) => line.trim() !== "").map((line) => line.trim());
   return list;
 }
-function bringAllDependencies(dependencies, dependencyName, cachedEnvironmentDeps, includeTransitive, path26, usePipDepTree, hashMap) {
+function bringAllDependencies(dependencies, dependencyName, cachedEnvironmentDeps, includeTransitive, path28, usePipDepTree, hashMap) {
   if (dependencyName?.trim() === "") {
     return;
   }
@@ -58120,18 +60713,18 @@ function bringAllDependencies(dependencies, dependencyName, cachedEnvironmentDep
     directDeps = record.dependencies;
   }
   let targetDeps = [];
-  let hashes = hashMap?.get(depName.toLowerCase());
+  let hashes2 = hashMap?.get(depName.toLowerCase());
   let entry = { "name": depName, "version": version, "dependencies": [] };
-  if (hashes) {
-    entry.hashes = hashes;
+  if (hashes2) {
+    entry.hashes = hashes2;
   }
   dependencies.push(entry);
   directDeps.forEach((dep) => {
     let depArray = [];
-    if (!path26.includes(dep.toLowerCase())) {
+    if (!path28.includes(dep.toLowerCase())) {
       depArray.push(dep.toLowerCase());
       if (includeTransitive) {
-        bringAllDependencies(targetDeps, dep, cachedEnvironmentDeps, includeTransitive, path26.concat(depArray), usePipDepTree, hashMap);
+        bringAllDependencies(targetDeps, dep, cachedEnvironmentDeps, includeTransitive, path28.concat(depArray), usePipDepTree, hashMap);
       }
     }
     targetDeps.sort((dep1, dep2) => {
@@ -58151,7 +60744,7 @@ function bringAllDependencies(dependencies, dependencyName, cachedEnvironmentDep
 function getDependencyTreeJsonFromPipDepTree(pipPath, pythonPath) {
   let dependencyTree;
   try {
-    invokeCommand(pipPath, ["install", "pipdeptree"]);
+    invokeCommand(pipPath, ["install", "pipdeptree<4"]);
   } catch (error) {
     throw new Error(`Failed installing pipdeptree utility`, { cause: error });
   }
@@ -58212,7 +60805,7 @@ async function getIgnoredDependencies(manifest) {
     getIgnoreQuery(),
     getPinnedVersionQuery()
   ]);
-  const content = fs18.readFileSync(manifest).toString();
+  const content = fs19.readFileSync(manifest).toString();
   const tree = parser.parse(content);
   return ignoreQuery.matches(tree.rootNode).map((match2) => {
     const reqNode = match2.captures.find((c) => c.name === "req").node;
@@ -58300,13 +60893,13 @@ function toPurl3(name2, version) {
 }
 
 // node_modules/@trustify-da/trustify-da-javascript-client/dist/src/providers/python_pip_pyproject.js
-import fs20 from "node:fs";
-import path17 from "node:path";
+import fs21 from "node:fs";
+import path19 from "node:path";
 
 // node_modules/@trustify-da/trustify-da-javascript-client/dist/src/providers/base_pyproject.js
 var import_packageurl_js7 = __toESM(require_packageurl_js(), 1);
-import fs19 from "node:fs";
-import path16 from "node:path";
+import fs20 from "node:fs";
+import path18 from "node:path";
 var ecosystem4 = "pip";
 var IGNORE_MARKERS = ["exhortignore", "trustify-da-ignore"];
 var NO_SCOPE2 = void 0;
@@ -58339,20 +60932,20 @@ var Base_pyproject = class {
   _findLockFileDir(manifestDir, opts = {}) {
     const workspaceDir = getCustom("TRUSTIFY_DA_WORKSPACE_DIR", null, opts);
     if (workspaceDir) {
-      const dir2 = path16.resolve(workspaceDir);
-      return fs19.existsSync(path16.join(dir2, this._lockFileName())) ? dir2 : null;
+      const dir2 = path18.resolve(workspaceDir);
+      return fs20.existsSync(path18.join(dir2, this._lockFileName())) ? dir2 : null;
     }
-    let dir = path16.resolve(manifestDir);
+    let dir = path18.resolve(manifestDir);
     let parent = dir;
     do {
       dir = parent;
-      if (fs19.existsSync(path16.join(dir, this._lockFileName()))) {
+      if (fs20.existsSync(path18.join(dir, this._lockFileName()))) {
         return dir;
       }
       if (this._isWorkspaceRoot(dir)) {
         return null;
       }
-      parent = path16.dirname(dir);
+      parent = path18.dirname(dir);
     } while (parent !== dir);
     return null;
   }
@@ -58366,12 +60959,12 @@ var Base_pyproject = class {
    * @protected
    */
   _isWorkspaceRoot(dir) {
-    const pyprojectPath = path16.join(dir, "pyproject.toml");
-    if (!fs19.existsSync(pyprojectPath)) {
+    const pyprojectPath = path18.join(dir, "pyproject.toml");
+    if (!fs20.existsSync(pyprojectPath)) {
       return false;
     }
     try {
-      const content = parse2(fs19.readFileSync(pyprojectPath, "utf-8"));
+      const content = parse2(fs20.readFileSync(pyprojectPath, "utf-8"));
       if (content.tool?.uv?.workspace) {
         return true;
       }
@@ -58387,7 +60980,7 @@ var Base_pyproject = class {
   readLicenseFromManifest(manifestPath) {
     let fromManifest = null;
     try {
-      let content = fs19.readFileSync(manifestPath, "utf-8");
+      let content = fs20.readFileSync(manifestPath, "utf-8");
       let parsed = parse2(content);
       fromManifest = parsed.project?.license;
       if (typeof fromManifest === "object" && fromManifest != null) {
@@ -58497,7 +61090,7 @@ var Base_pyproject = class {
    */
   _getIgnoredDeps(manifestPath) {
     let ignored = /* @__PURE__ */ new Set();
-    let content = fs19.readFileSync(manifestPath, "utf-8");
+    let content = fs20.readFileSync(manifestPath, "utf-8");
     let lines = content.split(/\r?\n/);
     for (let line of lines) {
       if (!IGNORE_MARKERS.some((m) => line.includes(m))) {
@@ -58562,8 +61155,8 @@ var Base_pyproject = class {
    * @private
    */
   async _createSbom(manifest, opts, includeTransitive) {
-    let manifestDir = path16.dirname(manifest);
-    let content = fs19.readFileSync(manifest, "utf-8");
+    let manifestDir = path18.dirname(manifest);
+    let content = fs20.readFileSync(manifest, "utf-8");
     let parsed = parse2(content);
     let workspaceDir = this._findLockFileDir(manifestDir, opts) || manifestDir;
     let { directDeps, graph } = await this._getDependencyData(manifestDir, workspaceDir, parsed, opts);
@@ -58688,8 +61281,8 @@ var Python_pip_pyproject = class extends Base_pyproject {
       let version = pkg.metadata.version;
       let key = this._canonicalize(name2);
       let sha256 = pkg.download_info?.archive_info?.hashes?.sha256;
-      let hashes = sha256 ? [{ alg: "SHA-256", content: sha256 }] : void 0;
-      graph.set(key, { name: name2, version, children: [], hashes });
+      let hashes2 = sha256 ? [{ alg: "SHA-256", content: sha256 }] : void 0;
+      graph.set(key, { name: name2, version, children: [], hashes: hashes2 });
     }
     for (let pkg of nonRootPackages) {
       let key = this._canonicalize(pkg.metadata.name);
@@ -58741,7 +61334,7 @@ var Python_pip_pyproject = class extends Base_pyproject {
   }
   _findEggInfoDirs(dir) {
     try {
-      return fs20.readdirSync(dir).filter((f) => f.endsWith(".egg-info"));
+      return fs21.readdirSync(dir).filter((f) => f.endsWith(".egg-info"));
     } catch {
       return [];
     }
@@ -58749,15 +61342,15 @@ var Python_pip_pyproject = class extends Base_pyproject {
   _cleanupEggInfo(dir, existing) {
     for (let entry of this._findEggInfoDirs(dir)) {
       if (!existing.includes(entry)) {
-        fs20.rmSync(path17.join(dir, entry), { recursive: true, force: true });
+        fs21.rmSync(path19.join(dir, entry), { recursive: true, force: true });
       }
     }
   }
 };
 
 // node_modules/@trustify-da/trustify-da-javascript-client/dist/src/providers/python_poetry.js
-import fs21 from "node:fs";
-import path18 from "node:path";
+import fs22 from "node:fs";
+import path20 from "node:path";
 
 // node_modules/@trustify-da/trustify-da-javascript-client/dist/src/providers/marker_evaluator.js
 import os5 from "node:os";
@@ -58948,11 +61541,11 @@ var Python_poetry = class extends Base_pyproject {
   _findLockFileDir(manifestDir, opts = {}) {
     const workspaceDir = getCustom("TRUSTIFY_DA_WORKSPACE_DIR", null, opts);
     if (workspaceDir) {
-      const dir2 = path18.resolve(workspaceDir);
-      return fs21.existsSync(path18.join(dir2, this._lockFileName())) ? dir2 : null;
+      const dir2 = path20.resolve(workspaceDir);
+      return fs22.existsSync(path20.join(dir2, this._lockFileName())) ? dir2 : null;
     }
-    const dir = path18.resolve(manifestDir);
-    return fs21.existsSync(path18.join(dir, this._lockFileName())) ? dir : null;
+    const dir = path20.resolve(manifestDir);
+    return fs22.existsSync(path20.join(dir, this._lockFileName())) ? dir : null;
   }
   /** @returns {string} */
   _lockFileName() {
@@ -58979,7 +61572,6 @@ var Python_poetry = class extends Base_pyproject {
    * @param {Object} opts
    * @returns {Promise<{directDeps: string[], graph: Map<string, {name: string, version: string, children: string[]}>}>}
    */
-  // eslint-disable-next-line no-unused-vars
   async _getDependencyData(manifestDir, _workspaceDir, parsed, opts) {
     let poetryBin = getCustomPath("poetry", opts);
     let envBypass = environmentVariableIsPopulated("TRUSTIFY_DA_POETRY_SHOW_TREE") && environmentVariableIsPopulated("TRUSTIFY_DA_POETRY_SHOW_ALL");
@@ -59054,11 +61646,12 @@ var Python_poetry = class extends Base_pyproject {
    *   → transitiveMarkers['click']['colorama'] = "sys_platform == 'win32'"
    * @param {string|null} lockDir
    * @param {object} parsed - parsed pyproject.toml
-   * @returns {{directMarkers: Map<string, string>, transitiveMarkers: Map<string, Map<string, string>>, hashMap: Map<string, Array<{alg: string, content: string}>>}}
+   * @returns {{directMarkers: Map<string, string>, transitiveMarkers: Map<string, Map<string, string>>, packageMarkers: Map<string, string>, hashMap: Map<string, Array<{alg: string, content: string}>>}}
    */
   _extractMarkerData(lockDir, parsed) {
     let directMarkers = /* @__PURE__ */ new Map();
     let transitiveMarkers = /* @__PURE__ */ new Map();
+    let packageMarkers = /* @__PURE__ */ new Map();
     let hashMap = /* @__PURE__ */ new Map();
     let deps = parsed.project?.dependencies || [];
     for (let dep of deps) {
@@ -59068,13 +61661,16 @@ var Python_poetry = class extends Base_pyproject {
       }
     }
     if (lockDir) {
-      let lockPath = path18.join(lockDir, this._lockFileName());
-      if (fs21.existsSync(lockPath)) {
-        let lockContent = fs21.readFileSync(lockPath, "utf-8");
+      let lockPath = path20.join(lockDir, this._lockFileName());
+      if (fs22.existsSync(lockPath)) {
+        let lockContent = fs22.readFileSync(lockPath, "utf-8");
         let lock = parse2(lockContent);
         let packages = lock.package || [];
         for (let pkg of packages) {
           let pkgKey = this._canonicalize(pkg.name);
+          if (pkg.markers) {
+            packageMarkers.set(pkgKey, pkg.markers);
+          }
           let pkgDeps = pkg.dependencies || {};
           for (let [depName, depSpec] of Object.entries(pkgDeps)) {
             let markers = typeof depSpec === "object" && depSpec != null ? depSpec.markers : null;
@@ -59092,7 +61688,7 @@ var Python_poetry = class extends Base_pyproject {
         }
       }
     }
-    return { directMarkers, transitiveMarkers, hashMap };
+    return { directMarkers, transitiveMarkers, packageMarkers, hashMap };
   }
   /**
    * Extract a SHA-256 hex digest from poetry.lock files array.
@@ -59117,7 +61713,7 @@ var Python_poetry = class extends Base_pyproject {
    *
    * @param {string} treeOutput
    * @param {Map<string, string>} versionMap - canonical name -> resolved version
-   * @param {{directMarkers: Map<string, string>, transitiveMarkers: Map<string, Map<string, string>>, hashMap: Map<string, Array<{alg: string, content: string}>>}} markerData
+   * @param {{directMarkers: Map<string, string>, transitiveMarkers: Map<string, Map<string, string>>, packageMarkers: Map<string, string>, hashMap: Map<string, Array<{alg: string, content: string}>>}} markerData
    * @returns {{directDeps: string[], graph: Map<string, {name: string, version: string, children: string[], hashes?: Array<{alg: string, content: string}>}>}}
    */
   _parsePoetryTree(treeOutput, versionMap, markerData) {
@@ -59126,6 +61722,7 @@ var Python_poetry = class extends Base_pyproject {
     let directDeps = [];
     let stack = [];
     let currentDirectDep = null;
+    let skipDepth = null;
     for (let line of lines) {
       if (!line.trim()) {
         continue;
@@ -59139,14 +61736,16 @@ var Python_poetry = class extends Base_pyproject {
         if (marker && !evaluateMarker(marker)) {
           currentDirectDep = null;
           stack = [];
+          skipDepth = null;
           continue;
         }
+        skipDepth = null;
         directDeps.push(key);
         if (!graph.has(key)) {
           let entry = { name: name2, version: version2, children: [] };
-          let hashes = markerData.hashMap.get(key);
-          if (hashes) {
-            entry.hashes = hashes;
+          let hashes2 = markerData.hashMap.get(key);
+          if (hashes2) {
+            entry.hashes = hashes2;
           }
           graph.set(key, entry);
         }
@@ -59170,8 +61769,19 @@ var Python_poetry = class extends Base_pyproject {
       let depKey = this._canonicalize(depName);
       let prefix = line.substring(0, nameStart);
       let depth = (prefix.match(/(?:[├└│ ][\s─]{2} ?)/g) || []).length;
+      if (skipDepth != null) {
+        if (depth > skipDepth) {
+          continue;
+        }
+        skipDepth = null;
+      }
       while (stack.length > 0 && stack[stack.length - 1].depth >= depth) {
         stack.pop();
+      }
+      let pkgMarker = markerData.packageMarkers.get(depKey);
+      if (pkgMarker && !evaluateMarker(pkgMarker)) {
+        skipDepth = depth;
+        continue;
       }
       let parentKey = stack.length > 0 ? stack[stack.length - 1].key : null;
       if (parentKey) {
@@ -59179,6 +61789,7 @@ var Python_poetry = class extends Base_pyproject {
         if (parentMarkers) {
           let marker = parentMarkers.get(depKey);
           if (marker && !evaluateMarker(marker)) {
+            skipDepth = depth;
             continue;
           }
         }
@@ -59189,9 +61800,9 @@ var Python_poetry = class extends Base_pyproject {
       }
       if (!graph.has(depKey)) {
         let entry = { name: depName, version, children: [] };
-        let hashes = markerData.hashMap.get(depKey);
-        if (hashes) {
-          entry.hashes = hashes;
+        let hashes2 = markerData.hashMap.get(depKey);
+        if (hashes2) {
+          entry.hashes = hashes2;
         }
         graph.set(depKey, entry);
       }
@@ -59208,9 +61819,9 @@ var Python_poetry = class extends Base_pyproject {
 };
 
 // node_modules/@trustify-da/trustify-da-javascript-client/dist/src/providers/python_uv.js
-var import_fast_glob2 = __toESM(require_out4(), 1);
-import fs22 from "node:fs";
-import path19 from "node:path";
+var import_fast_glob3 = __toESM(require_out4(), 1);
+import fs23 from "node:fs";
+import path21 from "node:path";
 var Python_uv = class extends Base_pyproject {
   /** @returns {string} */
   _lockFileName() {
@@ -59231,7 +61842,7 @@ var Python_uv = class extends Base_pyproject {
     let projectName = this._getProjectName(parsed);
     let uvOutput = this._getUvExportOutput(manifestDir, opts);
     let { directDeps, graph } = await this._parseUvExport(uvOutput, projectName, workspaceDir);
-    await this._attachHashesFromLockFile(path19.join(workspaceDir, "uv.lock"), graph);
+    await this._attachHashesFromLockFile(path21.join(workspaceDir, "uv.lock"), graph);
     return { directDeps, graph };
   }
   /**
@@ -59242,7 +61853,7 @@ var Python_uv = class extends Base_pyproject {
   async _attachHashesFromLockFile(lockFilePath, graph) {
     let lockContent;
     try {
-      lockContent = await fs22.promises.readFile(lockFilePath, "utf-8");
+      lockContent = await fs23.promises.readFile(lockFilePath, "utf-8");
     } catch {
       return;
     }
@@ -59310,10 +61921,10 @@ var Python_uv = class extends Base_pyproject {
         let optNode = child.children.find((c) => c.type === "option");
         let pathNode = child.children.find((c) => c.type === "path");
         if (optNode?.text === "-e" && pathNode && workspaceDir) {
-          let memberDir = path19.resolve(workspaceDir, pathNode.text);
-          let memberManifest = path19.join(memberDir, "pyproject.toml");
-          if (fs22.existsSync(memberManifest)) {
-            let memberParsed = parse2(fs22.readFileSync(memberManifest, "utf-8"));
+          let memberDir = path21.resolve(workspaceDir, pathNode.text);
+          let memberManifest = path21.join(memberDir, "pyproject.toml");
+          if (fs23.existsSync(memberManifest)) {
+            let memberParsed = parse2(fs23.readFileSync(memberManifest, "utf-8"));
             let name2 = memberParsed.project?.name || memberParsed.tool?.poetry?.name;
             let version = memberParsed.project?.version || memberParsed.tool?.poetry?.version;
             if (name2 && version) {
@@ -59413,15 +62024,15 @@ var DEFAULT_UV_DISCOVERY_IGNORE = [
   "**/.venv/**"
 ];
 async function discoverUvWorkspaceMembers(workspaceRoot, opts = {}) {
-  const root = path19.resolve(workspaceRoot);
-  const rootPyproject = path19.join(root, "pyproject.toml");
-  const uvLock = path19.join(root, "uv.lock");
-  if (!fs22.existsSync(rootPyproject) || !fs22.existsSync(uvLock)) {
+  const root = path21.resolve(workspaceRoot);
+  const rootPyproject = path21.join(root, "pyproject.toml");
+  const uvLock = path21.join(root, "uv.lock");
+  if (!fs23.existsSync(rootPyproject) || !fs23.existsSync(uvLock)) {
     return [];
   }
   let parsed;
   try {
-    parsed = parse2(fs22.readFileSync(rootPyproject, "utf-8"));
+    parsed = parse2(fs23.readFileSync(rootPyproject, "utf-8"));
   } catch {
     return [];
   }
@@ -59444,7 +62055,7 @@ async function discoverUvWorkspaceMembers(workspaceRoot, opts = {}) {
     followSymbolicLinks: false
   };
   const patterns = toManifestGlobPatterns(memberPatterns.filter((p) => typeof p === "string"), "pyproject.toml");
-  const manifestPaths = await (0, import_fast_glob2.default)(patterns, globOpts);
+  const manifestPaths = await (0, import_fast_glob3.default)(patterns, globOpts);
   if (!manifestPaths.includes(rootPyproject) && hasProjectMetadata(parsed)) {
     manifestPaths.unshift(rootPyproject);
   }
@@ -59460,8 +62071,8 @@ function hasProjectMetadata(parsedPyProject) {
 
 // node_modules/@trustify-da/trustify-da-javascript-client/dist/src/providers/rust_cargo.js
 var import_packageurl_js8 = __toESM(require_packageurl_js(), 1);
-import fs23 from "node:fs";
-import path20 from "node:path";
+import fs24 from "node:fs";
+import path22 from "node:path";
 var rust_cargo_default = { isSupported: isSupported4, validateLockFile: validateLockFile4, provideComponent: provideComponent4, provideStack: provideStack4, readLicenseFromManifest: readLicenseFromManifest4, packageManagerName() {
   return "cargo";
 } };
@@ -59495,7 +62106,7 @@ function isSupported4(manifestName) {
 function readLicenseFromManifest4(manifestPath, metadata2) {
   let fromManifest = null;
   try {
-    let content = fs23.readFileSync(manifestPath, "utf-8");
+    let content = fs24.readFileSync(manifestPath, "utf-8");
     let parsed = parse2(content);
     let packageLicense = parsed.package?.license;
     if (typeof packageLicense === "object" && packageLicense?.workspace === true) {
@@ -59508,9 +62119,9 @@ function readLicenseFromManifest4(manifestPath, metadata2) {
 }
 function resolveWorkspaceLicense(parsed, metadata2) {
   if (metadata2?.workspace_root) {
-    let cargoTomlPath = path20.join(metadata2.workspace_root, "Cargo.toml");
+    let cargoTomlPath = path22.join(metadata2.workspace_root, "Cargo.toml");
     try {
-      let content = fs23.readFileSync(cargoTomlPath, "utf-8");
+      let content = fs24.readFileSync(cargoTomlPath, "utf-8");
       let workspaceParsed = parse2(content);
       return workspaceParsed.workspace?.package?.license || null;
     } catch (_) {
@@ -59521,27 +62132,27 @@ function resolveWorkspaceLicense(parsed, metadata2) {
 function _findCargoLockDir(manifestDir, opts = {}) {
   const workspaceDir = getCustom("TRUSTIFY_DA_WORKSPACE_DIR", null, opts);
   if (workspaceDir) {
-    const dir2 = path20.resolve(workspaceDir);
-    return fs23.existsSync(path20.join(dir2, "Cargo.lock")) ? dir2 : null;
+    const dir2 = path22.resolve(workspaceDir);
+    return fs24.existsSync(path22.join(dir2, "Cargo.lock")) ? dir2 : null;
   }
-  let dir = path20.resolve(manifestDir);
+  let dir = path22.resolve(manifestDir);
   let parent = dir;
   do {
     dir = parent;
-    if (fs23.existsSync(path20.join(dir, "Cargo.lock"))) {
+    if (fs24.existsSync(path22.join(dir, "Cargo.lock"))) {
       return dir;
     }
-    let cargoToml = path20.join(dir, "Cargo.toml");
-    if (fs23.existsSync(cargoToml)) {
+    let cargoToml = path22.join(dir, "Cargo.toml");
+    if (fs24.existsSync(cargoToml)) {
       try {
-        let content = fs23.readFileSync(cargoToml, "utf-8");
+        let content = fs24.readFileSync(cargoToml, "utf-8");
         if (/\[workspace\]/.test(content)) {
           return null;
         }
       } catch (_) {
       }
     }
-    parent = path20.dirname(dir);
+    parent = path22.dirname(dir);
   } while (parent !== dir);
   return null;
 }
@@ -59565,7 +62176,7 @@ function provideComponent4(manifest, opts = {}) {
 function getSBOM2(manifest, opts = {}, includeTransitive) {
   let cargoBin = getCustomPath("cargo", opts);
   verifyCargoAccessible(cargoBin);
-  let manifestDir = path20.dirname(manifest);
+  let manifestDir = path22.dirname(manifest);
   let metadata2 = executeCargoMetadata(cargoBin, manifestDir);
   let ignoredDeps = getIgnoredDeps2(manifest, metadata2);
   let crateType = detectCrateType(metadata2);
@@ -59603,9 +62214,9 @@ function parseCargoLockHashes(manifestDir, opts = {}) {
   if (!lockDir) {
     return hashMap;
   }
-  let lockPath = path20.join(lockDir, "Cargo.lock");
+  let lockPath = path22.join(lockDir, "Cargo.lock");
   try {
-    let content = fs23.readFileSync(lockPath, "utf-8");
+    let content = fs24.readFileSync(lockPath, "utf-8");
     let parsed = parse2(content);
     for (let pkg of parsed.package || []) {
       if (pkg.name && pkg.version && pkg.checksum) {
@@ -59647,7 +62258,7 @@ function handleSingleCrate(metadata2, ignoredDeps, includeTransitive, opts, lice
 }
 function handleVirtualWorkspace(manifest, metadata2, ignoredDeps, includeTransitive, opts, license, hashMap) {
   let workspaceRoot = metadata2.workspace_root;
-  let rootName = path20.basename(workspaceRoot);
+  let rootName = path22.basename(workspaceRoot);
   let workspaceVersion = getWorkspaceVersion(metadata2);
   let rootPurl = toPurl4(rootName, workspaceVersion);
   let sbom = new Sbom();
@@ -59678,8 +62289,8 @@ function handleVirtualWorkspace(manifest, metadata2, ignoredDeps, includeTransit
         continue;
       }
       let depPurl = pkg.source == null ? toPathDepPurl(pkg.name, pkg.version) : toPurl4(pkg.name, pkg.version);
-      let hashes = hashMap.get(`${pkg.name}@${pkg.version}`);
-      sbom.addDependency(rootPurl, depPurl, void 0, hashes);
+      let hashes2 = hashMap.get(`${pkg.name}@${pkg.version}`);
+      sbom.addDependency(rootPurl, depPurl, void 0, hashes2);
     }
   }
   return sbom.getAsJsonString(opts);
@@ -59708,8 +62319,8 @@ function addTransitiveDeps(sbom, metadata2, packageId, ignoredDeps, visited, has
       continue;
     }
     let depPurl = depPackage.source == null ? toPathDepPurl(depPackage.name, depPackage.version) : toPurl4(depPackage.name, depPackage.version);
-    let hashes = hashMap.get(`${depPackage.name}@${depPackage.version}`);
-    sbom.addDependency(sourcePurl, depPurl, void 0, hashes);
+    let hashes2 = hashMap.get(`${depPackage.name}@${depPackage.version}`);
+    sbom.addDependency(sourcePurl, depPurl, void 0, hashes2);
     addTransitiveDeps(sbom, metadata2, depId, ignoredDeps, visited, hashMap);
   }
 }
@@ -59728,8 +62339,8 @@ function addDirectDeps(sbom, metadata2, packageId, parentPurl, ignoredDeps, hash
       continue;
     }
     let depPurl = depPackage.source == null ? toPathDepPurl(depPackage.name, depPackage.version) : toPurl4(depPackage.name, depPackage.version);
-    let hashes = hashMap.get(`${depPackage.name}@${depPackage.version}`);
-    sbom.addDependency(parentPurl, depPurl, void 0, hashes);
+    let hashes2 = hashMap.get(`${depPackage.name}@${depPackage.version}`);
+    sbom.addDependency(parentPurl, depPurl, void 0, hashes2);
   }
 }
 function filterRuntimeDeps(resolveNode) {
@@ -59750,15 +62361,15 @@ function findResolveNode(metadata2, packageId) {
   return metadata2.resolve.nodes.find((node) => node.id === packageId);
 }
 function getWorkspaceDepsFromManifest(manifest) {
-  let content = fs23.readFileSync(manifest, "utf-8");
+  let content = fs24.readFileSync(manifest, "utf-8");
   let parsed = parse2(content);
   return Object.keys(parsed.workspace?.dependencies || {});
 }
 function getWorkspaceVersion(metadata2) {
   let workspaceRoot = metadata2.workspace_root;
-  let cargoTomlPath = path20.join(workspaceRoot, "Cargo.toml");
+  let cargoTomlPath = path22.join(workspaceRoot, "Cargo.toml");
   try {
-    let content = fs23.readFileSync(cargoTomlPath, "utf-8");
+    let content = fs24.readFileSync(cargoTomlPath, "utf-8");
     let parsed = parse2(content);
     return parsed.workspace?.package?.version || "0.0.0";
   } catch (_) {
@@ -59768,7 +62379,7 @@ function getWorkspaceVersion(metadata2) {
 function getIgnoredDeps2(manifest, metadata2) {
   let ignored = /* @__PURE__ */ new Set();
   scanManifestForIgnored(manifest, ignored);
-  let manifestDir = path20.dirname(manifest);
+  let manifestDir = path22.dirname(manifest);
   let workspaceRoot = metadata2.workspace_root;
   let workspaceMembers = metadata2.workspace_members || [];
   for (let memberId of workspaceMembers) {
@@ -59776,11 +62387,11 @@ function getIgnoredDeps2(manifest, metadata2) {
     if (memberRelDir == null) {
       continue;
     }
-    let memberManifest = path20.join(manifestDir, memberRelDir, "Cargo.toml");
-    if (path20.resolve(memberManifest) === path20.resolve(manifest)) {
+    let memberManifest = path22.join(manifestDir, memberRelDir, "Cargo.toml");
+    if (path22.resolve(memberManifest) === path22.resolve(manifest)) {
       continue;
     }
-    if (fs23.existsSync(memberManifest)) {
+    if (fs24.existsSync(memberManifest)) {
       scanManifestForIgnored(memberManifest, ignored);
     }
   }
@@ -59802,7 +62413,7 @@ function getMemberRelativeDir(packageId, workspaceRoot) {
   return relPath || null;
 }
 function scanManifestForIgnored(manifest, ignored) {
-  let content = fs23.readFileSync(manifest, "utf-8");
+  let content = fs24.readFileSync(manifest, "utf-8");
   let lines = content.split(/\r?\n/);
   let currentSection = "";
   let currentDepName = null;
@@ -59863,7 +62474,7 @@ var availableProviders = [
   oci_dockerfile_default
 ];
 function matchForLicense(manifestPath, providers) {
-  const base = path21.parse(manifestPath).base;
+  const base = path23.parse(manifestPath).base;
   const provider = providers.find((prov) => prov.isSupported(base));
   if (!provider) {
     throw new Error(`${base} is not supported`);
@@ -59871,7 +62482,7 @@ function matchForLicense(manifestPath, providers) {
   return provider;
 }
 function match(manifest, providers, opts = {}) {
-  const manifestPath = path21.parse(manifest);
+  const manifestPath = path23.parse(manifest);
   const supported = providers.filter((prov) => prov.isSupported(manifestPath.base));
   if (supported.length === 0) {
     throw new Error(`${manifestPath.base} is not supported`);
@@ -60189,20 +62800,31 @@ function maxSeverity(vulnerabilities) {
 
 // node_modules/@trustify-da/trustify-da-javascript-client/dist/src/remediation_report.js
 function generateReport(remediations, options = {}) {
-  const { groupBy = "dependency", format: format2 = "markdown", dryRun = false } = options;
-  if (!remediations || remediations.length === 0) {
-    return format2 === "json" ? "[]" : "No remediations found.";
+  const { groupBy = "dependency", format: format2 = "markdown", dryRun = false, groups, skipped } = options;
+  const hasRemediations = remediations && remediations.length > 0;
+  if (!hasRemediations && format2 === "json") {
+    return "[]";
   }
-  if (format2 === "json") {
+  if (hasRemediations && format2 === "json") {
     return JSON.stringify(remediations, null, "	");
   }
-  if (dryRun) {
+  if (hasRemediations && dryRun) {
     return generateDryRunReport(remediations);
   }
-  if (groupBy === "bundle") {
-    return generateBundledReport(remediations);
+  let report;
+  if (!hasRemediations) {
+    report = "No remediations found.";
+  } else if (groupBy === "bundle") {
+    report = generateBundledReport(remediations);
+  } else {
+    report = generatePerDependencyReport(remediations);
   }
-  return generatePerDependencyReport(remediations);
+  const divergenceSection = renderDivergenceSection(groups);
+  const skippedSection = renderSkippedSection(skipped);
+  const suffix = [divergenceSection, skippedSection].filter(Boolean).join("\n\n");
+  return suffix ? `${report}
+
+${suffix}` : report;
 }
 function generatePerDependencyReport(remediations) {
   const sections = remediations.map((rem) => {
@@ -60296,12 +62918,55 @@ function formatAdvisoryLinks(advisories) {
   }
   return advisories.map((adv) => adv.url ? `[${adv.id}](${adv.url})` : adv.id).join(", ");
 }
+function renderDivergenceSection(groups) {
+  if (!groups || groups.length === 0) {
+    return "";
+  }
+  const divergentGroups = groups.filter((g) => g.divergent);
+  if (divergentGroups.length === 0) {
+    return "";
+  }
+  const rows = [];
+  for (const group of divergentGroups) {
+    for (const rem of group.remediations) {
+      const name2 = rem.groupId ? `${rem.groupId}:${rem.artifactId}` : rem.artifactId;
+      rows.push(`| ${name2} | ${rem.fixedInVersion} | ${group.appliedVersion} |`);
+    }
+  }
+  return [
+    "### Applied version differs from some recommendations",
+    "",
+    "These artifacts share one version site, so a single version was written for all of them.",
+    "",
+    "| Artifact | Recommended | Applied |",
+    "| --- | --- | --- |",
+    ...rows
+  ].join("\n");
+}
+function renderSkippedSection(skipped) {
+  if (!skipped || skipped.length === 0) {
+    return "";
+  }
+  const rows = skipped.map((s) => {
+    const name2 = s.groupId ? `${s.groupId}:${s.artifactId}` : s.artifactId;
+    return `| ${name2} | ${s.newVersion} | ${s.reason} |`;
+  });
+  return [
+    "### Skipped Remediations",
+    "",
+    "The following remediations were not applied. See the reason column for details.",
+    "",
+    "| Dependency | Version | Reason |",
+    "| --- | --- | --- |",
+    ...rows
+  ].join("\n");
+}
 
 // node_modules/@trustify-da/trustify-da-javascript-client/dist/src/index.js
 var src_default = { componentAnalysis, stackAnalysis, stackAnalysisBatch, imageAnalysis, validateToken, generateSbom };
 function logOptionsAndEnvironmentsVariables(alongsideText, valueToBePrinted) {
   if (process.env["TRUSTIFY_DA_DEBUG"] === "true") {
-    console.log(`${alongsideText}: ${valueToBePrinted} ${EOL7}`);
+    console.log(`${alongsideText}: ${valueToBePrinted} ${EOL6}`);
   }
 }
 function readAndPrintVersionFromPackageJson() {
@@ -60320,14 +62985,14 @@ function selectTrustifyDABackend(opts = {}) {
 }
 async function stackAnalysis(manifest, html = false, opts = {}) {
   const theUrl = selectTrustifyDABackend(opts);
-  fs24.accessSync(manifest, fs24.constants.R_OK);
+  fs25.accessSync(manifest, fs25.constants.R_OK);
   let provider = match(manifest, availableProviders, opts);
   return await analysis_default.requestStack(provider, manifest, theUrl, html, opts);
 }
 async function componentAnalysis(manifest, opts = {}) {
   const theUrl = selectTrustifyDABackend(opts);
-  fs24.accessSync(manifest, fs24.constants.R_OK);
-  opts["manifest-type"] = path22.basename(manifest);
+  fs25.accessSync(manifest, fs25.constants.R_OK);
+  opts["manifest-type"] = path24.basename(manifest);
   let provider = match(manifest, availableProviders, opts);
   const result = await analysis_default.requestComponent(provider, manifest, theUrl, opts);
   result.packageManager = provider.packageManagerName();
@@ -60357,7 +63022,7 @@ function buildBatchAnalysisMetadata(root, ecosystem6, totalSbomAttempts, success
   };
 }
 async function generateSbom(manifestPath, opts = {}) {
-  fs24.accessSync(manifestPath, fs24.constants.R_OK);
+  fs25.accessSync(manifestPath, fs25.constants.R_OK);
   const result = await generateOneSbom(manifestPath, opts);
   if (!result.ok) {
     throw new Error(`Failed to generate SBOM for ${result.manifestPath}: ${result.reason}`);
@@ -60375,40 +63040,40 @@ async function generateOneSbom(manifestPath, workspaceOpts) {
   return { ok: true, purl, sbom };
 }
 async function detectWorkspaceManifests(root, opts) {
-  const cargoToml = path22.join(root, "Cargo.toml");
-  const cargoLock = path22.join(root, "Cargo.lock");
-  const packageJson = path22.join(root, "package.json");
-  const pomXml = path22.join(root, "pom.xml");
-  if (fs24.existsSync(cargoToml) && fs24.existsSync(cargoLock)) {
+  const cargoToml = path24.join(root, "Cargo.toml");
+  const cargoLock = path24.join(root, "Cargo.lock");
+  const packageJson = path24.join(root, "package.json");
+  const pomXml = path24.join(root, "pom.xml");
+  if (fs25.existsSync(cargoToml) && fs25.existsSync(cargoLock)) {
     return { ecosystem: "cargo", manifestPaths: await discoverWorkspaceCrates(root, opts) };
   }
-  if (fs24.existsSync(pomXml)) {
+  if (fs25.existsSync(pomXml)) {
     const manifestPaths = await discoverMavenModules(root, opts);
     if (manifestPaths.length > 0) {
       return { ecosystem: "maven", manifestPaths };
     }
   }
-  const hasGradleSettings = fs24.existsSync(path22.join(root, "settings.gradle")) || fs24.existsSync(path22.join(root, "settings.gradle.kts"));
+  const hasGradleSettings = fs25.existsSync(path24.join(root, "settings.gradle")) || fs25.existsSync(path24.join(root, "settings.gradle.kts"));
   if (hasGradleSettings) {
     const manifestPaths = await discoverGradleSubprojects(root, opts);
     if (manifestPaths.length > 0) {
       return { ecosystem: "gradle", manifestPaths };
     }
   }
-  if (fs24.existsSync(path22.join(root, "go.work"))) {
+  if (fs25.existsSync(path24.join(root, "go.work"))) {
     const manifestPaths = await discoverGoWorkspaceModules(root, opts);
     if (manifestPaths.length > 0) {
       return { ecosystem: "gomodules", manifestPaths };
     }
   }
-  if (fs24.existsSync(path22.join(root, "pyproject.toml")) && fs24.existsSync(path22.join(root, "uv.lock"))) {
+  if (fs25.existsSync(path24.join(root, "pyproject.toml")) && fs25.existsSync(path24.join(root, "uv.lock"))) {
     const manifestPaths = await discoverUvWorkspaceMembers(root, opts);
     if (manifestPaths.length > 0) {
       return { ecosystem: "pyproject", manifestPaths };
     }
   }
-  const hasJsLock = fs24.existsSync(path22.join(root, "bun.lock")) || fs24.existsSync(path22.join(root, "pnpm-lock.yaml")) || fs24.existsSync(path22.join(root, "yarn.lock")) || fs24.existsSync(path22.join(root, "package-lock.json"));
-  if (fs24.existsSync(packageJson) && hasJsLock) {
+  const hasJsLock = fs25.existsSync(path24.join(root, "bun.lock")) || fs25.existsSync(path24.join(root, "pnpm-lock.yaml")) || fs25.existsSync(path24.join(root, "yarn.lock")) || fs25.existsSync(path24.join(root, "package-lock.json"));
+  if (fs25.existsSync(packageJson) && hasJsLock) {
     let manifestPaths = await discoverWorkspacePackages(root, opts);
     if (manifestPaths.length === 0) {
       manifestPaths = [packageJson];
@@ -60481,8 +63146,8 @@ function batchError(message, wantMetadata, metadata2) {
 }
 async function stackAnalysisBatch(workspaceRoot, html = false, opts = {}) {
   const theUrl = selectTrustifyDABackend(opts);
-  const root = path22.resolve(workspaceRoot);
-  fs24.accessSync(root, fs24.constants.R_OK);
+  const root = path24.resolve(workspaceRoot);
+  fs25.accessSync(root, fs25.constants.R_OK);
   const continueOnError = resolveContinueOnError(opts);
   const wantMetadata = resolveBatchMetadata(opts);
   const collectedErrors = [];
@@ -60591,10 +63256,10 @@ function licensesFromReport(analysisReport, purls = []) {
 }
 
 // node_modules/@trustify-da/trustify-da-javascript-client/dist/src/license/project_license.js
-import fs25 from "node:fs";
-import path23 from "node:path";
+import fs26 from "node:fs";
+import path25 from "node:path";
 function getProjectLicense(manifestPath) {
-  const resolved = path23.resolve(manifestPath);
+  const resolved = path25.resolve(manifestPath);
   const provider = matchForLicense(resolved, availableProviders);
   const fromManifest = provider.readLicenseFromManifest(resolved);
   const fromFile = readLicenseFile(resolved);
@@ -60607,7 +63272,7 @@ function getProjectLicense(manifestPath) {
 }
 async function identifyLicense(licenseFilePath, opts = {}) {
   try {
-    const fileContent = fs25.readFileSync(licenseFilePath);
+    const fileContent = fs26.readFileSync(licenseFilePath);
     const backendUrl = selectTrustifyDABackend(opts);
     const url2 = new URL(`${backendUrl}/api/v5/licenses/identify`);
     const tokenHeaders = getTokenHeaders(opts);
@@ -60707,8 +63372,8 @@ async function runLicenseCheck(sbomContent, manifestPath, url2, opts = {}, analy
 var CYCLONEDX_JSON_MEDIA_TYPE = "application/vnd.cyclonedx+json";
 var analysis_default = { requestComponent, requestStack, requestStackBatch, requestImages, validateToken: validateToken2, appendAnalysisQueryParams };
 async function requestStack(provider, manifest, url2, html = false, opts = {}) {
-  opts["source-manifest"] = Buffer.from(fs26.readFileSync(manifest).toString()).toString("base64");
-  opts["manifest-type"] = path24.parse(manifest).base;
+  opts["source-manifest"] = Buffer.from(fs27.readFileSync(manifest).toString()).toString("base64");
+  opts["manifest-type"] = path26.parse(manifest).base;
   let provided = await provider.provideStack(manifest, opts);
   if (provided.batch) {
     return requestStackBatch(JSON.parse(provided.content), url2, html, opts);
@@ -60746,7 +63411,7 @@ async function requestStack(provider, manifest, url2, html = false, opts = {}) {
         console.log("Unique Identifier associated with this request - ex-request-id=" + exRequestId);
       }
       endTime = /* @__PURE__ */ new Date();
-      console.log("Response body received from Trustify DA backend server : " + EOL8 + EOL8);
+      console.log("Response body received from Trustify DA backend server : " + EOL7 + EOL7);
       console.log(console.log(JSON.stringify(result, null, 4)));
       console.log("Ending time of sending stack analysis request to Trustify DA backend server= " + endTime);
       let time = (endTime - startTime) / 1e3;
@@ -60758,7 +63423,7 @@ async function requestStack(provider, manifest, url2, html = false, opts = {}) {
   return Promise.resolve(result);
 }
 async function requestComponent(provider, manifest, url2, opts = {}) {
-  opts["source-manifest"] = Buffer.from(fs26.readFileSync(manifest).toString()).toString("base64");
+  opts["source-manifest"] = Buffer.from(fs27.readFileSync(manifest).toString()).toString("base64");
   let provided = await provider.provideComponent(manifest, opts);
   if (provided.batch) {
     return requestStackBatch(JSON.parse(provided.content), url2, false, opts);
@@ -60789,7 +63454,7 @@ async function requestComponent(provider, manifest, url2, opts = {}) {
       if (exRequestId) {
         console.log("Unique Identifier associated with this request - ex-request-id=" + exRequestId);
       }
-      console.log("Response body received from Trustify DA backend server : " + EOL8 + EOL8);
+      console.log("Response body received from Trustify DA backend server : " + EOL7 + EOL7);
       console.log(JSON.stringify(result, null, 4));
       console.log("Ending time of sending component analysis request to Trustify DA backend server= " + /* @__PURE__ */ new Date());
     }
@@ -60831,7 +63496,7 @@ async function requestStackBatch(sbomByPurl, url2, html = false, opts = {}) {
       if (exRequestId) {
         console.log("Unique Identifier associated with this request - ex-request-id=" + exRequestId);
       }
-      console.log("Response body received from Trustify DA backend server : " + EOL8 + EOL8);
+      console.log("Response body received from Trustify DA backend server : " + EOL7 + EOL7);
       console.log(JSON.stringify(result, null, 4));
       console.log("Ending time of sending batch stack analysis request to Trustify DA backend server= " + /* @__PURE__ */ new Date());
     }
@@ -60870,7 +63535,7 @@ async function requestImages(imageRefs, url2, html = false, opts = {}) {
       if (exRequestId) {
         console.log("Unique Identifier associated with this request - ex-request-id=" + exRequestId);
       }
-      console.log("Response body received from Trustify DA backend server : " + EOL8 + EOL8);
+      console.log("Response body received from Trustify DA backend server : " + EOL7 + EOL7);
       console.log(JSON.stringify(result, null, 4));
       console.log("Ending time of sending component analysis request to Trustify DA backend server= " + /* @__PURE__ */ new Date());
     }
@@ -61471,18 +64136,18 @@ function normalizeExcludePattern(pattern) {
 }
 function compileExcludeMatcher(pattern) {
   const normalized = normalizeExcludePattern(pattern);
-  return (canonicalPurl) => import_micromatch2.default.isMatch(canonicalPurl, normalized);
+  return (canonicalPurl) => import_micromatch3.default.isMatch(canonicalPurl, normalized);
 }
 function findManifests(targetPath) {
-  const resolvedPath = path25.resolve(targetPath);
+  const resolvedPath = path27.resolve(targetPath);
   let stat;
   try {
-    stat = fs27.statSync(resolvedPath);
+    stat = fs28.statSync(resolvedPath);
   } catch {
     throw new Error(`Path not found: ${resolvedPath}`);
   }
   if (!stat.isDirectory()) {
-    const basename = path25.basename(resolvedPath);
+    const basename = path27.basename(resolvedPath);
     if (!getManifestType(basename)) {
       throw new Error(`Unsupported manifest type: ${basename}`);
     }
@@ -61490,11 +64155,11 @@ function findManifests(targetPath) {
   }
   const manifests = [];
   function walk(dir) {
-    for (const entry of fs27.readdirSync(dir, { withFileTypes: true })) {
+    for (const entry of fs28.readdirSync(dir, { withFileTypes: true })) {
       if (SKIP_DIRS.has(entry.name)) {
         continue;
       }
-      const fullPath = path25.join(dir, entry.name);
+      const fullPath = path27.join(dir, entry.name);
       if (entry.isDirectory()) {
         walk(fullPath);
       } else if (getManifestType(entry.name)) {
@@ -61505,12 +64170,18 @@ function findManifests(targetPath) {
   walk(resolvedPath);
   return manifests;
 }
+function resolveConflict(versions, resolve2) {
+  if (resolve2) {
+    return resolve2(versions);
+  }
+  return versions.sort((a, b) => compareVersions2(b, a))[0];
+}
 async function runRemediation(targetPath, options = {}) {
-  const { dryRun = false, providers, sources, perDependencyChanges = false, backendUrl, exclude = [] } = options;
+  const { dryRun = false, providers, sources, conflictResolution, backendUrl, exclude = [] } = options;
   const excludeMatchers = exclude.map(compileExcludeMatcher);
   const manifestPaths = findManifests(targetPath);
   if (manifestPaths.length === 0) {
-    return { exitCode: 0, remediations: [], manifests: manifestPaths, appliedFiles: [], skipped: [] };
+    return { exitCode: 0, groups: [], remediations: [], manifests: manifestPaths, appliedFiles: [], skipped: [] };
   }
   const opts = {};
   if (backendUrl !== void 0) {
@@ -61523,11 +64194,11 @@ async function runRemediation(targetPath, options = {}) {
     opts.TRUSTIFY_DA_SOURCES = sources;
   }
   const url2 = selectTrustifyDABackend(opts);
-  const allRemediations = [];
+  const allGroups = [];
   const appliedFiles = [];
   const allSkipped = [];
   for (const manifestPath of manifestPaths) {
-    const basename = path25.basename(manifestPath);
+    const basename = path27.basename(manifestPath);
     const manifestType = getManifestType(basename);
     if (!manifestType) {
       continue;
@@ -61549,93 +64220,98 @@ async function runRemediation(targetPath, options = {}) {
     if (remediations.length === 0) {
       continue;
     }
-    const needsContent = excludeMatchers.length > 0 || perDependencyChanges || !dryRun;
-    const originalContent = needsContent ? fs27.readFileSync(manifestPath, "utf-8") : null;
-    if (excludeMatchers.length > 0 && originalContent) {
-      const editSiteMap = manifestType.depsForEditSite(originalContent, manifestPath);
-      const kept = [];
-      for (const r of remediations) {
-        const result = manifestType.updater(originalContent, [{
-          groupId: r.groupId,
-          artifactId: r.artifactId,
-          newVersion: r.fixedInVersion
-        }]);
-        if (result.applied.length === 0) {
-          kept.push(r);
-          continue;
-        }
-        const key = manifestType.changeKey(manifestPath, result.applied[0]);
-        const selfPurl = canonicalDepPurl(r.purl);
-        const coLocated = editSiteMap.get(key) || [];
-        const excludedPurl = coLocated.find((purl) => {
-          const canonical = canonicalDepPurl(purl);
-          if (canonical === selfPurl) {
-            return false;
-          }
-          return excludeMatchers.some((matches) => matches(canonical));
-        });
-        if (excludedPurl) {
-          const editType = manifestType.label === "maven" ? "Maven property" : "Gradle version.ref";
-          allSkipped.push({
-            groupId: r.groupId,
-            artifactId: r.artifactId,
-            newVersion: r.fixedInVersion,
-            reason: `Shares a ${editType} with excluded dependency ${canonicalDepPurl(excludedPurl)}`
-          });
-        } else {
-          kept.push(r);
-        }
-      }
-      remediations = kept;
-      if (remediations.length === 0) {
-        continue;
-      }
-    }
+    const originalContent = fs28.readFileSync(manifestPath, "utf-8");
+    const editSiteMap = excludeMatchers.length > 0 ? manifestType.depsForEditSite(originalContent, manifestPath) : null;
+    const groups = /* @__PURE__ */ new Map();
     for (
       const remediation of
       /** @type {AppliedRemediation[]} */
       remediations
     ) {
       remediation.files = [manifestPath];
-    }
-    if (perDependencyChanges) {
-      const applicable = [];
-      for (const remediation of remediations) {
-        const isolated = manifestType.updater(originalContent, [{
+      const isolated = manifestType.updater(originalContent, [{
+        groupId: remediation.groupId,
+        artifactId: remediation.artifactId,
+        newVersion: remediation.fixedInVersion
+      }]);
+      if (isolated.applied.length === 0) {
+        allSkipped.push({
           groupId: remediation.groupId,
           artifactId: remediation.artifactId,
-          newVersion: remediation.fixedInVersion
-        }]);
-        if (isolated.applied.length === 0) {
+          newVersion: remediation.fixedInVersion,
+          reason: "Dependency not directly declared in the manifest"
+        });
+        continue;
+      }
+      const key = manifestType.changeKey(manifestPath, isolated.applied[0]);
+      if (editSiteMap) {
+        const selfPurl = canonicalDepPurl(remediation.purl);
+        const coLocated = editSiteMap.get(key) || [];
+        const excludedPurl = coLocated.find((purl) => {
+          const canonical = canonicalDepPurl(purl);
+          return canonical !== selfPurl && excludeMatchers.some((m) => m(canonical));
+        });
+        if (excludedPurl) {
+          const editType = manifestType.label === "maven" ? "Maven property" : "Gradle version.ref";
+          allSkipped.push({
+            groupId: remediation.groupId,
+            artifactId: remediation.artifactId,
+            newVersion: remediation.fixedInVersion,
+            reason: `Shares a ${editType} with excluded dependency ${canonicalDepPurl(excludedPurl)}`
+          });
           continue;
         }
-        remediation.changes = [{
-          path: manifestPath,
-          after: isolated.content,
-          changeKey: manifestType.changeKey(manifestPath, isolated.applied[0])
-        }];
-        applicable.push(remediation);
       }
-      allRemediations.push(...applicable);
-    } else {
-      allRemediations.push(...remediations);
+      let group = groups.get(key);
+      if (!group) {
+        group = [];
+        groups.set(key, group);
+      }
+      group.push(remediation);
     }
-    if (!dryRun) {
-      const result = manifestType.updater(originalContent, remediations.map((r) => ({
+    if (groups.size === 0) {
+      continue;
+    }
+    const allChanges = [];
+    for (const [changeKey, members] of groups) {
+      const uniqueVersions = [...new Set(members.map((r) => r.fixedInVersion))];
+      let appliedVersion;
+      if (uniqueVersions.length === 1) {
+        appliedVersion = uniqueVersions[0];
+      } else {
+        appliedVersion = resolveConflict(uniqueVersions, conflictResolution);
+        if (!uniqueVersions.includes(appliedVersion)) {
+          throw new Error(`conflictResolution returned '${appliedVersion}', which is not one of the candidates: ${uniqueVersions.join(", ")}`);
+        }
+      }
+      const changes = members.map((r) => ({
         groupId: r.groupId,
         artifactId: r.artifactId,
-        newVersion: r.fixedInVersion
-      })));
-      if (result.applied.length > 0) {
-        fs27.writeFileSync(manifestPath, result.content, "utf-8");
+        newVersion: appliedVersion
+      }));
+      const result = manifestType.updater(originalContent, changes);
+      allGroups.push({
+        changeKey,
+        appliedVersion,
+        remediations: members,
+        edit: { path: manifestPath, after: result.content },
+        divergent: members.some((r) => r.fixedInVersion !== appliedVersion)
+      });
+      allChanges.push(...changes);
+    }
+    if (!dryRun) {
+      const combined = manifestType.updater(originalContent, allChanges);
+      if (combined.applied.length > 0) {
+        fs28.writeFileSync(manifestPath, combined.content, "utf-8");
         appliedFiles.push(manifestPath);
       }
     }
   }
-  if (allRemediations.length === 0) {
-    return { exitCode: 0, remediations: [], manifests: manifestPaths, appliedFiles, skipped: allSkipped };
+  const flatRemediations = allGroups.flatMap((g) => g.remediations);
+  if (flatRemediations.length === 0) {
+    return { exitCode: 0, groups: [], remediations: [], manifests: manifestPaths, appliedFiles, skipped: allSkipped };
   }
-  return { exitCode: dryRun ? 2 : 0, remediations: allRemediations, manifests: manifestPaths, appliedFiles, skipped: allSkipped };
+  return { exitCode: dryRun ? 2 : 0, groups: allGroups, remediations: flatRemediations, manifests: manifestPaths, appliedFiles, skipped: allSkipped };
 }
 
 // src/github.ts
@@ -61755,9 +64431,7 @@ async function runRemediateMode(config) {
       dryRun: config.dryRun,
       providers: config.providers.length > 0 ? config.providers.join(",") : void 0,
       sources: config.sources.length > 0 ? config.sources.join(",") : void 0,
-      exclude: config.remediation?.exclude,
-      // Opt into per-dependency change data only when we need isolated PRs.
-      perDependencyChanges: groupBy === "dependency"
+      exclude: config.remediation?.exclude
     });
   } catch (error) {
     throw new Error(`Remediation failed: ${error instanceof Error ? error.message : String(error)}`);
@@ -61774,23 +64448,23 @@ async function runRemediateMode(config) {
     0
   );
   core3.setOutput("remediation-count", totalVulnerabilities);
-  if (result.remediations.length === 0) {
+  if (result.groups.length === 0) {
     core3.info("No remediations found.");
     return;
   }
-  const report = generateReport(result.remediations, { groupBy });
+  const report = generateReport(result.remediations, { groupBy, groups: result.groups, skipped: result.skipped });
   core3.info(report);
   if (config.dryRun) {
     core3.info("Dry-run mode: skipping PR creation");
     return;
   }
   if (groupBy === "dependency") {
-    await runDependencyMode(result.remediations, config, workspacePath, result.skipped);
+    await runDependencyMode(result.groups, config, workspacePath, result.skipped);
   } else {
-    await runBundleMode(result.remediations, config, workspacePath, result.skipped);
+    await runBundleMode(result.groups, config, workspacePath, result.skipped);
   }
 }
-async function runBundleMode(remediations, config, workspacePath, skipped) {
+async function runBundleMode(groups, config, workspacePath, skipped) {
   const changedFiles = await getChangedFiles(workspacePath);
   if (changedFiles.length === 0) {
     core3.info("No files modified - no remediations applied");
@@ -61800,14 +64474,17 @@ async function runBundleMode(remediations, config, workspacePath, skipped) {
   core3.setOutput("changed-files", changedFiles.join(","));
   const baseSha = await getHeadSha(workspacePath);
   const manifestLabel = changedFiles.join(", ");
-  const group = {
+  const remediations = groups.flatMap((g) => g.remediations);
+  const prGroup = {
     key: "bundle",
     branchName: `${config.branchPrefix}/remediate-vulnerabilities`,
     title: `fix: remediate dependency vulnerabilities in ${manifestLabel}`,
-    remediations
+    group: groups[0]
   };
   const prUrl = await createPRForGroup(
-    group,
+    prGroup,
+    remediations,
+    groups,
     config,
     changedFiles,
     workspacePath,
@@ -61817,40 +64494,39 @@ async function runBundleMode(remediations, config, workspacePath, skipped) {
   core3.setOutput("pr-url", prUrl);
   core3.info("Created 1 PR");
 }
-async function runDependencyMode(remediations, config, workspacePath, skipped) {
-  const rawGroups = groupByChangeKey(remediations);
-  if (rawGroups.length === 0) {
+async function runDependencyMode(groups, config, workspacePath, skipped) {
+  if (groups.length === 0) {
     core3.info("No per-dependency changes emitted - no remediations applied");
     return;
   }
   const allChangePaths = Array.from(
-    new Set(rawGroups.flatMap((g) => g.changes.map((c) => c.path)))
+    new Set(groups.map((g) => g.edit.path))
   );
   core3.setOutput("changed-files", allChangePaths.join(","));
   await discardWorkingTreeChanges(allChangePaths, workspacePath);
   const baseSha = await getHeadSha(workspacePath);
-  core3.info(`Creating ${rawGroups.length} PR(s) (groupBy: dependency)`);
+  core3.info(`Creating ${groups.length} PR(s) (groupBy: dependency)`);
   const purls = [];
-  for (const raw of rawGroups) {
+  for (const group of groups) {
     const depLabel = Array.from(
       new Set(
-        raw.remediations.map(
+        group.remediations.map(
           (r) => r.groupId ? `${r.groupId}:${r.artifactId}` : r.artifactId
         )
       )
     ).join(", ");
-    const group = {
-      key: raw.key,
-      branchName: `${config.branchPrefix}/remediate-${sanitizeBranchName(depLabel)}-${shortHash(raw.key)}`,
+    const prGroup = {
+      key: group.changeKey,
+      branchName: `${config.branchPrefix}/remediate-${sanitizeBranchName(depLabel)}-${shortHash(group.changeKey)}`,
       title: `fix: update ${depLabel} to fix vulnerabilities`,
-      remediations: raw.remediations,
-      changes: raw.changes,
-      appliedVersion: raw.appliedVersion
+      group
     };
     const prUrl = await createPRForGroup(
-      group,
+      prGroup,
+      group.remediations,
+      [group],
       config,
-      raw.changes.map((c) => c.path),
+      [group.edit.path],
       workspacePath,
       baseSha,
       skipped
@@ -61860,73 +64536,37 @@ async function runDependencyMode(remediations, config, workspacePath, skipped) {
   core3.setOutput("pr-url", purls.length === 1 ? purls[0] : purls.join(","));
   core3.info(`Created ${purls.length} PR(s)`);
 }
-function groupByChangeKey(remediations) {
-  const groups = /* @__PURE__ */ new Map();
-  for (const remediation of remediations) {
-    for (const change of remediation.changes ?? []) {
-      let group = groups.get(change.changeKey);
-      if (!group) {
-        group = {
-          key: change.changeKey,
-          remediations: [],
-          changeByPath: /* @__PURE__ */ new Map()
-        };
-        groups.set(change.changeKey, group);
-      }
-      if (!group.remediations.includes(remediation)) {
-        group.remediations.push(remediation);
-      }
-      const existing = group.changeByPath.get(change.path);
-      if (!existing || compareVersions3(remediation.fixedInVersion, existing.version) > 0) {
-        group.changeByPath.set(change.path, {
-          after: change.after,
-          version: remediation.fixedInVersion
-        });
-      }
-    }
-  }
-  return Array.from(groups.values()).map((group) => {
-    const entries = Array.from(group.changeByPath.entries());
-    const appliedVersion = entries.map(([, value]) => value.version).sort((a, b) => compareVersions3(b, a))[0];
-    return {
-      key: group.key,
-      remediations: group.remediations,
-      appliedVersion,
-      changes: entries.map(([path26, value]) => ({ path: path26, after: value.after }))
-    };
-  });
-}
-async function createPRForGroup(group, config, changedFilesList, workspacePath, baseSha, skipped) {
-  await checkoutBranch(group.branchName, baseSha, workspacePath);
-  await materializeChanges(group, workspacePath);
-  await commitAndPushBranch(group, changedFilesList, workspacePath);
-  core3.info(`Creating or updating PR for branch: ${group.branchName}`);
+async function createPRForGroup(prGroup, remediations, groups, config, changedFilesList, workspacePath, baseSha, skipped) {
+  await checkoutBranch(prGroup.branchName, baseSha, workspacePath);
+  await materializeEdit(prGroup, workspacePath);
+  await commitAndPushBranch(prGroup, changedFilesList, workspacePath);
+  core3.info(`Creating or updating PR for branch: ${prGroup.branchName}`);
   const prUrl = await createOrUpdatePR(
     {
-      title: group.title,
-      body: buildPrBody(group, config, changedFilesList, skipped),
-      head: group.branchName,
+      title: prGroup.title,
+      body: buildPrBody(remediations, groups, config, changedFilesList, skipped),
+      head: prGroup.branchName,
       base: github2.context.payload.repository?.default_branch ?? "main",
       labels: config.labels
     },
     {
       mode: "remediate",
-      branch: group.branchName
+      branch: prGroup.branchName
     }
   );
   core3.info(`PR created/updated: ${prUrl}`);
   return prUrl;
 }
-async function materializeChanges(group, workspacePath) {
-  for (const change of group.changes ?? []) {
-    await writeFile(resolve(workspacePath, change.path), change.after);
-  }
+async function materializeEdit(prGroup, workspacePath) {
+  if (prGroup.key === "bundle") return;
+  const { path: path28, after } = prGroup.group.edit;
+  await writeFile(resolve(workspacePath, path28), after);
 }
 async function checkoutBranch(branchName, baseSha, workspacePath) {
   core3.info(`Preparing branch: ${branchName}`);
   await exec.exec("git", ["checkout", "-B", branchName, baseSha], { cwd: workspacePath });
 }
-async function commitAndPushBranch(group, changedFilesList, workspacePath) {
+async function commitAndPushBranch(prGroup, changedFilesList, workspacePath) {
   const options = { cwd: workspacePath };
   if (changedFilesList.length === 0) return;
   await exec.exec("git", ["add", ...changedFilesList], options);
@@ -61939,14 +64579,14 @@ async function commitAndPushBranch(group, changedFilesList, workspacePath) {
       "user.email=trustify-da[bot]@users.noreply.github.com",
       "commit",
       "-m",
-      group.title,
+      prGroup.title,
       "-m",
       "Automated remediation by Trustify Dependency Analytics"
     ],
     options
   );
-  core3.info(`Pushing branch: ${group.branchName}`);
-  await pushBranch(group.branchName, workspacePath);
+  core3.info(`Pushing branch: ${prGroup.branchName}`);
+  await pushBranch(prGroup.branchName, workspacePath);
 }
 async function pushBranch(branchName, workspacePath) {
   const options = { cwd: workspacePath };
@@ -61959,16 +64599,12 @@ async function pushBranch(branchName, workspacePath) {
   const pushArgs = remoteSha ? ["push", "origin", branchName, `--force-with-lease=${branchName}:${remoteSha}`] : ["push", "-u", "origin", branchName];
   await exec.exec("git", pushArgs, options);
 }
-function buildPrBody(group, config, changedFilesList, skipped) {
+function buildPrBody(remediations, groups, config, changedFilesList, skipped) {
   const groupBy = config.groupBy === "dependency" ? "dependency" : "bundle";
-  const appliedVersion = group.appliedVersion;
-  const remediations = appliedVersion ? group.remediations.map((r) => ({ ...r, fixedInVersion: appliedVersion })) : group.remediations;
-  const report = generateReport(remediations, { groupBy });
-  const divergence = appliedVersion ? renderDivergenceTable(group.remediations, appliedVersion) : "";
-  const skippedSection = renderSkippedSection(skipped);
+  const report = generateReport(remediations, { groupBy, groups, skipped });
   return `## Automated Dependency Remediation
 
-${[divergence, report, skippedSection].filter(Boolean).join("\n\n")}
+${report}
 
 ### Changed Files
 ${changedFilesList.map((f) => `- \`${f}\``).join("\n")}
@@ -61976,61 +64612,11 @@ ${changedFilesList.map((f) => `- \`${f}\``).join("\n")}
 ---
 *Automated by [Trustify Dependency Analytics](https://github.com/trustification/trustify-da-action)*`;
 }
-function renderDivergenceTable(remediations, appliedVersion) {
-  if (remediations.length < 2) return "";
-  if (!remediations.some((r) => r.fixedInVersion !== appliedVersion)) return "";
-  const rows = remediations.map((r) => {
-    const name2 = r.groupId ? `${r.groupId}:${r.artifactId}` : r.artifactId;
-    return `| ${name2} | ${r.fixedInVersion} | ${appliedVersion} |`;
-  });
-  return [
-    "### Applied version differs from some recommendations",
-    "",
-    "These artifacts share one version site, so a single version was written for all of them.",
-    "",
-    "| Artifact | Recommended | Applied |",
-    "| --- | --- | --- |",
-    ...rows
-  ].join("\n");
-}
-function renderSkippedSection(skipped) {
-  if (skipped.length === 0) return "";
-  const rows = skipped.map((s) => {
-    const name2 = s.groupId ? `${s.groupId}:${s.artifactId}` : s.artifactId;
-    return `| ${name2} | ${s.newVersion} | ${s.reason} |`;
-  });
-  return [
-    "### Skipped Remediations",
-    "",
-    "These remediations were skipped because they share a version edit site with an excluded dependency.",
-    "",
-    "| Dependency | Version | Reason |",
-    "| --- | --- | --- |",
-    ...rows
-  ].join("\n");
-}
 function shortHash(value) {
   return createHash("sha256").update(value).digest("hex").substring(0, 8);
 }
 function sanitizeBranchName(name2) {
   return name2.toLowerCase().replace(/[^a-z0-9-_.]/g, "-").replace(/-+/g, "-").replace(/^-|-$/g, "");
-}
-function compareVersions3(a, b) {
-  const aParts = a.split(/[.+-]/);
-  const bParts = b.split(/[.+-]/);
-  const len = Math.max(aParts.length, bParts.length);
-  for (let i2 = 0; i2 < len; i2++) {
-    const aRaw = aParts[i2] ?? "0";
-    const bRaw = bParts[i2] ?? "0";
-    const aNum = Number(aRaw);
-    const bNum = Number(bRaw);
-    if (!Number.isNaN(aNum) && !Number.isNaN(bNum)) {
-      if (aNum !== bNum) return aNum - bNum;
-    } else if (aRaw !== bRaw) {
-      return aRaw < bRaw ? -1 : 1;
-    }
-  }
-  return 0;
 }
 async function discardWorkingTreeChanges(paths, workspacePath) {
   if (paths.length === 0) return;
