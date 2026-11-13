@@ -7,31 +7,42 @@ import type { ActionConfig } from '../src/config.js';
 // Mock dependencies
 vi.mock('@actions/core');
 vi.mock('@actions/exec');
-vi.mock('@trustify-da/trustify-da-javascript-client/dist/src/remediate.js', () => ({
-  runRemediation: vi.fn().mockResolvedValue({
-    exitCode: 0,
-    manifests: [],
-    appliedFiles: [],
-    skipped: [],
-    remediations: [
-      {
-        purl: 'pkg:maven/com.example/vulnerable@1.0.0',
-        groupId: 'com.example',
-        artifactId: 'vulnerable',
-        currentVersion: '1.0.0',
-        fixedInVersion: '1.1.0',
-        fixedInPurl: 'pkg:maven/com.example/vulnerable@1.1.0',
-        provider: 'osv',
-        source: 'osv',
-        vulnerabilities: [
-          { id: 'CVE-2024-1234', severity: 'HIGH', advisories: [{ id: 'GHSA-1234', url: 'https://github.com/advisories/GHSA-1234' }] },
-          { id: 'CVE-2024-5678', severity: 'HIGH', advisories: [] },
-        ],
-        files: ['pom.xml'],
-      },
+
+vi.mock('@trustify-da/trustify-da-javascript-client/dist/src/remediate.js', () => {
+  const rem = {
+    purl: 'pkg:maven/com.example/vulnerable@1.0.0',
+    groupId: 'com.example',
+    artifactId: 'vulnerable',
+    currentVersion: '1.0.0',
+    fixedInVersion: '1.1.0',
+    fixedInPurl: 'pkg:maven/com.example/vulnerable@1.1.0',
+    provider: 'osv',
+    source: 'osv',
+    vulnerabilities: [
+      { id: 'CVE-2024-1234', severity: 'HIGH', advisories: [{ id: 'GHSA-1234', url: 'https://github.com/advisories/GHSA-1234' }] },
+      { id: 'CVE-2024-5678', severity: 'HIGH', advisories: [] },
     ],
-  }),
-}));
+    files: ['pom.xml'],
+  };
+  return {
+    runRemediation: vi.fn().mockResolvedValue({
+      exitCode: 0,
+      manifests: [],
+      appliedFiles: [],
+      skipped: [],
+      groups: [
+        {
+          changeKey: 'mvn:direct:pom.xml:com.example:vulnerable',
+          appliedVersion: '1.1.0',
+          remediations: [rem],
+          edit: { path: 'pom.xml', after: '<pom><vulnerable>1.1.0</vulnerable></pom>' },
+          divergent: false,
+        },
+      ],
+      remediations: [rem],
+    }),
+  };
+});
 vi.mock('@trustify-da/trustify-da-javascript-client/dist/src/remediation_report.js', () => ({
   generateReport: vi.fn().mockReturnValue('# Remediation Report\n\nFixed 2 vulnerabilities'),
 }));
@@ -42,8 +53,6 @@ vi.mock('node:fs/promises', () => ({
   writeFile: vi.fn().mockResolvedValue(undefined),
 }));
 
-// Builds a Remediation with sensible defaults; pass overrides for the fields a
-// given test actually cares about (versions, changeKey, vulnerabilities, ...).
 function makeRemediation(overrides: Record<string, unknown> = {}) {
   return {
     purl: 'pkg:maven/com.example/vulnerable@1.0.0',
@@ -60,6 +69,18 @@ function makeRemediation(overrides: Record<string, unknown> = {}) {
   };
 }
 
+function makeGroup(overrides: Record<string, unknown> = {}) {
+  const remediations = (overrides.remediations as ReturnType<typeof makeRemediation>[]) ?? [makeRemediation()];
+  return {
+    changeKey: 'mvn:direct:pom.xml:com.example:vulnerable',
+    appliedVersion: '1.1.0',
+    remediations,
+    edit: { path: 'pom.xml', after: '<pom><vulnerable>1.1.0</vulnerable></pom>' },
+    divergent: false,
+    ...overrides,
+  };
+}
+
 describe('remediate mode', () => {
   beforeEach(() => {
     vi.clearAllMocks();
@@ -67,7 +88,6 @@ describe('remediate mode', () => {
     process.env.GITHUB_TOKEN = 'test-token';
     process.env.TRUSTIFY_DA_BACKEND_URL = 'https://trustify.test';
 
-    // getChangedFiles / getHeadSha read the .stdout of getExecOutput.
     vi.mocked(exec.getExecOutput).mockImplementation(async (cmd, args) => {
       if (cmd === 'git' && args?.[0] === 'rev-parse') {
         return { stdout: 'basesha0000000000000000000000000000000000\n', stderr: '', exitCode: 0 };
@@ -80,7 +100,6 @@ describe('remediate mode', () => {
   });
 
   it('should run remediation and create PR when files are modified', async () => {
-    // Mock git operations
     vi.mocked(exec.exec).mockImplementation(async (cmd, args, options) => {
       if (cmd === 'git' && args?.[0] === 'diff') {
         options?.listeners?.stdout?.(Buffer.from('pom.xml\n'));
@@ -106,7 +125,6 @@ describe('remediate mode', () => {
 
     await runRemediateMode(config);
 
-    // Verify outputs were set - 2 CVEs total
     expect(core.setOutput).toHaveBeenCalledWith('changed-files', 'pom.xml');
     expect(core.setOutput).toHaveBeenCalledWith('remediation-count', 2);
     expect(core.setOutput).toHaveBeenCalledWith('pr-url', 'https://github.com/test/repo/pull/1');
@@ -132,13 +150,11 @@ describe('remediate mode', () => {
 
     await runRemediateMode(config);
 
-    // Verify runRemediation was called with dryRun: true
     expect(runRemediation).toHaveBeenCalledWith(
       expect.any(String),
       expect.objectContaining({ dryRun: true })
     );
 
-    // Verify no git operations were performed
     const gitCalls = vi.mocked(exec.exec).mock.calls.filter((call) => call[0] === 'git');
     expect(gitCalls.length).toBe(0);
   });
@@ -175,7 +191,9 @@ describe('remediate mode', () => {
     const { runRemediation } = await import(
       '@trustify-da/trustify-da-javascript-client/dist/src/remediate.js'
     );
-    vi.mocked(runRemediation).mockResolvedValueOnce({ exitCode: 0, remediations: [], manifests: [], appliedFiles: [], skipped: [] });
+    vi.mocked(runRemediation).mockResolvedValueOnce({
+      exitCode: 0, groups: [], remediations: [], manifests: [], appliedFiles: [], skipped: [],
+    });
 
     const config: ActionConfig = {
       mode: 'remediate',
@@ -192,10 +210,8 @@ describe('remediate mode', () => {
 
     await runRemediateMode(config);
 
-    // Verify remediation-count is 0
     expect(core.setOutput).toHaveBeenCalledWith('remediation-count', 0);
 
-    // Verify no git operations
     const gitCalls = vi.mocked(exec.exec).mock.calls.filter((call) => call[0] === 'git');
     expect(gitCalls.length).toBe(0);
   });
@@ -228,7 +244,6 @@ describe('remediate mode', () => {
 
     await runRemediateMode(config);
 
-    // Verify createOrUpdatePR was called with custom labels and branch
     expect(createOrUpdatePR).toHaveBeenCalledWith(
       expect.objectContaining({
         head: 'custom-prefix/remediate-vulnerabilities',
@@ -236,6 +251,67 @@ describe('remediate mode', () => {
       }),
       expect.any(Object)
     );
+  });
+
+  it('passes groups and skipped to generateReport for the PR body', async () => {
+    const { runRemediation } = await import(
+      '@trustify-da/trustify-da-javascript-client/dist/src/remediate.js'
+    );
+    const { generateReport } = await import(
+      '@trustify-da/trustify-da-javascript-client/dist/src/remediation_report.js'
+    );
+
+    const rem1 = makeRemediation({ fixedInVersion: '1.10.0' });
+    const rem2 = makeRemediation({
+      artifactId: 'commons-lang3',
+      fixedInVersion: '1.9.0',
+    });
+    const group = makeGroup({
+      changeKey: 'mvn:prop:pom.xml:commons.version',
+      appliedVersion: '1.10.0',
+      remediations: [rem1, rem2],
+      divergent: true,
+    });
+    const skipped = [
+      { groupId: 'com.example', artifactId: 'legacy', newVersion: '2.0.0', reason: 'Shares a Maven property with excluded dependency' },
+    ];
+
+    vi.mocked(runRemediation).mockResolvedValueOnce({
+      exitCode: 0,
+      manifests: [],
+      appliedFiles: [],
+      skipped,
+      groups: [group],
+      remediations: [rem1, rem2],
+    });
+
+    vi.mocked(exec.exec).mockResolvedValue(0);
+
+    const config: ActionConfig = {
+      mode: 'remediate',
+      backendUrl: null,
+      providers: [],
+      sources: [],
+      groupBy: 'bundle',
+      dryRun: false,
+      labels: ['trustify-da'],
+      branchPrefix: 'trustify-da',
+      remediation: {},
+      failOn: {},
+    };
+
+    await runRemediateMode(config);
+
+    // generateReport is called twice: once for the info-log, once for the PR body.
+    // Both should receive groups and skipped.
+    for (const call of vi.mocked(generateReport).mock.calls) {
+      expect(call[1]).toEqual(
+        expect.objectContaining({
+          groups: [group],
+          skipped,
+        })
+      );
+    }
   });
 
   describe('per-dependency mode (groupBy: dependency)', () => {
@@ -248,52 +324,52 @@ describe('remediate mode', () => {
       });
     });
 
-    it('creates one PR per distinct changeKey (two separate deps in one pom)', async () => {
+    it('creates one PR per group (two separate deps in one pom)', async () => {
       const { runRemediation } = await import(
         '@trustify-da/trustify-da-javascript-client/dist/src/remediate.js'
       );
       const { writeFile } = await import('node:fs/promises');
       const { createOrUpdatePR } = await import('../src/github.js');
 
+      const rem1 = makeRemediation({
+        purl: 'pkg:maven/org.apache.commons/commons-text@1.9',
+        groupId: 'org.apache.commons',
+        artifactId: 'commons-text',
+        currentVersion: '1.9',
+        fixedInVersion: '1.10.0',
+        fixedInPurl: 'pkg:maven/org.apache.commons/commons-text@1.10.0',
+        vulnerabilities: [{ id: 'CVE-2022-42889', severity: 'HIGH', advisories: [] }],
+      });
+      const rem2 = makeRemediation({
+        purl: 'pkg:maven/com.fasterxml.jackson.core/jackson-databind@2.14.0',
+        groupId: 'com.fasterxml.jackson.core',
+        artifactId: 'jackson-databind',
+        currentVersion: '2.14.0',
+        fixedInVersion: '2.15.0',
+        fixedInPurl: 'pkg:maven/com.fasterxml.jackson.core/jackson-databind@2.15.0',
+        vulnerabilities: [{ id: 'CVE-2023-0001', severity: 'HIGH', advisories: [] }],
+      });
+
       vi.mocked(runRemediation).mockResolvedValueOnce({
         exitCode: 0,
         manifests: [],
         appliedFiles: [],
         skipped: [],
-        remediations: [
-          makeRemediation({
-            purl: 'pkg:maven/org.apache.commons/commons-text@1.9',
-            groupId: 'org.apache.commons',
-            artifactId: 'commons-text',
-            currentVersion: '1.9',
-            fixedInVersion: '1.10.0',
-            fixedInPurl: 'pkg:maven/org.apache.commons/commons-text@1.10.0',
-            vulnerabilities: [{ id: 'CVE-2022-42889', severity: 'HIGH', advisories: [] }],
-            changes: [
-              {
-                path: 'pom.xml',
-                after: '<pom><commons-text>1.10.0</commons-text><jackson>2.14.0</jackson></pom>',
-                changeKey: 'mvn:direct:pom.xml:org.apache.commons:commons-text',
-              },
-            ],
+        groups: [
+          makeGroup({
+            changeKey: 'mvn:direct:pom.xml:org.apache.commons:commons-text',
+            appliedVersion: '1.10.0',
+            remediations: [rem1],
+            edit: { path: 'pom.xml', after: '<pom><commons-text>1.10.0</commons-text><jackson>2.14.0</jackson></pom>' },
           }),
-          makeRemediation({
-            purl: 'pkg:maven/com.fasterxml.jackson.core/jackson-databind@2.14.0',
-            groupId: 'com.fasterxml.jackson.core',
-            artifactId: 'jackson-databind',
-            currentVersion: '2.14.0',
-            fixedInVersion: '2.15.0',
-            fixedInPurl: 'pkg:maven/com.fasterxml.jackson.core/jackson-databind@2.15.0',
-            vulnerabilities: [{ id: 'CVE-2023-0001', severity: 'HIGH', advisories: [] }],
-            changes: [
-              {
-                path: 'pom.xml',
-                after: '<pom><commons-text>1.9</commons-text><jackson>2.15.0</jackson></pom>',
-                changeKey: 'mvn:direct:pom.xml:com.fasterxml.jackson.core:jackson-databind',
-              },
-            ],
+          makeGroup({
+            changeKey: 'mvn:direct:pom.xml:com.fasterxml.jackson.core:jackson-databind',
+            appliedVersion: '2.15.0',
+            remediations: [rem2],
+            edit: { path: 'pom.xml', after: '<pom><commons-text>1.9</commons-text><jackson>2.15.0</jackson></pom>' },
           }),
         ],
+        remediations: [rem1, rem2],
       });
 
       const config: ActionConfig = {
@@ -311,20 +387,14 @@ describe('remediate mode', () => {
 
       await runRemediateMode(config);
 
-      // Two distinct changeKeys => two PRs
       expect(createOrUpdatePR).toHaveBeenCalledTimes(2);
-      // Two isolated writes of `after` content
       expect(writeFile).toHaveBeenCalledTimes(2);
-      // pr-url output is comma-joined for multiple PRs
       expect(core.setOutput).toHaveBeenCalledWith(
         'pr-url',
         'https://github.com/test/repo/pull/1,https://github.com/test/repo/pull/1'
       );
 
-      // Regression: each group must `git checkout -B` its clean branch BEFORE it
-      // materializes pom.xml. Writing first leaves the previous group's branch
-      // dirty and makes the next checkout abort. Assert the calls strictly
-      // interleave: checkout1 < write1 < checkout2 < write2.
+      // Each group must checkout its branch BEFORE materializing the edit.
       const checkoutOrders = vi
         .mocked(exec.exec)
         .mock.calls.map((call, i) => ({ call, order: vi.mocked(exec.exec).mock.invocationCallOrder[i] }))
@@ -344,6 +414,28 @@ describe('remediate mode', () => {
       );
       const { writeFile } = await import('node:fs/promises');
       const { createOrUpdatePR } = await import('../src/github.js');
+      const { generateReport } = await import(
+        '@trustify-da/trustify-da-javascript-client/dist/src/remediation_report.js'
+      );
+
+      const rem1 = makeRemediation({
+        purl: 'pkg:maven/org.apache.commons/commons-text@1.9',
+        groupId: 'org.apache.commons',
+        artifactId: 'commons-text',
+        currentVersion: '1.9',
+        fixedInVersion: '1.10.0',
+        fixedInPurl: 'pkg:maven/org.apache.commons/commons-text@1.10.0',
+        vulnerabilities: [{ id: 'CVE-2022-42889', severity: 'HIGH', advisories: [] }],
+      });
+      const rem2 = makeRemediation({
+        purl: 'pkg:maven/org.apache.commons/commons-lang3@3.11',
+        groupId: 'org.apache.commons',
+        artifactId: 'commons-lang3',
+        currentVersion: '3.11',
+        fixedInVersion: '1.9.0',
+        fixedInPurl: 'pkg:maven/org.apache.commons/commons-lang3@1.9.0',
+        vulnerabilities: [{ id: 'CVE-2023-0002', severity: 'MEDIUM', advisories: [] }],
+      });
 
       const sharedAfter = '<pom><commons.version>1.10.0</commons.version></pom>';
       vi.mocked(runRemediation).mockResolvedValueOnce({
@@ -351,42 +443,16 @@ describe('remediate mode', () => {
         manifests: [],
         appliedFiles: [],
         skipped: [],
-        remediations: [
-          makeRemediation({
-            purl: 'pkg:maven/org.apache.commons/commons-text@1.9',
-            groupId: 'org.apache.commons',
-            artifactId: 'commons-text',
-            currentVersion: '1.9',
-            fixedInVersion: '1.10.0',
-            fixedInPurl: 'pkg:maven/org.apache.commons/commons-text@1.10.0',
-            vulnerabilities: [{ id: 'CVE-2022-42889', severity: 'HIGH', advisories: [] }],
-            changes: [
-              {
-                path: 'pom.xml',
-                after: sharedAfter,
-                changeKey: 'mvn:prop:pom.xml:commons.version',
-              },
-            ],
-          }),
-          makeRemediation({
-            purl: 'pkg:maven/org.apache.commons/commons-lang3@3.11',
-            groupId: 'org.apache.commons',
-            artifactId: 'commons-lang3',
-            currentVersion: '3.11',
-            // Lower fix than commons-text; the shared property collapses to the
-            // highest (1.10.0), which must be the stamped appliedVersion.
-            fixedInVersion: '1.9.0',
-            fixedInPurl: 'pkg:maven/org.apache.commons/commons-lang3@1.9.0',
-            vulnerabilities: [{ id: 'CVE-2023-0002', severity: 'MEDIUM', advisories: [] }],
-            changes: [
-              {
-                path: 'pom.xml',
-                after: sharedAfter,
-                changeKey: 'mvn:prop:pom.xml:commons.version',
-              },
-            ],
+        groups: [
+          makeGroup({
+            changeKey: 'mvn:prop:pom.xml:commons.version',
+            appliedVersion: '1.10.0',
+            remediations: [rem1, rem2],
+            edit: { path: 'pom.xml', after: sharedAfter },
+            divergent: true,
           }),
         ],
+        remediations: [rem1, rem2],
       });
 
       const config: ActionConfig = {
@@ -404,30 +470,29 @@ describe('remediate mode', () => {
 
       await runRemediateMode(config);
 
-      // Same changeKey => one PR, one write
+      // One group => one PR, one write
       expect(createOrUpdatePR).toHaveBeenCalledTimes(1);
       expect(writeFile).toHaveBeenCalledTimes(1);
-      // remediation-count sums both deps' CVEs
       expect(core.setOutput).toHaveBeenCalledWith('remediation-count', 2);
 
-      // The client heading renders from fixedInVersion, so every dep in the
-      // collapsed group is overloaded to the highest applied version (1.10.0)
-      // before the report is generated — the heading shows what was written.
-      const { generateReport } = await import(
-        '@trustify-da/trustify-da-javascript-client/dist/src/remediation_report.js'
-      );
-      // The last generateReport call is the PR-body one (the earlier call is the
-      // top-level info-log report, which keeps each dep's own recommendation).
+      // The PR body call to generateReport should receive the groups (with
+      // divergent: true) — divergence rendering is now delegated to the report
+      // generator, not the action.
       const bodyCall = vi.mocked(generateReport).mock.calls.at(-1);
-      expect(bodyCall?.[0]).toHaveLength(2);
-      expect(bodyCall?.[0].every((r) => r.fixedInVersion === '1.10.0')).toBe(true);
+      expect(bodyCall?.[1]).toEqual(
+        expect.objectContaining({
+          groups: expect.arrayContaining([
+            expect.objectContaining({ divergent: true, appliedVersion: '1.10.0' }),
+          ]),
+        })
+      );
 
-      // The action appends its own divergence table to the PR body, surfacing the
-      // overwritten recommendation (commons-lang3 recommended 1.9.0, applied 1.10.0).
-      const prBody = vi.mocked(createOrUpdatePR).mock.calls[0][0].body;
-      expect(prBody).toContain('Applied version differs from some recommendations');
-      expect(prBody).toContain('| org.apache.commons:commons-lang3 | 1.9.0 | 1.10.0 |');
-      expect(prBody).toContain('| org.apache.commons:commons-text | 1.10.0 | 1.10.0 |');
+      // fixedInVersion should NOT be overridden — each dep keeps its original
+      // recommendation; the divergence table in the report handles the explanation.
+      expect(bodyCall?.[0]).toHaveLength(2);
+      const versions = bodyCall?.[0].map((r) => r.fixedInVersion);
+      expect(versions).toContain('1.10.0');
+      expect(versions).toContain('1.9.0');
     });
 
     it('pins --force-with-lease to the branch remote SHA when it already exists', async () => {
@@ -441,10 +506,16 @@ describe('remediate mode', () => {
           return { stdout: 'basesha\n', stderr: '', exitCode: 0 };
         }
         if (cmd === 'git' && args?.[0] === 'ls-remote') {
-          // Branch already exists on the remote (e.g. from a prior run).
           return { stdout: `${existingSha}\trefs/heads/some-branch\n`, stderr: '', exitCode: 0 };
         }
         return { stdout: '', stderr: '', exitCode: 0 };
+      });
+
+      const rem = makeRemediation({
+        groupId: 'org.apache.commons',
+        artifactId: 'commons-text',
+        fixedInVersion: '1.10.0',
+        vulnerabilities: [{ id: 'CVE-2022-42889', severity: 'HIGH', advisories: [] }],
       });
 
       vi.mocked(runRemediation).mockResolvedValueOnce({
@@ -452,21 +523,15 @@ describe('remediate mode', () => {
         manifests: [],
         appliedFiles: [],
         skipped: [],
-        remediations: [
-          makeRemediation({
-            groupId: 'org.apache.commons',
-            artifactId: 'commons-text',
-            fixedInVersion: '1.10.0',
-            vulnerabilities: [{ id: 'CVE-2022-42889', severity: 'HIGH', advisories: [] }],
-            changes: [
-              {
-                path: 'pom.xml',
-                after: '<pom/>',
-                changeKey: 'mvn:direct:pom.xml:org.apache.commons:commons-text',
-              },
-            ],
+        groups: [
+          makeGroup({
+            changeKey: 'mvn:direct:pom.xml:org.apache.commons:commons-text',
+            appliedVersion: '1.10.0',
+            remediations: [rem],
+            edit: { path: 'pom.xml', after: '<pom/>' },
           }),
         ],
+        remediations: [rem],
       });
 
       const config: ActionConfig = {
@@ -488,7 +553,6 @@ describe('remediate mode', () => {
         .mocked(exec.exec)
         .mock.calls.find((call) => call[0] === 'git' && call[1]?.[0] === 'push');
       expect(pushCall).toBeDefined();
-      // Lease pinned to the observed remote SHA, not a bare --force-with-lease.
       expect(
         pushCall?.[1]?.some((a) => a.startsWith('--force-with-lease=') && a.endsWith(`:${existingSha}`))
       ).toBe(true);
